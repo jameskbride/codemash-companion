@@ -1,17 +1,28 @@
 package com.jameskbride.codemashcompanion
 
 import org.junit.Test
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.verify
 
-import org.junit.Assert.*
-
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 class ExampleUnitTest {
+
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun mockingWorks() {
+        val testClass1 = mock(TestClass1::class.java)
+        val testClass2 = TestClass2(testClass1)
+
+        testClass2.doSomething()
+
+        verify(testClass1).doSomething()
+    }
+}
+
+class TestClass1 {
+    fun doSomething() {}
+}
+
+class TestClass2(private val testClass1: TestClass1) {
+    fun doSomething() {
+        testClass1.doSomething()
     }
 }
