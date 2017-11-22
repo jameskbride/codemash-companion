@@ -1,12 +1,12 @@
 package com.jameskbride.codemashcompanion
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity(val impl: MainActivityImpl = MainActivityImpl()) : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        impl.onCreate(savedInstanceState, this)
     }
 }
