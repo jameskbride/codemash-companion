@@ -1,0 +1,17 @@
+package com.jameskbride.codemashcompanion.injection
+
+import com.jameskbride.codemashcompanion.CodemashCompanionApplication
+import dagger.Module
+import dagger.Provides
+import org.greenrobot.eventbus.EventBus
+import javax.inject.Singleton
+
+@Module
+class ApplicationModule(private val codemashCompanionApplication: CodemashCompanionApplication) {
+
+    @Provides
+    @Singleton
+    fun makeEventBus(): EventBus {
+        return EventBus.builder().throwSubscriberException(true).build()
+    }
+}
