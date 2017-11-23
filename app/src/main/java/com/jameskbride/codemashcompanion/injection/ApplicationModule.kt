@@ -7,7 +7,7 @@ import org.greenrobot.eventbus.EventBus
 import javax.inject.Singleton
 
 @Module
-class ApplicationModule(private val codemashCompanionApplication: CodemashCompanionApplication) {
+open class ApplicationModule {
 
     @Provides
     @Singleton

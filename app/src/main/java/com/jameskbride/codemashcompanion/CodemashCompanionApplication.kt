@@ -12,7 +12,7 @@ class CodemashCompanionApplication : Application() {
 
         applicationComponent = DaggerApplicationComponent
                 .builder()
-                .applicationModule(ApplicationModule(this))
+                .applicationModule(ApplicationModule())
                 .build()
     }
 

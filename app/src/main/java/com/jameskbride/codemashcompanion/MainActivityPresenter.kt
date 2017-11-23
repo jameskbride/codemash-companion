@@ -1,7 +1,14 @@
 package com.jameskbride.codemashcompanion
 
-class MainActivityPresenter {
-    fun open() {
+import org.greenrobot.eventbus.EventBus
+import javax.inject.Inject
 
+class MainActivityPresenter() {
+
+    @Inject
+    lateinit var eventBus: EventBus
+
+    fun open() {
+        eventBus.register(this)
     }
 }
