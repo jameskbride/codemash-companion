@@ -11,4 +11,8 @@ class MainActivityImpl(val presenter: MainActivityPresenter = MainActivityPresen
         presenter.open()
     }
 
+    fun onPause(mainActivity: MainActivity) {
+        presenter.close()
+    }
+
 }

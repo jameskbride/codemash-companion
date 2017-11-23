@@ -31,4 +31,11 @@ class MainActivityImplTest {
 
         verify(presenter).open()
     }
+
+    @Test
+    fun itClosesThePresenterOnPause() {
+        subject.onPause(mainActivity)
+
+        verify(presenter).close()
+    }
 }

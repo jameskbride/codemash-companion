@@ -14,4 +14,9 @@ class MainActivity(val impl: MainActivityImpl = MainActivityImpl()) : AppCompatA
         super.onResume()
         impl.onResume(this)
     }
+
+    override fun onPause() {
+        super.onPause()
+        impl.onPause(this)
+    }
 }

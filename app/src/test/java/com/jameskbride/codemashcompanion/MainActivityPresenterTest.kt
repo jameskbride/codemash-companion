@@ -1,20 +1,34 @@
 package com.jameskbride.codemashcompanion
 
 import org.greenrobot.eventbus.EventBus
+import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 
 class MainActivityPresenterTest {
 
+    lateinit var eventBus: EventBus
+    lateinit var subject: MainActivityPresenter
+
+    @Before
+    fun setUp() {
+        eventBus = mock(EventBus::class.java)
+        subject = MainActivityPresenter()
+        subject.eventBus = eventBus
+    }
+
     @Test
     fun itRegistersWithTheBusOnOpen() {
-        val eventBus = mock(EventBus::class.java);
-        val presenter = MainActivityPresenter()
-        presenter.eventBus = eventBus
+        subject.open()
 
-        presenter.open()
+        verify(eventBus).register(subject)
+    }
 
-        verify(eventBus).register(presenter)
+    @Test
+    fun itUnregistersWithTheBusOnClose() {
+        subject.close()
+
+        verify(eventBus).unregister(subject)
     }
 }
