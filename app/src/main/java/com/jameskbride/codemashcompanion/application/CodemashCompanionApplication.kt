@@ -1,4 +1,4 @@
-package com.jameskbride.codemashcompanion
+package com.jameskbride.codemashcompanion.application
 
 import android.app.Application
 import com.jameskbride.codemashcompanion.injection.ApplicationComponent

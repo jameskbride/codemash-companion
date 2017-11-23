@@ -1,4 +1,4 @@
-package com.jameskbride.codemashcompanion
+package com.jameskbride.codemashcompanion.main
 
 import org.greenrobot.eventbus.EventBus
 import org.junit.Before

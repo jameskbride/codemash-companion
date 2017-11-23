@@ -1,6 +1,7 @@
-package com.jameskbride.codemashcompanion
+package com.jameskbride.codemashcompanion.main
 
 import android.os.Bundle
+import com.jameskbride.codemashcompanion.R
 
 class MainActivityImpl(val presenter: MainActivityPresenter = MainActivityPresenter()) {
     fun onCreate(savedInstanceState: Bundle?, activity: MainActivity) {

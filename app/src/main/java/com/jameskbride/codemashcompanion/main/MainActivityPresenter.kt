@@ -1,9 +1,9 @@
-package com.jameskbride.codemashcompanion
+package com.jameskbride.codemashcompanion.main
 
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
-class MainActivityPresenter {
+public class MainActivityPresenter {
 
     @Inject
     lateinit var eventBus: EventBus

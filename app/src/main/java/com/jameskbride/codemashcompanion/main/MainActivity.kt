@@ -1,4 +1,4 @@
-package com.jameskbride.codemashcompanion
+package com.jameskbride.codemashcompanion.main
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

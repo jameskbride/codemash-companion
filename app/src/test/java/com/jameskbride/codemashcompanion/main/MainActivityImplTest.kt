@@ -1,5 +1,6 @@
-package com.jameskbride.codemashcompanion
+package com.jameskbride.codemashcompanion.main
 
+import com.jameskbride.codemashcompanion.R
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.mock

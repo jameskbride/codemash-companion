@@ -1,6 +1,5 @@
 package com.jameskbride.codemashcompanion.injection
 
-import com.jameskbride.codemashcompanion.CodemashCompanionApplication
 import dagger.Module
 import dagger.Provides
 import org.greenrobot.eventbus.EventBus
