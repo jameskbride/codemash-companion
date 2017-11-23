@@ -1,18 +1,34 @@
 package com.jameskbride.codemashcompanion
 
+import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 
 class MainActivityImplTest {
 
+    private lateinit var mainActivity: MainActivity
+    private lateinit var presenter: MainActivityPresenter
+    private lateinit var subject: MainActivityImpl
+
+    @Before
+    fun setUp() {
+        mainActivity = mock(MainActivity::class.java)
+        presenter = mock(MainActivityPresenter::class.java)
+        subject = MainActivityImpl(presenter)
+    }
+
     @Test
     fun itCanDelegateToTheMainActivity() {
-        val base = mock(MainActivity::class.java)
-        val mainActivityImpl = MainActivityImpl()
+        subject.onCreate(null, mainActivity)
 
-        mainActivityImpl.onCreate(null, base)
+        verify(mainActivity).setContentView(R.layout.activity_main)
+    }
 
-        verify(base).setContentView(R.layout.activity_main)
+    @Test
+    fun itOpensThePresenterOnResume() {
+        subject.onResume(mainActivity)
+
+        verify(presenter).open()
     }
 }

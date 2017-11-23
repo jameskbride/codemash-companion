@@ -9,4 +9,9 @@ class MainActivity(val impl: MainActivityImpl = MainActivityImpl()) : AppCompatA
         super.onCreate(savedInstanceState)
         impl.onCreate(savedInstanceState, this)
     }
+
+    override fun onResume() {
+        super.onResume()
+        impl.onResume(this)
+    }
 }
