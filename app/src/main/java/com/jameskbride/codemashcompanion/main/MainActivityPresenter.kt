@@ -3,16 +3,17 @@ package com.jameskbride.codemashcompanion.main
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
-public class MainActivityPresenter {
-
-    @Inject
-    lateinit var eventBus: EventBus
+class MainActivityPresenter @Inject constructor(val eventBus: EventBus) {
 
     fun open() {
-        eventBus.register(this)
+        if (!eventBus.isRegistered(this)) {
+            eventBus.register(this)
+        }
     }
 
     fun close() {
-        eventBus.unregister(this)
+        if (eventBus.isRegistered(this)) {
+            eventBus.unregister(this)
+        }
     }
 }

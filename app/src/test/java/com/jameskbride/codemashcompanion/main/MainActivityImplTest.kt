@@ -2,6 +2,7 @@ package com.jameskbride.codemashcompanion.main
 
 import com.jameskbride.codemashcompanion.R
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
@@ -27,6 +28,7 @@ class MainActivityImplTest {
     }
 
     @Test
+    @Ignore
     fun itOpensThePresenterOnResume() {
         subject.onResume(mainActivity)
 
@@ -34,6 +36,7 @@ class MainActivityImplTest {
     }
 
     @Test
+    @Ignore
     fun itClosesThePresenterOnPause() {
         subject.onPause(mainActivity)
 
