@@ -2,7 +2,6 @@ package com.jameskbride.codemashcompanion.main
 
 import com.jameskbride.codemashcompanion.R
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
@@ -25,21 +24,5 @@ class MainActivityImplTest {
         subject.onCreate(null, mainActivity)
 
         verify(mainActivity).setContentView(R.layout.activity_main)
-    }
-
-    @Test
-    @Ignore
-    fun itOpensThePresenterOnResume() {
-        subject.onResume(mainActivity)
-
-        verify(presenter).open()
-    }
-
-    @Test
-    @Ignore
-    fun itClosesThePresenterOnPause() {
-        subject.onPause(mainActivity)
-
-        verify(presenter).close()
     }
 }
