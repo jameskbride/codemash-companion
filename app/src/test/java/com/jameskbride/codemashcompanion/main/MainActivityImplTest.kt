@@ -20,9 +20,16 @@ class MainActivityImplTest {
     }
 
     @Test
-    fun itCanDelegateToTheMainActivity() {
+    fun onCreateSetsTheContentView() {
         subject.onCreate(null, mainActivity)
 
         verify(mainActivity).setContentView(R.layout.activity_main)
+    }
+
+    @Test
+    fun onCreateRequestsTheConferenceData() {
+        subject.onCreate(null, mainActivity)
+
+        verify(presenter).requestConferenceData()
     }
 }

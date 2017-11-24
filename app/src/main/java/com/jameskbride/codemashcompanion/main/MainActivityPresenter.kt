@@ -16,4 +16,8 @@ class MainActivityPresenter @Inject constructor(val eventBus: EventBus) {
             eventBus.unregister(this)
         }
     }
+
+    fun requestConferenceData() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
