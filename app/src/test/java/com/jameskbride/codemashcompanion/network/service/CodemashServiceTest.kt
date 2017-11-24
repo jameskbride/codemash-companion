@@ -4,8 +4,7 @@ import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import com.jameskbride.codemashcompanion.bus.SpeakersReceivedEvent
 import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.Speaker
-import com.jameskbride.codemashcompanion.network.SpeakerResponse
-import io.reactivex.Single
+import io.reactivex.Observable
 import io.reactivex.schedulers.TestScheduler
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -35,13 +34,13 @@ class CodemashServiceTest {
 
         subject = CodemashService(codemashApi, eventBus, testScheduler, testScheduler)
 
-        eventBus.register(subject)
+       subject.open()
     }
 
     @After
     fun tearDown() {
         eventBus.unregister(this)
-        eventBus.unregister(subject)
+        subject.close()
     }
 
     @Test
@@ -59,8 +58,7 @@ class CodemashServiceTest {
                 BlogUrl = "blog"
                 )
 
-        val speakerResponse = SpeakerResponse(speakers = arrayOf(speaker))
-        `when`(codemashApi.getSpeakers()).thenReturn(Single.just(speakerResponse))
+        `when`(codemashApi.getSpeakers()).thenReturn(Observable.fromArray(arrayOf(speaker)))
 
         eventBus.post(RequestConferenceDataEvent())
 
