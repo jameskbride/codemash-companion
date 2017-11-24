@@ -1,6 +1,9 @@
 package com.jameskbride.codemashcompanion.main
 
+import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.*
@@ -10,21 +13,28 @@ class MainActivityPresenterTest {
     lateinit var eventBus: EventBus
     lateinit var subject: MainActivityPresenter
 
+    var requestConferenceDataEventCalled = false
+
     @Before
     fun setUp() {
-        eventBus = mock(EventBus::class.java)
+        eventBus = EventBus.getDefault()
+        eventBus.register(this)
         subject = MainActivityPresenter(eventBus)
     }
 
     @Test
-    fun itRegistersWithTheBusOnOpen() {
+    fun openRegistersWithTheBusOnOpen() {
+        eventBus = mock(EventBus::class.java)
+        subject = MainActivityPresenter(eventBus)
         subject.open()
 
         verify(eventBus).register(subject)
     }
 
     @Test
-    fun itDoesNotRegisterWithTheBusIfAlreadyRegistered() {
+    fun openDoesNotRegisterWithTheBusIfAlreadyRegistered() {
+        eventBus = mock(EventBus::class.java)
+        subject = MainActivityPresenter(eventBus)
         `when`(eventBus.isRegistered(subject)).thenReturn(true)
 
         subject.open()
@@ -33,7 +43,9 @@ class MainActivityPresenterTest {
     }
 
     @Test
-    fun itUnregistersWithTheBusOnClose() {
+    fun closeUnregistersWithTheBusOnClose() {
+        eventBus = mock(EventBus::class.java)
+        subject = MainActivityPresenter(eventBus)
         `when`(eventBus.isRegistered(subject)).thenReturn(true)
 
         subject.close()
@@ -42,11 +54,25 @@ class MainActivityPresenterTest {
     }
 
     @Test
-    fun itDoesNotUnregisterWithTheBusIfNotRegistered() {
+    fun closeDoesNotUnregisterWithTheBusIfNotRegistered() {
+        eventBus = mock(EventBus::class.java)
+        subject = MainActivityPresenter(eventBus)
         `when`(eventBus.isRegistered(subject)).thenReturn(false)
 
         subject.close()
 
         verify(eventBus, times(0)).unregister(subject)
+    }
+
+    @Test
+    fun requestConferenceDataEventSendsTheConferenceDataRequestEvent() {
+        subject.requestConferenceData()
+
+        assertTrue(requestConferenceDataEventCalled)
+    }
+
+    @Subscribe
+    fun onRequestConferenceDataEvent(event: RequestConferenceDataEvent) {
+        requestConferenceDataEventCalled = true
     }
 }

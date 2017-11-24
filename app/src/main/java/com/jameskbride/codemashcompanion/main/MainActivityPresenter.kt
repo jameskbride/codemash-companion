@@ -1,5 +1,6 @@
 package com.jameskbride.codemashcompanion.main
 
+import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
@@ -18,6 +19,6 @@ class MainActivityPresenter @Inject constructor(val eventBus: EventBus) {
     }
 
     fun requestConferenceData() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        eventBus.post(RequestConferenceDataEvent())
     }
 }
