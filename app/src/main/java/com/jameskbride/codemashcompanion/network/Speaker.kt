@@ -1,14 +1,14 @@
 package com.jameskbride.codemashcompanion.network
 
 data class Speaker(
-        val linkedInProfile: String = "",
-        val id: String = "",
-        val lastName: String = "",
-        val sessionIds: Array<String> = arrayOf(String()),
-        val twitterLink: String = "",
-        val gitHubLink: String = "",
-        val firstName: String = "",
-        val gravatarUrl: String = "",
-        val biography: String = "",
-        val blogUrl: String = ""
+        val LinkedInProfile: String = "",
+        val Id: String = "",
+        val LastName: String = "",
+        val SessionIds: Array<String> = arrayOf(String()),
+        val TwitterLink: String = "",
+        val GitHubLink: String = "",
+        val FirstName: String = "",
+        val GravatarUrl: String = "",
+        val Biography: String = "",
+        val BlogUrl: String = ""
 )
