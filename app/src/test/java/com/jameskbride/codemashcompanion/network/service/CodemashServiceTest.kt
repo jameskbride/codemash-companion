@@ -75,14 +75,14 @@ class CodemashServiceTest {
     @Test
     fun onSpeakersPersistedEventRequestsTheSessionsData() {
         val session = Session(
-                id  = "123",
-                category = "DevOps",
-                sessionStartTime = "start time",
-                sessionEndTime = "end time",
-                sessionType = "session type",
-                sessionTime = "session time",
-                title = "title",
-                abstract = "abstract",
+                Id  = "123",
+                Category = "DevOps",
+                SessionStartTime = "start time",
+                SessionEndTime = "end time",
+                SessionType = "session type",
+                SessionTime = "session time",
+                Title = "title",
+                Abstract = "abstract",
                 speakers = arrayOf("john", "smith"),
                 tags = arrayOf("tag1", "tag2")
         )

@@ -35,18 +35,7 @@ class ConferenceRepositoryTest {
 
     @Test
     fun onSpeakersReceivedEventItInsertsAllSpeakers() {
-        val speakers = arrayOf(Speaker(
-                LinkedInProfile = "linkedin",
-                Id = "1234",
-                LastName = "Smith",
-                SessionIds = arrayOf("1", "2"),
-                TwitterLink = "twitter",
-                GitHubLink = "github",
-                FirstName = "John",
-                GravatarUrl = "gravitar",
-                Biography = "biography",
-                BlogUrl = "blog"
-        ))
+        val speakers = buildSpeakers()
 
         subject.onSpeakersReceivedEvent(SpeakersReceivedEvent(speakers))
 
@@ -55,18 +44,7 @@ class ConferenceRepositoryTest {
 
     @Test
     fun onSpeakersReceivedEventItNotifiesSpeakersPersisted() {
-        val speakers = arrayOf(Speaker(
-                LinkedInProfile = "linkedin",
-                Id = "1234",
-                LastName = "Smith",
-                SessionIds = arrayOf("1", "2"),
-                TwitterLink = "twitter",
-                GitHubLink = "github",
-                FirstName = "John",
-                GravatarUrl = "gravitar",
-                Biography = "biography",
-                BlogUrl = "blog"
-        ))
+        val speakers = buildSpeakers()
 
         subject.onSpeakersReceivedEvent(SpeakersReceivedEvent(speakers))
 
@@ -77,18 +55,7 @@ class ConferenceRepositoryTest {
 
     @Test
     fun onSessionsReceivedEventItInsertsAllSessions() {
-        val sessions = arrayOf(Session(
-                id  = "123",
-                category = "DevOps",
-                sessionStartTime = "start time",
-                sessionEndTime = "end time",
-                sessionType = "session type",
-                sessionTime = "session time",
-                title = "title",
-                abstract = "abstract",
-                speakers = arrayOf("john", "smith"),
-                tags = arrayOf("tag1", "tag2")
-        ))
+        val sessions = buildSessions()
 
         subject.onSessionsReceivedEvent(SessionsReceivedEvent(sessions = sessions))
 
@@ -97,23 +64,42 @@ class ConferenceRepositoryTest {
 
     @Test
     fun onSessionsReceivedEventItNotifiesConferenceDataPersisted() {
-        val sessions = arrayOf(Session(
-                id  = "123",
-                category = "DevOps",
-                sessionStartTime = "start time",
-                sessionEndTime = "end time",
-                sessionType = "session type",
-                sessionTime = "session time",
-                title = "title",
-                abstract = "abstract",
-                speakers = arrayOf("john", "smith"),
-                tags = arrayOf("tag1", "tag2")
-        ))
+        val sessions = buildSessions()
 
         subject.onSessionsReceivedEvent(SessionsReceivedEvent(sessions))
 
         val conferenceDataPersistedEventCaptor = ArgumentCaptor.forClass(ConferenceDataPersistedEvent::class.java)
 
         verify(eventBus).post(conferenceDataPersistedEventCaptor.capture())
+    }
+
+    private fun buildSpeakers(): Array<Speaker> {
+        return arrayOf(Speaker(
+                LinkedInProfile = "linkedin",
+                Id = "1234",
+                LastName = "Smith",
+                SessionIds = arrayOf("1", "2"),
+                TwitterLink = "twitter",
+                GitHubLink = "github",
+                FirstName = "John",
+                GravatarUrl = "gravitar",
+                Biography = "biography",
+                BlogUrl = "blog"
+        ))
+    }
+
+    private fun buildSessions(): Array<Session> {
+        return arrayOf(Session(
+                Id = "123",
+                Category = "DevOps",
+                SessionStartTime = "start time",
+                SessionEndTime = "end time",
+                SessionType = "session type",
+                SessionTime = "session time",
+                Title = "title",
+                Abstract = "abstract",
+                speakers = arrayOf("john", "smith"),
+                tags = arrayOf("tag1", "tag2")
+        ))
     }
 }
