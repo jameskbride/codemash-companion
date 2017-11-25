@@ -1,8 +1,6 @@
 package com.jameskbride.codemashcompanion.data
 
-import com.jameskbride.codemashcompanion.bus.BusAware
-import com.jameskbride.codemashcompanion.bus.SpeakersPersistedEvent
-import com.jameskbride.codemashcompanion.bus.SpeakersReceivedEvent
+import com.jameskbride.codemashcompanion.bus.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -14,5 +12,11 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     fun onSpeakersReceivedEvent(speakersReceivedEvent: SpeakersReceivedEvent) {
         conferenceDao.insertAll(speakersReceivedEvent.speakers)
         eventBus.post(SpeakersPersistedEvent())
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onSessionsReceivedEvent(sessionsReceivedEvent: SessionsReceivedEvent) {
+        conferenceDao.insertAll(sessionsReceivedEvent.sessions)
+        eventBus.post(ConferenceDataPersistedEvent())
     }
 }
