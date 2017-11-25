@@ -1,6 +1,7 @@
 package com.jameskbride.codemashcompanion.application
 
 import android.app.Application
+import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.injection.ApplicationComponent
 import com.jameskbride.codemashcompanion.injection.ApplicationModule
 import com.jameskbride.codemashcompanion.injection.DaggerApplicationComponent
@@ -12,6 +13,9 @@ class CodemashCompanionApplication : Application() {
     @Inject
     lateinit var codemashService: CodemashService
 
+    @Inject
+    lateinit var conferenceRepository: ConferenceRepository
+
     override fun onCreate() {
         super.onCreate()
 
@@ -22,6 +26,7 @@ class CodemashCompanionApplication : Application() {
 
         applicationComponent.inject(this)
         codemashService.open()
+        conferenceRepository.open()
     }
 
     companion object {
