@@ -10,6 +10,7 @@ import com.jameskbride.codemashcompanion.splash.SplashActivityImpl
 import com.jameskbride.codemashcompanion.splash.SplashActivityPresenter
 import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.service.CodemashService
+import com.jameskbride.codemashcompanion.utils.IntentFactory
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler
@@ -107,8 +108,14 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     }
 
     @Provides
-    fun makeMainActivityImpl(presenter: SplashActivityPresenter): SplashActivityImpl {
-        return SplashActivityImpl(presenter)
+    @Singleton
+    fun makeIntentFactory(): IntentFactory {
+        return IntentFactory()
+    }
+
+    @Provides
+    fun makeMainActivityImpl(presenter: SplashActivityPresenter, intentFactory: IntentFactory): SplashActivityImpl {
+        return SplashActivityImpl(presenter, intentFactory)
     }
 
     @Provides

@@ -15,4 +15,14 @@ class SplashActivity : AppCompatActivity() {
         CodemashCompanionApplication.applicationComponent.inject(this)
         impl.onCreate(savedInstanceState, this)
     }
+
+    override fun onPause() {
+        super.onPause()
+        impl.onPause(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        impl.onResume(this)
+    }
 }
