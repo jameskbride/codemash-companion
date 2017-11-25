@@ -23,7 +23,7 @@ class SplashActivityImplTest {
     fun onCreateSetsTheContentView() {
         subject.onCreate(null, splashActivity)
 
-        verify(splashActivity).setContentView(R.layout.activity_main)
+        verify(splashActivity).setContentView(R.layout.activity_splash)
     }
 
     @Test

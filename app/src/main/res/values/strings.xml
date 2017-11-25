@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Codemash Companion</string>
+    <string name="loading_all_of_the_fun_stuff">Loading all of the fun stuff...</string>
 </resources>

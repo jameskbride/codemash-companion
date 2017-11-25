@@ -7,7 +7,7 @@ import javax.inject.Inject
 class SplashActivityImpl @Inject constructor(val presenter: SplashActivityPresenter) {
 
     fun onCreate(savedInstanceState: Bundle?, activity: SplashActivity) {
-        activity.setContentView(R.layout.activity_main)
+        activity.setContentView(R.layout.activity_splash)
         presenter.requestConferenceData()
     }
 }
