@@ -7,6 +7,8 @@ import com.jameskbride.codemashcompanion.bus.SpeakersReceivedEvent
 import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.Session
 import com.jameskbride.codemashcompanion.network.Speaker
+import io.mockk.every
+import io.mockk.mockk
 import io.reactivex.Observable
 import io.reactivex.schedulers.TestScheduler
 import org.greenrobot.eventbus.EventBus
@@ -15,8 +17,6 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
 
 class CodemashServiceTest {
 
@@ -31,7 +31,7 @@ class CodemashServiceTest {
 
     @Before
     fun setUp() {
-        codemashApi = mock(CodemashApi::class.java)
+        codemashApi = mockk()
         testScheduler = TestScheduler()
         eventBus = EventBus.getDefault()
         eventBus.register(this)
@@ -61,7 +61,7 @@ class CodemashServiceTest {
                 BlogUrl = "blog"
                 )
 
-        `when`(codemashApi.getSpeakers()).thenReturn(Observable.fromArray(arrayOf(speaker)))
+        every{codemashApi.getSpeakers()} returns Observable.fromArray(arrayOf(speaker))
 
         eventBus.post(RequestConferenceDataEvent())
 
@@ -84,7 +84,7 @@ class CodemashServiceTest {
                 Abstract = "abstract"
         )
 
-        `when`(codemashApi.getSessions()).thenReturn(Observable.fromArray(arrayOf(session)))
+        every{codemashApi.getSessions()} returns Observable.fromArray(arrayOf(session))
 
         eventBus.post(SpeakersPersistedEvent())
 

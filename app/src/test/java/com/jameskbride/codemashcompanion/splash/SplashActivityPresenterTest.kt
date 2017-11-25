@@ -2,13 +2,14 @@ package com.jameskbride.codemashcompanion.splash
 
 import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
 import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
-import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.*
 
 class SplashActivityPresenterTest {
 
@@ -20,7 +21,7 @@ class SplashActivityPresenterTest {
 
     @Before
     fun setUp() {
-        view = mock(SplashActivityView::class.java)
+        view = mockk()
         eventBus = EventBus.getDefault()
         eventBus.register(this)
         subject = SplashActivityPresenter(eventBus)
@@ -29,44 +30,47 @@ class SplashActivityPresenterTest {
 
     @Test
     fun openRegistersWithTheBusOnOpen() {
-        eventBus = mock(EventBus::class.java)
+        eventBus = mockk()
         subject = SplashActivityPresenter(eventBus)
+        every{eventBus.isRegistered(subject)} returns false
+        every{eventBus.register(subject)} returns Unit
         subject.open()
 
-        verify(eventBus).register(subject)
+        verify{eventBus.register(subject)}
     }
 
     @Test
     fun openDoesNotRegisterWithTheBusIfAlreadyRegistered() {
-        eventBus = mock(EventBus::class.java)
+        eventBus = mockk()
         subject = SplashActivityPresenter(eventBus)
-        `when`(eventBus.isRegistered(subject)).thenReturn(true)
+        every{eventBus.isRegistered(subject)} returns true
 
         subject.open()
 
-        verify(eventBus, times(0)).register(subject)
+        verify(exactly = 0){eventBus.register(subject)}
     }
 
     @Test
     fun closeUnregistersWithTheBusOnClose() {
-        eventBus = mock(EventBus::class.java)
+        eventBus = mockk()
         subject = SplashActivityPresenter(eventBus)
-        `when`(eventBus.isRegistered(subject)).thenReturn(true)
+        every { eventBus.isRegistered(subject)} returns true
+        every { eventBus.unregister(subject)} returns Unit
 
         subject.close()
 
-        verify(eventBus).unregister(subject)
+        verify{eventBus.unregister(subject)}
     }
 
     @Test
     fun closeDoesNotUnregisterWithTheBusIfNotRegistered() {
-        eventBus = mock(EventBus::class.java)
+        eventBus = mockk()
         subject = SplashActivityPresenter(eventBus)
-        `when`(eventBus.isRegistered(subject)).thenReturn(false)
+        every{eventBus.isRegistered(subject)} returns false
 
         subject.close()
 
-        verify(eventBus, times(0)).unregister(subject)
+        verify(exactly = 0) {eventBus.unregister(subject)}
     }
 
     @Test
@@ -78,9 +82,10 @@ class SplashActivityPresenterTest {
 
     @Test
     fun onConferenceDataPersistedNavigatesToTheMainView() {
+        every{view.navigateToMain()} returns Unit
         subject.onConferenceDataPersistedEvent(ConferenceDataPersistedEvent())
 
-        verify(view).navigateToMain()
+        verify{view.navigateToMain()}
     }
 
     @Subscribe

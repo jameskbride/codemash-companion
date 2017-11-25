@@ -1,9 +1,11 @@
 package com.jameskbride.codemashcompanion.bus
 
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import org.greenrobot.eventbus.EventBus
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito
 
 class BusAwareTest {
     lateinit var eventBus: EventBus
@@ -17,44 +19,47 @@ class BusAwareTest {
 
     @Test
     fun openRegistersWithTheBusOnOpen() {
-        eventBus = Mockito.mock(EventBus::class.java)
+        eventBus = mockk()
         subject = LocalBusAware(eventBus)
+        every { eventBus.isRegistered(subject) } returns false
+        every {eventBus.register(subject)} returns Unit
         subject.open()
 
-        Mockito.verify(eventBus).register(subject)
+        verify {eventBus.register(subject)}
     }
 
     @Test
     fun openDoesNotRegisterWithTheBusIfAlreadyRegistered() {
-        eventBus = Mockito.mock(EventBus::class.java)
+        eventBus = mockk()
         subject = LocalBusAware(eventBus)
-        Mockito.`when`(eventBus.isRegistered(subject)).thenReturn(true)
+        every{eventBus.isRegistered(subject)} returns true
 
         subject.open()
 
-        Mockito.verify(eventBus, Mockito.times(0)).register(subject)
+       verify(exactly = 0) {eventBus.register(subject)}
     }
 
     @Test
     fun closeUnregistersWithTheBusOnClose() {
-        eventBus = Mockito.mock(EventBus::class.java)
+        eventBus = mockk()
         subject = LocalBusAware(eventBus)
-        Mockito.`when`(eventBus.isRegistered(subject)).thenReturn(true)
+        every { eventBus.unregister(subject) } returns Unit
+        every { eventBus.isRegistered(subject)} returns true
 
         subject.close()
 
-        Mockito.verify(eventBus).unregister(subject)
+        verify{eventBus.unregister(subject)}
     }
 
     @Test
     fun closeDoesNotUnregisterWithTheBusIfNotRegistered() {
-        eventBus = Mockito.mock(EventBus::class.java)
+        eventBus = mockk()
         subject = LocalBusAware(eventBus)
-        Mockito.`when`(eventBus.isRegistered(subject)).thenReturn(false)
+        every{eventBus.isRegistered(subject)} returns false
 
         subject.close()
 
-        Mockito.verify(eventBus, Mockito.times(0)).unregister(subject)
+        verify(exactly = 0){eventBus.unregister(subject)}
     }
 }
 
