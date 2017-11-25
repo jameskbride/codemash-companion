@@ -78,7 +78,6 @@ class ConferenceRepositoryTest {
                 LinkedInProfile = "linkedin",
                 Id = "1234",
                 LastName = "Smith",
-                SessionIds = arrayOf("1", "2"),
                 TwitterLink = "twitter",
                 GitHubLink = "github",
                 FirstName = "John",
@@ -97,9 +96,7 @@ class ConferenceRepositoryTest {
                 SessionType = "session type",
                 SessionTime = "session time",
                 Title = "title",
-                Abstract = "abstract",
-                speakers = arrayOf("john", "smith"),
-                tags = arrayOf("tag1", "tag2")
+                Abstract = "abstract"
         ))
     }
 }

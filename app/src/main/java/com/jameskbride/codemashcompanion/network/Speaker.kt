@@ -2,7 +2,6 @@ package com.jameskbride.codemashcompanion.network
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
-import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
 
 @Entity
@@ -16,7 +15,5 @@ data class Speaker(
         @ColumnInfo(name = "first_name") var FirstName: String? = "",
         @ColumnInfo(name = "gravatar_url") var GravatarUrl: String? = "",
         @ColumnInfo(name = "biography") var Biography: String? = "",
-        @ColumnInfo(name = "blog_url") var BlogUrl: String? = "",
-
-        @Ignore var SessionIds: Array<String>? = arrayOf(String())
+        @ColumnInfo(name = "blog_url") var BlogUrl: String? = ""
 )
