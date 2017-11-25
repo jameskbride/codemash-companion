@@ -1,8 +1,6 @@
 package com.jameskbride.codemashcompanion.network.service
 
-import com.jameskbride.codemashcompanion.bus.BusAware
-import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
-import com.jameskbride.codemashcompanion.bus.SpeakersReceivedEvent
+import com.jameskbride.codemashcompanion.bus.*
 import com.jameskbride.codemashcompanion.network.CodemashApi
 import io.reactivex.Scheduler
 import org.greenrobot.eventbus.EventBus
@@ -21,5 +19,13 @@ class CodemashService @Inject constructor(private val codemashApi: CodemashApi,
                .subscribeOn(processScheduler)
                .observeOn(androidScheduler)
                .subscribe {result -> eventBus.post(SpeakersReceivedEvent(speakers = result))}
+    }
+
+    @Subscribe
+    fun onSpeakersPersistedEvent(event: SpeakersPersistedEvent) {
+        codemashApi.getSessions()
+                .subscribeOn(processScheduler)
+                .observeOn(androidScheduler)
+                .subscribe {result -> eventBus.post(SessionsReceivedEvent(sessions = result))}
     }
 }

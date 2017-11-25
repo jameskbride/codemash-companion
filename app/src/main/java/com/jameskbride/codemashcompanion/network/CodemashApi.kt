@@ -10,4 +10,7 @@ interface CodemashApi {
 
     @GET("api/SpeakersData")
     fun getSpeakers(@Query("type") type: String = "json"): Observable<Array<Speaker>>
+
+    @GET("api/SessionsData")
+    fun getSessions(@Query("type") type: String = "json"): Observable<Array<Session>>
 }

@@ -1,8 +1,11 @@
 package com.jameskbride.codemashcompanion.network.service
 
 import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
+import com.jameskbride.codemashcompanion.bus.SessionsReceivedEvent
+import com.jameskbride.codemashcompanion.bus.SpeakersPersistedEvent
 import com.jameskbride.codemashcompanion.bus.SpeakersReceivedEvent
 import com.jameskbride.codemashcompanion.network.CodemashApi
+import com.jameskbride.codemashcompanion.network.Session
 import com.jameskbride.codemashcompanion.network.Speaker
 import io.reactivex.Observable
 import io.reactivex.schedulers.TestScheduler
@@ -24,6 +27,7 @@ class CodemashServiceTest {
     private lateinit var subject: CodemashService
 
     private var speakersReceivedEvent: SpeakersReceivedEvent = SpeakersReceivedEvent()
+    private var sessionsReceivedEvent: SessionsReceivedEvent = SessionsReceivedEvent()
 
     @Before
     fun setUp() {
@@ -68,8 +72,38 @@ class CodemashServiceTest {
         assertEquals(speaker, actualSpeakers[0])
     }
 
+    @Test
+    fun onSpeakersPersistedEventRequestsTheSessionsData() {
+        val session = Session(
+                id  = "123",
+                category = "DevOps",
+                sessionStartTime = "start time",
+                sessionEndTime = "end time",
+                sessionType = "session type",
+                sessionTime = "session time",
+                title = "title",
+                abstract = "abstract",
+                speakers = arrayOf("john", "smith"),
+                tags = arrayOf("tag1", "tag2")
+        )
+
+        `when`(codemashApi.getSessions()).thenReturn(Observable.fromArray(arrayOf(session)))
+
+        eventBus.post(SpeakersPersistedEvent())
+
+        testScheduler.triggerActions()
+
+        val actualSessions = sessionsReceivedEvent.sessions
+        assertEquals(session, actualSessions[0])
+    }
+
     @Subscribe
     fun onSpeakersReceivedEvent(speakersReceivedEvent: SpeakersReceivedEvent) {
         this.speakersReceivedEvent = speakersReceivedEvent
+    }
+
+    @Subscribe
+    fun onSessionsReceivedEvent(sessionsReceivedEvent: SessionsReceivedEvent) {
+        this.sessionsReceivedEvent = sessionsReceivedEvent
     }
 }
