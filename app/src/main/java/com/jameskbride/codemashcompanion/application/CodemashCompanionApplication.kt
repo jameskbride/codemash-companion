@@ -8,7 +8,8 @@ import com.jameskbride.codemashcompanion.injection.DaggerApplicationComponent
 import com.jameskbride.codemashcompanion.network.service.CodemashService
 import javax.inject.Inject
 
-class CodemashCompanionApplication : Application() {
+class CodemashCompanionApplication
+constructor(val applicationComponentFactory: ApplicationComponentFactory = ApplicationComponentFactory()) : Application() {
 
     @Inject
     lateinit var codemashService: CodemashService
@@ -19,12 +20,13 @@ class CodemashCompanionApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        applicationComponent = DaggerApplicationComponent
-                .builder()
-                .applicationModule(ApplicationModule(this))
-                .build()
+        configure()
+    }
 
+    fun configure() {
+        applicationComponent = applicationComponentFactory.build(this)
         applicationComponent.inject(this)
+
         codemashService.open()
         conferenceRepository.open()
     }
@@ -32,5 +34,14 @@ class CodemashCompanionApplication : Application() {
     companion object {
         //platformStatic allow access it from java code
         lateinit var applicationComponent: ApplicationComponent
+    }
+}
+
+class ApplicationComponentFactory {
+    fun build(codemashCompanionApplication: CodemashCompanionApplication): ApplicationComponent {
+        return DaggerApplicationComponent
+                .builder()
+                .applicationModule(ApplicationModule(codemashCompanionApplication))
+                .build()
     }
 }
