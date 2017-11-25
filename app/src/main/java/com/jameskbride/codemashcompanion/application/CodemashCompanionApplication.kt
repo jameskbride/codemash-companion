@@ -17,7 +17,7 @@ class CodemashCompanionApplication : Application() {
 
         applicationComponent = DaggerApplicationComponent
                 .builder()
-                .applicationModule(ApplicationModule())
+                .applicationModule(ApplicationModule(this))
                 .build()
 
         applicationComponent.inject(this)

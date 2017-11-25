@@ -10,7 +10,10 @@ import org.greenrobot.eventbus.Subscribe
 import javax.inject.Inject
 
 
-class CodemashService @Inject constructor(private val codemashApi: CodemashApi, override val eventBus: EventBus, private val processScheduler: Scheduler, private val androidScheduler: Scheduler) : BusAware {
+class CodemashService @Inject constructor(private val codemashApi: CodemashApi,
+                                          override val eventBus: EventBus,
+                                          private val processScheduler: Scheduler,
+                                          private val androidScheduler: Scheduler) : BusAware {
 
     @Subscribe
     fun onRequestConferenceDataEvent(event: RequestConferenceDataEvent) {

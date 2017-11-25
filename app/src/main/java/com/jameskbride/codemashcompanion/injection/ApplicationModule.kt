@@ -1,6 +1,11 @@
 package com.jameskbride.codemashcompanion.injection
 
+import android.arch.persistence.room.Room
 import com.jameskbride.codemashcompanion.BuildConfig
+import com.jameskbride.codemashcompanion.application.CodemashCompanionApplication
+import com.jameskbride.codemashcompanion.data.ConferenceDao
+import com.jameskbride.codemashcompanion.data.ConferenceDatabase
+import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.main.MainActivityImpl
 import com.jameskbride.codemashcompanion.main.MainActivityPresenter
 import com.jameskbride.codemashcompanion.network.CodemashApi
@@ -20,7 +25,7 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-open class ApplicationModule {
+open class ApplicationModule(private val codemashCompanionApplication: CodemashCompanionApplication) {
 
     @Provides
     @Named("process")
@@ -76,6 +81,29 @@ open class ApplicationModule {
     @Singleton
     fun makeEventBus(): EventBus {
         return EventBus.builder().throwSubscriberException(true).build()
+    }
+
+    @Provides
+    @Singleton
+    fun makeConferenceDatabase(): ConferenceDatabase {
+        return Room
+                .databaseBuilder(
+                        codemashCompanionApplication.applicationContext,
+                        ConferenceDatabase::class.java,
+                        "codemash")
+                .build()
+    }
+
+    @Provides
+    @Singleton
+    fun makeConferenceDao(conferenceDatabase: ConferenceDatabase): ConferenceDao {
+        return conferenceDatabase.conferenceDao()
+    }
+
+    @Provides
+    @Singleton
+    fun makeConferenceRepository(conferenceDao: ConferenceDao, eventBus: EventBus): ConferenceRepository {
+        return ConferenceRepository(conferenceDao, eventBus)
     }
 
     @Provides
