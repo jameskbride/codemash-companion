@@ -107,12 +107,12 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     }
 
     @Provides
-    fun makeMainActivityPresenter(eventBus: EventBus): SplashActivityPresenter {
-        return SplashActivityPresenter(eventBus)
+    fun makeMainActivityImpl(presenter: SplashActivityPresenter): SplashActivityImpl {
+        return SplashActivityImpl(presenter)
     }
 
     @Provides
-    fun makeMainActivityImpl(presenter: SplashActivityPresenter): SplashActivityImpl {
-        return SplashActivityImpl(presenter)
+    fun makeMainActivityPresenter(eventBus: EventBus): SplashActivityPresenter {
+        return SplashActivityPresenter(eventBus)
     }
 }

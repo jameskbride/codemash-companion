@@ -1,8 +1,10 @@
 package com.jameskbride.codemashcompanion.splash
 
+import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
 import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -11,15 +13,18 @@ import org.mockito.Mockito.*
 class SplashActivityPresenterTest {
 
     lateinit var eventBus: EventBus
+    lateinit var view: SplashActivityView
     lateinit var subject: SplashActivityPresenter
 
-    var requestConferenceDataEventCalled = false
+    private var requestConferenceDataEventCalled = false
 
     @Before
     fun setUp() {
+        view = mock(SplashActivityView::class.java)
         eventBus = EventBus.getDefault()
         eventBus.register(this)
         subject = SplashActivityPresenter(eventBus)
+        subject.view = view
     }
 
     @Test
@@ -69,6 +74,13 @@ class SplashActivityPresenterTest {
         subject.requestConferenceData()
 
         assertTrue(requestConferenceDataEventCalled)
+    }
+
+    @Test
+    fun onConferenceDataPersistedNavigatesToTheMainView() {
+        subject.onConferenceDataPersistedEvent(ConferenceDataPersistedEvent())
+
+        verify(view).navigateToMain()
     }
 
     @Subscribe
