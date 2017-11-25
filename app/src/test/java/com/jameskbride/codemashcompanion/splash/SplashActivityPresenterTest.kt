@@ -1,4 +1,4 @@
-package com.jameskbride.codemashcompanion.main
+package com.jameskbride.codemashcompanion.splash
 
 import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import org.greenrobot.eventbus.EventBus
@@ -8,10 +8,10 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.*
 
-class MainActivityPresenterTest {
+class SplashActivityPresenterTest {
 
     lateinit var eventBus: EventBus
-    lateinit var subject: MainActivityPresenter
+    lateinit var subject: SplashActivityPresenter
 
     var requestConferenceDataEventCalled = false
 
@@ -19,13 +19,13 @@ class MainActivityPresenterTest {
     fun setUp() {
         eventBus = EventBus.getDefault()
         eventBus.register(this)
-        subject = MainActivityPresenter(eventBus)
+        subject = SplashActivityPresenter(eventBus)
     }
 
     @Test
     fun openRegistersWithTheBusOnOpen() {
         eventBus = mock(EventBus::class.java)
-        subject = MainActivityPresenter(eventBus)
+        subject = SplashActivityPresenter(eventBus)
         subject.open()
 
         verify(eventBus).register(subject)
@@ -34,7 +34,7 @@ class MainActivityPresenterTest {
     @Test
     fun openDoesNotRegisterWithTheBusIfAlreadyRegistered() {
         eventBus = mock(EventBus::class.java)
-        subject = MainActivityPresenter(eventBus)
+        subject = SplashActivityPresenter(eventBus)
         `when`(eventBus.isRegistered(subject)).thenReturn(true)
 
         subject.open()
@@ -45,7 +45,7 @@ class MainActivityPresenterTest {
     @Test
     fun closeUnregistersWithTheBusOnClose() {
         eventBus = mock(EventBus::class.java)
-        subject = MainActivityPresenter(eventBus)
+        subject = SplashActivityPresenter(eventBus)
         `when`(eventBus.isRegistered(subject)).thenReturn(true)
 
         subject.close()
@@ -56,7 +56,7 @@ class MainActivityPresenterTest {
     @Test
     fun closeDoesNotUnregisterWithTheBusIfNotRegistered() {
         eventBus = mock(EventBus::class.java)
-        subject = MainActivityPresenter(eventBus)
+        subject = SplashActivityPresenter(eventBus)
         `when`(eventBus.isRegistered(subject)).thenReturn(false)
 
         subject.close()
