@@ -6,6 +6,7 @@ import com.jameskbride.codemashcompanion.application.CodemashCompanionApplicatio
 import com.jameskbride.codemashcompanion.data.ConferenceDao
 import com.jameskbride.codemashcompanion.data.ConferenceDatabase
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
+import com.jameskbride.codemashcompanion.main.MainActivityImpl
 import com.jameskbride.codemashcompanion.splash.SplashActivityImpl
 import com.jameskbride.codemashcompanion.splash.SplashActivityPresenter
 import com.jameskbride.codemashcompanion.network.CodemashApi
@@ -114,12 +115,17 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     }
 
     @Provides
-    fun makeMainActivityImpl(presenter: SplashActivityPresenter, intentFactory: IntentFactory): SplashActivityImpl {
+    fun makeSplashActivityImpl(presenter: SplashActivityPresenter, intentFactory: IntentFactory): SplashActivityImpl {
         return SplashActivityImpl(presenter, intentFactory)
     }
 
     @Provides
-    fun makeMainActivityPresenter(eventBus: EventBus): SplashActivityPresenter {
+    fun makeSplashActivityPresenter(eventBus: EventBus): SplashActivityPresenter {
         return SplashActivityPresenter(eventBus)
+    }
+
+    @Provides
+    fun makeMainActivityImpl(): MainActivityImpl {
+        return MainActivityImpl()
     }
 }
