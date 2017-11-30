@@ -11,7 +11,9 @@ import com.jameskbride.codemashcompanion.splash.SplashActivityImpl
 import com.jameskbride.codemashcompanion.splash.SplashActivityPresenter
 import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.service.CodemashService
+import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentImpl
 import com.jameskbride.codemashcompanion.utils.IntentFactory
+import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler
@@ -115,6 +117,12 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     }
 
     @Provides
+    @Singleton
+    fun makeLayoutInflaterFactory(): LayoutInflaterFactory {
+        return LayoutInflaterFactory()
+    }
+
+    @Provides
     fun makeSplashActivityImpl(presenter: SplashActivityPresenter, intentFactory: IntentFactory): SplashActivityImpl {
         return SplashActivityImpl(presenter, intentFactory)
     }
@@ -127,5 +135,10 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     @Provides
     fun makeMainActivityImpl(): MainActivityImpl {
         return MainActivityImpl()
+    }
+
+    @Provides
+    fun makeSpeakersFragmentImpl(): SpeakersFragmentImpl {
+        return SpeakersFragmentImpl()
     }
 }
