@@ -30,10 +30,15 @@ class SpeakersFragmentImplTest {
     }
 
     @Test
-    fun itInflatesTheView() {
+    fun itInflatesTheViewOnCreateView() {
         subject.onCreateView(layoutInflater, viewGroup, null)
 
         verify(layoutInflater).inflate(R.layout.fragment_speakers, viewGroup, false)
+    }
+
+    @Test
+    fun itSetsTheViewOnThePresenterOnCreate() {
+        subject.onCreateView(layoutInflater, viewGroup, null)
     }
 
     @Test
