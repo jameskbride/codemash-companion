@@ -6,9 +6,12 @@ import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.R
 import javax.inject.Inject
 
-class SpeakersFragmentImpl @Inject constructor() {
-    fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?,
-                     speakerFragment: SpeakersFragment) {
+class SpeakersFragmentImpl @Inject constructor(val speakersFragmentPresenter: SpeakersFragmentPresenter) {
+    fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?) {
         inflater?.inflate(R.layout.fragment_speakers, container, false)
+    }
+
+    fun onResume() {
+        speakersFragmentPresenter.open()
     }
 }
