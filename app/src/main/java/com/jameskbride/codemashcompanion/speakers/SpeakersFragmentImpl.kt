@@ -13,5 +13,10 @@ class SpeakersFragmentImpl @Inject constructor(val speakersFragmentPresenter: Sp
 
     fun onResume() {
         speakersFragmentPresenter.open()
+        speakersFragmentPresenter.requestSpeakerData()
+    }
+
+    fun onPause() {
+        speakersFragmentPresenter.close()
     }
 }

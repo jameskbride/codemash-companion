@@ -139,8 +139,8 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     }
 
     @Provides
-    fun makeSpeakersFragmentPresenter(eventBus: EventBus): SpeakersFragmentPresenter {
-        return SpeakersFragmentPresenter(eventBus)
+    fun makeSpeakersFragmentPresenter(eventBus: EventBus, conferenceRepository: ConferenceRepository): SpeakersFragmentPresenter {
+        return SpeakersFragmentPresenter(eventBus, conferenceRepository)
     }
 
     @Provides

@@ -42,4 +42,18 @@ class SpeakersFragmentImplTest {
 
         verify(speakersFragmentPresenter).open()
     }
+
+    @Test
+    fun itRequestsTheSpeakerDataOnResume() {
+        subject.onResume()
+
+        verify(speakersFragmentPresenter).requestSpeakerData()
+    }
+
+    @Test
+    fun itClosesThePresenterOnPause() {
+        subject.onPause()
+
+        verify(speakersFragmentPresenter).close()
+    }
 }

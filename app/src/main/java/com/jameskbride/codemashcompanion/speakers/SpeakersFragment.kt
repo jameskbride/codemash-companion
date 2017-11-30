@@ -21,4 +21,9 @@ class SpeakersFragment: Fragment() {
         super.onResume()
         impl.onResume()
     }
+
+    override fun onPause() {
+        super.onPause()
+        impl.onPause()
+    }
 }
