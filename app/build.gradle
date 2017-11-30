@@ -50,6 +50,7 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxkotlin:2.1.0'
     implementation "android.arch.persistence.room:runtime:1.0.0"
     implementation 'com.android.support:design:26.1.0'
+    implementation "android.arch.persistence.room:rxjava2:1.0.0"
     kapt 'com.google.dagger:dagger-compiler:2.13'
     kapt "android.arch.persistence.room:compiler:1.0.0"
     testImplementation 'junit:junit:4.12'

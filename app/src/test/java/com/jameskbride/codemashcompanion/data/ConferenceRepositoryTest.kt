@@ -6,13 +6,15 @@ import com.jameskbride.codemashcompanion.bus.SpeakersPersistedEvent
 import com.jameskbride.codemashcompanion.bus.SpeakersReceivedEvent
 import com.jameskbride.codemashcompanion.network.Session
 import com.jameskbride.codemashcompanion.network.Speaker
+import io.reactivex.Maybe
+import io.reactivex.Observable
 import org.greenrobot.eventbus.EventBus
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentCaptor
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 
 class ConferenceRepositoryTest {
 
@@ -71,6 +73,18 @@ class ConferenceRepositoryTest {
         val conferenceDataPersistedEventCaptor = ArgumentCaptor.forClass(ConferenceDataPersistedEvent::class.java)
 
         verify(eventBus).post(conferenceDataPersistedEventCaptor.capture())
+    }
+
+    @Test
+    fun getSpeakersReturnsTheSpeakersFromTheDao() {
+        val speakers = buildSpeakers()
+
+        val maybe = Maybe.just(speakers)
+        `when`(conferenceDao.getSpeakers()).thenReturn(maybe)
+
+        val result = subject.getSpeakers()
+
+        assertEquals(maybe, result)
     }
 
     private fun buildSpeakers(): Array<Speaker> {

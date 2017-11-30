@@ -2,6 +2,7 @@ package com.jameskbride.codemashcompanion.speakers
 
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.network.Speaker
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.schedulers.TestScheduler
 import org.greenrobot.eventbus.EventBus
@@ -39,7 +40,7 @@ class SpeakersFragmentPresenterTest {
     fun whenSpeakerDataIsReceivedThenTheDataIsPassedToTheView() {
         val speakers = buildSpeakers()
 
-        `when`(conferenceRepository.getSpeakers()).thenReturn(Observable.fromArray(speakers))
+        `when`(conferenceRepository.getSpeakers()).thenReturn(Maybe.just(speakers))
 
         subject.requestSpeakerData()
 

@@ -2,6 +2,7 @@ package com.jameskbride.codemashcompanion.data
 
 import com.jameskbride.codemashcompanion.bus.*
 import com.jameskbride.codemashcompanion.network.Speaker
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -22,7 +23,7 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         eventBus.post(ConferenceDataPersistedEvent())
     }
 
-    fun getSpeakers(): Observable<Array<Speaker>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    fun getSpeakers(): Maybe<Array<Speaker>> {
+        return conferenceDao.getSpeakers()
     }
 }
