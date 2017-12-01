@@ -12,12 +12,14 @@ class SpeakersFragmentImpl @Inject constructor(val speakersFragmentPresenter: Sp
                                                val speakersViewAdapterFactory:SpeakersViewAdapterFactory = SpeakersViewAdapterFactory()): SpeakersFragmentView {
 
     private lateinit var speakersView: GridView
+    private lateinit var speakersViewAdapter: SpeakersViewAdapter
 
     fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?, speakersFragment: SpeakersFragment) {
         inflater?.inflate(R.layout.fragment_speakers, container, false)
         speakersFragmentPresenter.view = this
         speakersView = speakersFragment.view!!.findViewById(R.id.speakers)
-        speakersView.adapter = speakersViewAdapterFactory.make(speakersFragment.activity)
+        speakersViewAdapter = speakersViewAdapterFactory.make(speakersFragment.context)
+        speakersView.adapter = speakersViewAdapter
     }
 
     fun onResume() {
@@ -30,6 +32,6 @@ class SpeakersFragmentImpl @Inject constructor(val speakersFragmentPresenter: Sp
     }
 
     override fun onSpeakerDataRetrieved(speakers: Array<Speaker>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        speakersViewAdapter.setSpeakers(speakers)
     }
 }

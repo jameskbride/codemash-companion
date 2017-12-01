@@ -1,11 +1,13 @@
 package com.jameskbride.codemashcompanion.speakers
 
+import android.content.Context
 import android.support.v4.app.FragmentActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.GridView
 import com.jameskbride.codemashcompanion.R
+import com.jameskbride.codemashcompanion.network.Speaker
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -40,7 +42,7 @@ class SpeakersFragmentImplTest {
     private lateinit var speakersGridView:GridView
 
     @Mock
-    private lateinit var context:FragmentActivity
+    private lateinit var context:Context
 
     private lateinit var subject: SpeakersFragmentImpl
 
@@ -51,7 +53,7 @@ class SpeakersFragmentImplTest {
         subject = SpeakersFragmentImpl(speakersFragmentPresenter, speakersViewAdapterFactory)
 
         `when`(speakersFragment.getView()).thenReturn(view)
-        `when`(speakersFragment.getActivity()).thenReturn(context)
+        `when`(speakersFragment.getContext()).thenReturn(context)
         `when`(view.findViewById<GridView>(R.id.speakers)).thenReturn(speakersGridView)
         `when`(speakersViewAdapterFactory.make(context)).thenReturn(speakersViewAdapter)
     }
@@ -94,5 +96,29 @@ class SpeakersFragmentImplTest {
         subject.onPause()
 
         verify(speakersFragmentPresenter).close()
+    }
+
+    @Test
+    fun itSetsTheSpeakersOnSpeakerDataReceived() {
+        subject.onCreateView(layoutInflater, viewGroup, null, speakersFragment)
+        val speakers = buildSpeakers()
+
+        subject.onSpeakerDataRetrieved(speakers)
+
+        verify(speakersViewAdapter).setSpeakers(speakers)
+    }
+
+    private fun buildSpeakers(): Array<Speaker> {
+        return arrayOf(Speaker(
+                LinkedInProfile = "linkedin",
+                Id = "1234",
+                LastName = "Smith",
+                TwitterLink = "twitter",
+                GitHubLink = "github",
+                FirstName = "John",
+                GravatarUrl = "gravitar",
+                Biography = "biography",
+                BlogUrl = "blog"
+        ))
     }
 }
