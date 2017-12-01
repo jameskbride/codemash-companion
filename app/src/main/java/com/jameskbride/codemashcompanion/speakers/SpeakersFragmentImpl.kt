@@ -3,15 +3,21 @@ package com.jameskbride.codemashcompanion.speakers
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.GridView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.network.Speaker
 import javax.inject.Inject
 
-class SpeakersFragmentImpl @Inject constructor(val speakersFragmentPresenter: SpeakersFragmentPresenter): SpeakersFragmentView {
+class SpeakersFragmentImpl @Inject constructor(val speakersFragmentPresenter: SpeakersFragmentPresenter,
+                                               val speakersViewAdapterFactory:SpeakersViewAdapterFactory = SpeakersViewAdapterFactory()): SpeakersFragmentView {
 
-    fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?) {
+    private lateinit var speakersView: GridView
+
+    fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?, speakersFragment: SpeakersFragment) {
         inflater?.inflate(R.layout.fragment_speakers, container, false)
         speakersFragmentPresenter.view = this
+        speakersView = speakersFragment.view!!.findViewById(R.id.speakers)
+        speakersView.adapter = speakersViewAdapterFactory.make(speakersFragment.activity)
     }
 
     fun onResume() {

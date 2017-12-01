@@ -14,7 +14,7 @@ class SpeakersFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return super.onCreateView(inflater, container, savedInstanceState)
         CodemashCompanionApplication.applicationComponent.inject(this)
-        impl.onCreateView(inflater, container, savedInstanceState)
+        impl.onCreateView(inflater, container, savedInstanceState, this)
     }
 
     override fun onResume() {
