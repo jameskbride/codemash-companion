@@ -12,8 +12,8 @@ class SpeakersViewAdapterImpl constructor(val context: Context) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun getItem(p0: Int): Any {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    fun getItem(position: Int): Any {
+        return speakers[position]
     }
 
     fun getItemId(p0: Int): Long {

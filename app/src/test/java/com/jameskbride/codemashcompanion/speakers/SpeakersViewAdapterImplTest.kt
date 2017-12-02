@@ -17,18 +17,27 @@ class SpeakersViewAdapterImplTest {
     @InjectMocks
     private lateinit var subject: SpeakersViewAdapterImpl
 
+    private val speakers: Array<Speaker> = buildSpeakers()
+
     @Before
     fun setUp() {
         initMocks(this)
+
+        subject.setSpeakers(speakers)
     }
 
     @Test
     fun itCanReturnSpeakerCount() {
-        val speakers = buildSpeakers()
-
-        subject.setSpeakers(speakers)
-
         assertEquals(speakers.size, subject.getCount())
+    }
+
+    @Test
+    fun itCanGetTheSpeakerByIndex() {
+        val johnSmith: Speaker = subject.getItem(0) as Speaker
+        assertEquals("Smith", johnSmith.LastName)
+
+        val walterWhite: Speaker = subject.getItem(1) as Speaker
+        assertEquals("White", walterWhite.LastName)
     }
 
     private fun buildSpeakers(): Array<Speaker> {
