@@ -8,7 +8,7 @@ import com.jameskbride.codemashcompanion.network.Speaker
 class SpeakersViewAdapterImpl constructor(val context: Context) {
     private var speakers: Array<Speaker> = arrayOf()
 
-    fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
+    fun getView(position: Int, convertView: View?, parentView: ViewGroup?): View {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -17,7 +17,7 @@ class SpeakersViewAdapterImpl constructor(val context: Context) {
     }
 
     fun getItemId(p0: Int): Long {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return 0
     }
 
     fun getCount(): Int {
