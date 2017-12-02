@@ -6,25 +6,25 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.jameskbride.codemashcompanion.network.Speaker
 
-class SpeakersViewAdapter(val context: Context) : BaseAdapter() {
+class SpeakersViewAdapter(val context: Context, val impl: SpeakersViewAdapterImpl = SpeakersViewAdapterImpl(context)) : BaseAdapter() {
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return impl.getView(p0, p1, p2)
     }
 
     override fun getItem(p0: Int): Any {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return impl.getItem(p0)
     }
 
     override fun getItemId(p0: Int): Long {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return impl.getItemId(p0)
     }
 
     override fun getCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return impl.getCount()
     }
 
     fun setSpeakers(speakers: Array<Speaker>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        impl.setSpeakers(speakers)
     }
 }
 
