@@ -3,11 +3,13 @@ package com.jameskbride.codemashcompanion.speakers
 import android.content.Context
 import android.widget.ImageView
 import com.jameskbride.codemashcompanion.network.Speaker
+import com.jameskbride.codemashcompanion.utils.LogWrapper
 import com.jameskbride.codemashcompanion.utils.PicassoWrapper
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentMatchers
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.*
@@ -24,6 +26,9 @@ class SpeakersViewAdapterImplTest {
     @Mock
     private lateinit var picassoWrapper: PicassoWrapper
 
+    @Mock
+    private lateinit var logWrapper: LogWrapper
+
     private lateinit var subject: SpeakersViewAdapterImpl
 
     private val speakers: Array<Speaker> = buildSpeakers()
@@ -32,7 +37,7 @@ class SpeakersViewAdapterImplTest {
     fun setUp() {
         initMocks(this)
 
-        subject = SpeakersViewAdapterImpl(context, picassoWrapper)
+        subject = SpeakersViewAdapterImpl(context, picassoWrapper, logWrapper)
 
         subject.setSpeakers(speakers)
     }
@@ -57,6 +62,9 @@ class SpeakersViewAdapterImplTest {
         val speakers = buildSpeakers()
         `when`(speakerViewAdapter.buildImageView()).thenReturn(newImageView)
         `when`(picassoWrapper.with(context)).thenReturn(picassoWrapper)
+        `when`(picassoWrapper.load(anyString())).thenReturn(picassoWrapper)
+        `when`(picassoWrapper.resize(anyInt(), anyInt())).thenReturn(picassoWrapper)
+        `when`(picassoWrapper.centerCrop()).thenReturn(picassoWrapper)
         `when`(picassoWrapper.load(speakers[0].GravatarUrl)).thenReturn(picassoWrapper)
 
         val imageView = subject.getView(0, null, null, speakerViewAdapter)
@@ -65,7 +73,7 @@ class SpeakersViewAdapterImplTest {
 
         verify(speakerViewAdapter).buildImageView()
         verify(picassoWrapper).with(context)
-        verify(picassoWrapper).load(speakers[0].GravatarUrl)
+        verify(picassoWrapper).load(ArgumentMatchers.anyString())
         verify(picassoWrapper).into(newImageView)
     }
 
@@ -73,7 +81,11 @@ class SpeakersViewAdapterImplTest {
     fun itReusesTheImageViewWhenTheOldViewIsNotNull() {
         val newImageView = mock(ImageView::class.java)
         val speakers = buildSpeakers()
+        `when`(speakerViewAdapter.buildImageView()).thenReturn(newImageView)
         `when`(picassoWrapper.with(context)).thenReturn(picassoWrapper)
+        `when`(picassoWrapper.load(anyString())).thenReturn(picassoWrapper)
+        `when`(picassoWrapper.resize(anyInt(), anyInt())).thenReturn(picassoWrapper)
+        `when`(picassoWrapper.centerCrop()).thenReturn(picassoWrapper)
         `when`(picassoWrapper.load(speakers[0].GravatarUrl)).thenReturn(picassoWrapper)
 
         val imageView = subject.getView(0, newImageView, null, speakerViewAdapter)
@@ -82,7 +94,7 @@ class SpeakersViewAdapterImplTest {
 
         verify(speakerViewAdapter, times(0)).buildImageView()
         verify(picassoWrapper).with(context)
-        verify(picassoWrapper).load(speakers[0].GravatarUrl)
+        verify(picassoWrapper).load(ArgumentMatchers.anyString())
         verify(picassoWrapper).into(newImageView)
     }
 

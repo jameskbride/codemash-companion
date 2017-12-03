@@ -20,6 +20,21 @@ class PicassoWrapper() {
         return this
     }
 
+    fun fit(): PicassoWrapper {
+        this.requestCreator = this.requestCreator?.fit()
+        return this
+    }
+
+    fun centerCrop(): PicassoWrapper {
+        this.requestCreator = this.requestCreator?.centerCrop()
+        return this
+    }
+
+    fun resize(width: Int, height:Int): PicassoWrapper {
+        this.requestCreator = this.requestCreator?.resize(width, height)
+        return this
+    }
+
     fun into(imageView: ImageView?): RequestCreator? {
         this.requestCreator?.into(imageView)
         return requestCreator
