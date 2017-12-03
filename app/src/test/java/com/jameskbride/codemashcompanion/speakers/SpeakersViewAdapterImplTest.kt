@@ -69,6 +69,22 @@ class SpeakersViewAdapterImplTest {
         verify(picassoWrapper).into(newImageView)
     }
 
+    @Test
+    fun itReusesTheImageViewWhenTheOldViewIsNotNull() {
+        val newImageView = mock(ImageView::class.java)
+        val speakers = buildSpeakers()
+        `when`(picassoWrapper.with(context)).thenReturn(picassoWrapper)
+        `when`(picassoWrapper.load(speakers[0].GravatarUrl)).thenReturn(picassoWrapper)
+
+        val imageView = subject.getView(0, newImageView, null, speakerViewAdapter)
+
+        assertSame(newImageView, imageView)
+
+        verify(speakerViewAdapter, times(0)).buildImageView()
+        verify(picassoWrapper).with(context)
+        verify(picassoWrapper).load(speakers[0].GravatarUrl)
+        verify(picassoWrapper).into(newImageView)
+    }
 
     private fun buildSpeakers(): Array<Speaker> {
         return arrayOf(Speaker(

@@ -3,6 +3,7 @@ package com.jameskbride.codemashcompanion.speakers
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.jameskbride.codemashcompanion.network.Speaker
 import com.jameskbride.codemashcompanion.utils.PicassoWrapper
 
@@ -13,8 +14,8 @@ class SpeakersViewAdapterImpl constructor(val context: Context,
     fun getView(position: Int, convertView: View?, parentView: ViewGroup?,
                 speakerViewAdapter: SpeakersViewAdapter): View {
 
-        val imageView = speakerViewAdapter.buildImageView()
-        picassoWrapper.with(context).load(speakers[position].GravatarUrl).into(imageView)
+        val imageView = convertView ?: speakerViewAdapter.buildImageView()
+        picassoWrapper.with(context).load(speakers[position].GravatarUrl).into(imageView as ImageView)
 
         return imageView
     }
