@@ -25,6 +25,11 @@ class PicassoWrapper() {
         return this
     }
 
+    fun placeholder(placeholderId: Int): PicassoWrapper {
+        this.requestCreator = this.requestCreator?.placeholder(placeholderId)
+        return this
+    }
+
     fun centerCrop(): PicassoWrapper {
         this.requestCreator = this.requestCreator?.centerCrop()
         return this

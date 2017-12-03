@@ -1,11 +1,11 @@
 package com.jameskbride.codemashcompanion.speakers
 
 import android.content.Context
-import android.support.v4.app.FragmentActivity
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.network.Speaker
 import org.junit.Assert.assertSame
@@ -28,7 +28,7 @@ class SpeakersFragmentImplTest {
     private lateinit var speakersFragmentPresenter:SpeakersFragmentPresenter
 
     @Mock
-    private lateinit var speakersViewAdapter:SpeakersViewAdapter
+    private lateinit var speakersViewAdapter:SpeakersRecyclerViewAdapter
 
     @Mock
     private lateinit var speakersViewAdapterFactory:SpeakersViewAdapterFactory
@@ -40,10 +40,13 @@ class SpeakersFragmentImplTest {
     private lateinit var view:View
 
     @Mock
-    private lateinit var speakersGridView:GridView
+    private lateinit var speakersView:RecyclerView
 
     @Mock
     private lateinit var context:Context
+
+    @Mock
+    private lateinit var gridLayoutManager:GridLayoutManager
 
     private lateinit var subject: SpeakersFragmentImpl
 
@@ -55,8 +58,8 @@ class SpeakersFragmentImplTest {
 
         `when`(speakersFragment.getView()).thenReturn(view)
         `when`(speakersFragment.getContext()).thenReturn(context)
-        `when`(view.findViewById<GridView>(R.id.speakers)).thenReturn(speakersGridView)
-        `when`(speakersViewAdapterFactory.make(context)).thenReturn(speakersViewAdapter)
+        `when`(view.findViewById<RecyclerView>(R.id.speakers)).thenReturn(speakersView)
+        `when`(speakersViewAdapterFactory.make()).thenReturn(speakersViewAdapter)
         `when`(layoutInflater.inflate(R.layout.fragment_speakers, viewGroup, false)).thenReturn(view)
     }
 
@@ -77,7 +80,19 @@ class SpeakersFragmentImplTest {
     fun itSetsTheSpeakersViewAdapterOnCreate() {
         subject.onCreateView(layoutInflater, viewGroup, null, speakersFragment)
 
-        verify(speakersGridView).setAdapter(speakersViewAdapter)
+        verify(speakersView).setAdapter(speakersViewAdapter)
+    }
+
+    @Test
+    fun itConfiguresTheViewForASmoothScrollingGridview() {
+        `when`(speakersFragment.makeGridLayoutManager(2)).thenReturn(gridLayoutManager)
+
+        subject.onCreateView(layoutInflater, viewGroup, null, speakersFragment)
+
+        verify(speakersView).setLayoutManager(gridLayoutManager)
+        verify(speakersView).setDrawingCacheEnabled(true)
+        verify(speakersView).setItemViewCacheSize(20)
+        verify(speakersView).setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH)
     }
 
     @Test
