@@ -13,7 +13,12 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onSpeakersReceivedEvent(speakersReceivedEvent: SpeakersReceivedEvent) {
-        conferenceDao.insertAll(speakersReceivedEvent.speakers)
+        var correctedSpeakers = speakersReceivedEvent.speakers
+        correctedSpeakers.forEach{
+            it.GravatarUrl ?: ""
+            it.GravatarUrl = "http:${it.GravatarUrl}"
+        }
+        conferenceDao.insertAll(correctedSpeakers)
         eventBus.post(SpeakersPersistedEvent())
     }
 

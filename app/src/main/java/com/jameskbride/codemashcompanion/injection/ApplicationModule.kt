@@ -13,6 +13,7 @@ import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.service.CodemashService
 import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentImpl
 import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentPresenter
+import com.jameskbride.codemashcompanion.speakers.SpeakersViewAdapterFactory
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import dagger.Module

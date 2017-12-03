@@ -6,15 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.application.CodemashCompanionApplication
+import javax.inject.Inject
 
 class SpeakersFragment: Fragment() {
 
+    @Inject
     lateinit var impl: SpeakersFragmentImpl
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
         CodemashCompanionApplication.applicationComponent.inject(this)
-        impl.onCreateView(inflater, container, savedInstanceState, this)
+        return impl.onCreateView(inflater, container, savedInstanceState, this)
     }
 
     override fun onResume() {

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.GridView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.network.Speaker
+import org.junit.Assert.assertSame
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -56,12 +57,14 @@ class SpeakersFragmentImplTest {
         `when`(speakersFragment.getContext()).thenReturn(context)
         `when`(view.findViewById<GridView>(R.id.speakers)).thenReturn(speakersGridView)
         `when`(speakersViewAdapterFactory.make(context)).thenReturn(speakersViewAdapter)
+        `when`(layoutInflater.inflate(R.layout.fragment_speakers, viewGroup, false)).thenReturn(view)
     }
 
     @Test
     fun itInflatesTheViewOnCreateView() {
-        subject.onCreateView(layoutInflater, viewGroup, null, speakersFragment)
+        val inflatedView = subject.onCreateView(layoutInflater, viewGroup, null, speakersFragment)
 
+        assertSame(view, inflatedView)
         verify(layoutInflater).inflate(R.layout.fragment_speakers, viewGroup, false)
     }
 
@@ -78,24 +81,10 @@ class SpeakersFragmentImplTest {
     }
 
     @Test
-    fun itOpensThePresenterOnResume() {
-        subject.onResume()
-
-        verify(speakersFragmentPresenter).open()
-    }
-
-    @Test
     fun itRequestsTheSpeakerDataOnResume() {
         subject.onResume()
 
         verify(speakersFragmentPresenter).requestSpeakerData()
-    }
-
-    @Test
-    fun itClosesThePresenterOnPause() {
-        subject.onPause()
-
-        verify(speakersFragmentPresenter).close()
     }
 
     @Test

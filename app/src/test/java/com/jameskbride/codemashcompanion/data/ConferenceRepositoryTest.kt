@@ -6,15 +6,12 @@ import com.jameskbride.codemashcompanion.bus.SpeakersPersistedEvent
 import com.jameskbride.codemashcompanion.bus.SpeakersReceivedEvent
 import com.jameskbride.codemashcompanion.network.Session
 import com.jameskbride.codemashcompanion.network.Speaker
+import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Maybe
-import io.reactivex.Observable
 import org.greenrobot.eventbus.EventBus
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentCaptor
-import org.mockito.Mockito.*
 
 class ConferenceRepositoryTest {
 
@@ -24,15 +21,9 @@ class ConferenceRepositoryTest {
 
     @Before
     fun setUp() {
-        conferenceDao = mock(ConferenceDao::class.java)
-        eventBus = mock(EventBus::class.java)
+        conferenceDao = mock()
+        eventBus = mock()
         subject = ConferenceRepository(conferenceDao, eventBus)
-    }
-
-    @After
-    fun tearDown() {
-        eventBus.unregister(this)
-        subject.close()
     }
 
     @Test
@@ -40,8 +31,10 @@ class ConferenceRepositoryTest {
         val speakers = buildSpeakers()
 
         subject.onSpeakersReceivedEvent(SpeakersReceivedEvent(speakers))
-
-        verify(conferenceDao).insertAll(speakers)
+        val speakersCaptor = argumentCaptor<Array<Speaker>>()
+        verify(conferenceDao).insertAll(speakersCaptor.capture())
+        val actualSpeakers = speakersCaptor.firstValue
+        assertEquals("http://gravitar", actualSpeakers[0].GravatarUrl)
     }
 
     @Test
@@ -50,7 +43,7 @@ class ConferenceRepositoryTest {
 
         subject.onSpeakersReceivedEvent(SpeakersReceivedEvent(speakers))
 
-        val speakersPersistedEventCaptor = ArgumentCaptor.forClass(SpeakersPersistedEvent::class.java)
+        val speakersPersistedEventCaptor = argumentCaptor<SpeakersPersistedEvent>()
 
         verify(eventBus).post(speakersPersistedEventCaptor.capture())
     }
@@ -70,7 +63,7 @@ class ConferenceRepositoryTest {
 
         subject.onSessionsReceivedEvent(SessionsReceivedEvent(sessions))
 
-        val conferenceDataPersistedEventCaptor = ArgumentCaptor.forClass(ConferenceDataPersistedEvent::class.java)
+        val conferenceDataPersistedEventCaptor = argumentCaptor<ConferenceDataPersistedEvent>()
 
         verify(eventBus).post(conferenceDataPersistedEventCaptor.capture())
     }
@@ -80,7 +73,7 @@ class ConferenceRepositoryTest {
         val speakers = buildSpeakers()
 
         val maybe = Maybe.just(speakers)
-        `when`(conferenceDao.getSpeakers()).thenReturn(maybe)
+        whenever(conferenceDao.getSpeakers()).thenReturn(maybe)
 
         val result = subject.getSpeakers()
 
@@ -95,7 +88,7 @@ class ConferenceRepositoryTest {
                 TwitterLink = "twitter",
                 GitHubLink = "github",
                 FirstName = "John",
-                GravatarUrl = "gravitar",
+                GravatarUrl = "//gravitar",
                 Biography = "biography",
                 BlogUrl = "blog"
         ))
