@@ -4,12 +4,19 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.network.Speaker
+import com.jameskbride.codemashcompanion.utils.PicassoWrapper
 
-class SpeakersViewAdapterImpl constructor(val context: Context) {
+class SpeakersViewAdapterImpl constructor(val context: Context,
+                                          val picassoWrapper: PicassoWrapper = PicassoWrapper()) {
     private var speakers: Array<Speaker> = arrayOf()
 
-    fun getView(position: Int, convertView: View?, parentView: ViewGroup?): View {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    fun getView(position: Int, convertView: View?, parentView: ViewGroup?,
+                speakerViewAdapter: SpeakersViewAdapter): View {
+
+        val imageView = speakerViewAdapter.buildImageView()
+        picassoWrapper.with(context).load(speakers[position].GravatarUrl).into(imageView)
+
+        return imageView
     }
 
     fun getItem(position: Int): Any {

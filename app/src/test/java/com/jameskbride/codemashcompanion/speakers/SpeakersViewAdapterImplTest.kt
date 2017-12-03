@@ -1,20 +1,29 @@
 package com.jameskbride.codemashcompanion.speakers
 
 import android.content.Context
+import android.widget.ImageView
 import com.jameskbride.codemashcompanion.network.Speaker
+import com.jameskbride.codemashcompanion.utils.PicassoWrapper
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertSame
 import org.junit.Before
 import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations.initMocks
 
 class SpeakersViewAdapterImplTest {
 
     @Mock
+    private lateinit var speakerViewAdapter: SpeakersViewAdapter
+
+    @Mock
     private lateinit var context: Context
 
-    @InjectMocks
+    @Mock
+    private lateinit var picassoWrapper: PicassoWrapper
+
     private lateinit var subject: SpeakersViewAdapterImpl
 
     private val speakers: Array<Speaker> = buildSpeakers()
@@ -22,6 +31,8 @@ class SpeakersViewAdapterImplTest {
     @Before
     fun setUp() {
         initMocks(this)
+
+        subject = SpeakersViewAdapterImpl(context, picassoWrapper)
 
         subject.setSpeakers(speakers)
     }
@@ -39,6 +50,25 @@ class SpeakersViewAdapterImplTest {
         val walterWhite: Speaker = subject.getItem(1) as Speaker
         assertEquals("White", walterWhite.LastName)
     }
+
+    @Test
+    fun itCreatesANewImageViewWhenTheOldViewIsNull() {
+        val newImageView = mock(ImageView::class.java)
+        val speakers = buildSpeakers()
+        `when`(speakerViewAdapter.buildImageView()).thenReturn(newImageView)
+        `when`(picassoWrapper.with(context)).thenReturn(picassoWrapper)
+        `when`(picassoWrapper.load(speakers[0].GravatarUrl)).thenReturn(picassoWrapper)
+
+        val imageView = subject.getView(0, null, null, speakerViewAdapter)
+
+        assertSame(newImageView, imageView)
+
+        verify(speakerViewAdapter).buildImageView()
+        verify(picassoWrapper).with(context)
+        verify(picassoWrapper).load(speakers[0].GravatarUrl)
+        verify(picassoWrapper).into(newImageView)
+    }
+
 
     private fun buildSpeakers(): Array<Speaker> {
         return arrayOf(Speaker(
