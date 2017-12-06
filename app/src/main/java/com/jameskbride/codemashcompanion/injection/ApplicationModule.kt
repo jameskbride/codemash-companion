@@ -14,6 +14,7 @@ import com.jameskbride.codemashcompanion.network.service.CodemashService
 import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentImpl
 import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentPresenter
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
+import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailFragmentImpl
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import dagger.Module
@@ -154,5 +155,10 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     @Provides
     fun makeSpeakerDetailActivityImpl():SpeakerDetailActivityImpl {
         return SpeakerDetailActivityImpl()
+    }
+
+    @Provides
+    fun makeSpeakerDetailFragmentImpl(): SpeakerDetailFragmentImpl {
+        return SpeakerDetailFragmentImpl()
     }
 }

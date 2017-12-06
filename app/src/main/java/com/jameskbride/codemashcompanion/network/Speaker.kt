@@ -3,9 +3,10 @@ package com.jameskbride.codemashcompanion.network
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import java.io.Serializable
 
 @Entity
-data class Speaker(
+data class Speaker (
         @ColumnInfo(name = "id") @PrimaryKey var Id: String = "",
 
         @ColumnInfo(name = "linkedin_profile") var LinkedInProfile: String? = "",
@@ -16,4 +17,4 @@ data class Speaker(
         @ColumnInfo(name = "gravatar_url") var GravatarUrl: String? = "",
         @ColumnInfo(name = "biography") var Biography: String? = "",
         @ColumnInfo(name = "blog_url") var BlogUrl: String? = ""
-)
+): Serializable

@@ -43,7 +43,7 @@ class SpeakerDetailActivityImplTest {
 
         whenever(activity.intent).thenReturn(intent)
         whenever(intent.getSerializableExtra(PARAMETER_BLOCK)).thenReturn(speakerDetailParams)
-        whenever(speakerPagerAdapterFactory.make(supportFragmentManager, speakers)).thenReturn(speakerPagerAdapter)
+        whenever(speakerPagerAdapterFactory.make(supportFragmentManager)).thenReturn(speakerPagerAdapter)
         whenever(activity.findViewById<ViewPager>(R.id.speaker_pager)).thenReturn(speakerPager)
         whenever(activity.supportFragmentManager).thenReturn(supportFragmentManager)
     }
@@ -60,6 +60,7 @@ class SpeakerDetailActivityImplTest {
         subject.onCreate(null, activity)
 
         assertSame(speakerPagerAdapter, subject.speakerDetailPagerAdapter)
+        verify(speakerPagerAdapter).updateSpeakers(speakers)
         verify(speakerPager).setAdapter(subject.speakerDetailPagerAdapter)
         verify(speakerPager).setCurrentItem(speakerDetailParams.index)
     }

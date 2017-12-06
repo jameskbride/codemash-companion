@@ -14,7 +14,8 @@ class SpeakerDetailActivityImpl(val speakerPagerAdapterFactory: SpeakerPagerAdap
         val speakerDetailParams:SpeakerDetailParams =
                 activity.intent.getSerializableExtra(PARAMETER_BLOCK) as SpeakerDetailParams
         speakerDetailPagerAdapter =
-                speakerPagerAdapterFactory.make(activity.supportFragmentManager, speakerDetailParams.speakers)
+                speakerPagerAdapterFactory.make(activity.supportFragmentManager)
+        speakerDetailPagerAdapter.updateSpeakers(speakerDetailParams.speakers)
 
         val container = activity.findViewById<ViewPager>(R.id.speaker_pager)
         container.adapter = speakerDetailPagerAdapter
