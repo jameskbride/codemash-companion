@@ -12,7 +12,7 @@
             android:id="@+id/speaker_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_person_black"
+            android:src="@drawable/ic_person"
             android:adjustViewBounds="true"/>
         <TextView
             android:id="@+id/speaker_first_name"
