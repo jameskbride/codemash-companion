@@ -7,6 +7,7 @@ import com.jameskbride.codemashcompanion.bus.SpeakersReceivedEvent
 import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.Session
 import com.jameskbride.codemashcompanion.network.Speaker
+import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import io.reactivex.Observable
 import io.reactivex.schedulers.TestScheduler
 import org.greenrobot.eventbus.EventBus
@@ -49,17 +50,7 @@ class CodemashServiceTest {
 
     @Test
     fun onRequestConferenceDataEventSendsTheSpeakersReceivedEvent() {
-        val speaker = Speaker(
-                LinkedInProfile = "linkedin",
-                Id = "1234",
-                LastName = "Smith",
-                TwitterLink = "twitter",
-                GitHubLink = "github",
-                FirstName = "John",
-                GravatarUrl = "gravitar",
-                Biography = "biography",
-                BlogUrl = "blog"
-                )
+        val speaker = buildDefaultSpeakers()[0]
 
         `when`(codemashApi.getSpeakers()).thenReturn(Observable.fromArray(arrayOf(speaker)))
 

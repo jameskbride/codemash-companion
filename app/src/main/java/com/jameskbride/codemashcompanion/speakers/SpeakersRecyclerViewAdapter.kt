@@ -11,7 +11,7 @@ import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import com.jameskbride.codemashcompanion.utils.LogWrapper
 import com.jameskbride.codemashcompanion.utils.PicassoWrapper
 
-class SpeakersRecyclerViewAdapter constructor(val impl: SpeakersRecyclerViewAdapterImpl = SpeakersRecyclerViewAdapterImpl())
+class SpeakersRecyclerViewAdapter constructor(val speakersFragmentPresenter: SpeakersFragmentPresenter, val impl: SpeakersRecyclerViewAdapterImpl = SpeakersRecyclerViewAdapterImpl(speakersFragmentPresenter))
     : RecyclerView.Adapter<SpeakerViewHolder>() {
 
     override fun onBindViewHolder(holder: SpeakerViewHolder?, position: Int) {
@@ -31,11 +31,14 @@ class SpeakersRecyclerViewAdapter constructor(val impl: SpeakersRecyclerViewAdap
     }
 }
 
-class SpeakersRecyclerViewAdapterImpl constructor(val layoutInflaterFactory: LayoutInflaterFactory = LayoutInflaterFactory()) {
+class SpeakersRecyclerViewAdapterImpl constructor(val speakersFragmentPresenter: SpeakersFragmentPresenter, val layoutInflaterFactory: LayoutInflaterFactory = LayoutInflaterFactory()) {
     private var speakers: Array<Speaker> = arrayOf()
 
     fun onBindViewHolder(holder: SpeakerViewHolder?, position: Int) {
         holder!!.bind(speakers[position])
+        holder!!.view!!.setOnClickListener( {view ->
+            speakersFragmentPresenter.navigateToDetails(speakers, position)
+        })
     }
 
     fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SpeakerViewHolder {
@@ -58,8 +61,10 @@ class SpeakerViewHolder(itemView: View?, val logWrapper: LogWrapper = LogWrapper
     var speakerImage:ImageView?
     var speakerFirstName:TextView?
     var speakerLastName:TextView?
+    var view: View?
 
     init {
+        view = itemView
         speakerImage = itemView?.findViewById(R.id.speaker_image)
         speakerFirstName = itemView?.findViewById(R.id.speaker_first_name)
         speakerLastName = itemView?.findViewById(R.id.speaker_last_name)
@@ -81,8 +86,8 @@ class SpeakerViewHolder(itemView: View?, val logWrapper: LogWrapper = LogWrapper
 }
 
 class SpeakersViewAdapterFactory {
-    fun make(): SpeakersRecyclerViewAdapter {
-        return SpeakersRecyclerViewAdapter()
+    fun make(speakersFragmentPresenter: SpeakersFragmentPresenter): SpeakersRecyclerViewAdapter {
+        return SpeakersRecyclerViewAdapter(speakersFragmentPresenter)
     }
 
 }

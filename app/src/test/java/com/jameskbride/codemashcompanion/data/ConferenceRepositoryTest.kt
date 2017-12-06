@@ -6,6 +6,7 @@ import com.jameskbride.codemashcompanion.bus.SpeakersPersistedEvent
 import com.jameskbride.codemashcompanion.bus.SpeakersReceivedEvent
 import com.jameskbride.codemashcompanion.network.Session
 import com.jameskbride.codemashcompanion.network.Speaker
+import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Maybe
 import org.greenrobot.eventbus.EventBus
@@ -28,7 +29,8 @@ class ConferenceRepositoryTest {
 
     @Test
     fun onSpeakersReceivedEventItInsertsAllSpeakers() {
-        val speakers = buildSpeakers()
+        val speakers = buildDefaultSpeakers()
+        speakers[0].GravatarUrl = "//${speakers[0].GravatarUrl}"
 
         subject.onSpeakersReceivedEvent(SpeakersReceivedEvent(speakers))
         val speakersCaptor = argumentCaptor<Array<Speaker>>()
@@ -39,7 +41,7 @@ class ConferenceRepositoryTest {
 
     @Test
     fun onSpeakersReceivedEventItNotifiesSpeakersPersisted() {
-        val speakers = buildSpeakers()
+        val speakers = buildDefaultSpeakers()
 
         subject.onSpeakersReceivedEvent(SpeakersReceivedEvent(speakers))
 
@@ -70,7 +72,7 @@ class ConferenceRepositoryTest {
 
     @Test
     fun getSpeakersReturnsTheSpeakersFromTheDao() {
-        val speakers = buildSpeakers()
+        val speakers = buildDefaultSpeakers()
 
         val maybe = Maybe.just(speakers)
         whenever(conferenceDao.getSpeakers()).thenReturn(maybe)
@@ -78,20 +80,6 @@ class ConferenceRepositoryTest {
         val result = subject.getSpeakers()
 
         assertEquals(maybe, result)
-    }
-
-    private fun buildSpeakers(): Array<Speaker> {
-        return arrayOf(Speaker(
-                LinkedInProfile = "linkedin",
-                Id = "1234",
-                LastName = "Smith",
-                TwitterLink = "twitter",
-                GitHubLink = "github",
-                FirstName = "John",
-                GravatarUrl = "//gravitar",
-                Biography = "biography",
-                BlogUrl = "blog"
-        ))
     }
 
     private fun buildSessions(): Array<Session> {

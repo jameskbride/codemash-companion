@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentActivity
 
 class IntentFactory {
 
-    fun make(context: Context, clazz:Class<out FragmentActivity>):Intent {
+    fun make(context: Context?, clazz:Class<out FragmentActivity>):Intent {
         return Intent(context, clazz)
     }
 }

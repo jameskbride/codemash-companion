@@ -20,8 +20,13 @@ class SpeakersFragmentPresenter @Inject constructor(override val eventBus: Event
                 .observeOn(androidScheduler)
                 .subscribe {speakers -> view.onSpeakerDataRetrieved(speakers)}
     }
+
+    fun navigateToDetails(speakers: Array<Speaker>, index: Int) {
+        view.navigateToDetails(speakers, index)
+    }
 }
 
 interface SpeakersFragmentView {
     fun onSpeakerDataRetrieved(speakers: Array<Speaker>)
+    fun navigateToDetails(speakers: Array<Speaker>, index: Int)
 }

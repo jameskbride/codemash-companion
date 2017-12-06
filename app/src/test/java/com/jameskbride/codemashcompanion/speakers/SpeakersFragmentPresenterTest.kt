@@ -1,9 +1,8 @@
 package com.jameskbride.codemashcompanion.speakers
 
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
-import com.jameskbride.codemashcompanion.network.Speaker
+import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import io.reactivex.Maybe
-import io.reactivex.Observable
 import io.reactivex.schedulers.TestScheduler
 import org.greenrobot.eventbus.EventBus
 import org.junit.Before
@@ -38,7 +37,7 @@ class SpeakersFragmentPresenterTest {
 
     @Test
     fun whenSpeakerDataIsReceivedThenTheDataIsPassedToTheView() {
-        val speakers = buildSpeakers()
+        val speakers = buildDefaultSpeakers()
 
         `when`(conferenceRepository.getSpeakers()).thenReturn(Maybe.just(speakers))
 
@@ -49,17 +48,12 @@ class SpeakersFragmentPresenterTest {
         verify(view).onSpeakerDataRetrieved(speakers)
     }
 
-    private fun buildSpeakers(): Array<Speaker> {
-        return arrayOf(Speaker(
-                LinkedInProfile = "linkedin",
-                Id = "1234",
-                LastName = "Smith",
-                TwitterLink = "twitter",
-                GitHubLink = "github",
-                FirstName = "John",
-                GravatarUrl = "gravitar",
-                Biography = "biography",
-                BlogUrl = "blog"
-        ))
+    @Test
+    fun itDelegatesToTheViewToNavigateToDetails() {
+        val speakers = buildDefaultSpeakers()
+
+        subject.navigateToDetails(speakers, 0)
+
+        verify(view).navigateToDetails(speakers, 0)
     }
 }
