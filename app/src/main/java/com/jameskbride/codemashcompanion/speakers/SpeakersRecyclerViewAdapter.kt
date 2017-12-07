@@ -78,7 +78,7 @@ class SpeakerViewHolder(itemView: View?, val logWrapper: LogWrapper = LogWrapper
         logWrapper.d("SpeakersRecyclerViewAdapter", "Requesting gravatar url: ${url}")
         picassoWrapper.with(speakerImage!!.context)
                 .load(url)
-                .placeholder(R.drawable.ic_person_black)
+                .placeholder(R.drawable.ic_person)
                 .resize(500, 500)
                 .centerCrop()
                 .into(speakerImage)
