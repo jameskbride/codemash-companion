@@ -131,8 +131,10 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     }
 
     @Provides
-    fun makeSplashActivityPresenter(eventBus: EventBus): SplashActivityPresenter {
-        return SplashActivityPresenter(eventBus)
+    fun makeSplashActivityPresenter(eventBus: EventBus, conferenceRepository: ConferenceRepository,
+                                    @Named("process") processScheduler: Scheduler,
+                                    @Named("main") androidScheduler: Scheduler): SplashActivityPresenter {
+        return SplashActivityPresenter(eventBus, conferenceRepository, processScheduler, androidScheduler)
     }
 
     @Provides
@@ -141,8 +143,8 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     }
 
     @Provides
-    fun makeSpeakersFragmentPresenter(eventBus: EventBus, conferenceRepository: ConferenceRepository
-                                      ,@Named("process") processScheduler: Scheduler,
+    fun makeSpeakersFragmentPresenter(eventBus: EventBus, conferenceRepository: ConferenceRepository,
+                                      @Named("process") processScheduler: Scheduler,
                                       @Named("main") androidScheduler: Scheduler): SpeakersFragmentPresenter {
         return SpeakersFragmentPresenter(eventBus, conferenceRepository, processScheduler, androidScheduler)
     }

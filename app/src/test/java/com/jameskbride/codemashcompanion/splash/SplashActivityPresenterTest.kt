@@ -2,78 +2,63 @@ package com.jameskbride.codemashcompanion.splash
 
 import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
 import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
+import com.jameskbride.codemashcompanion.data.ConferenceRepository
+import com.jameskbride.codemashcompanion.network.Speaker
+import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
+import io.reactivex.Maybe
+import io.reactivex.schedulers.TestScheduler
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
-import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.*
 
 class SplashActivityPresenterTest {
 
     lateinit var eventBus: EventBus
     lateinit var view: SplashActivityView
+    lateinit var conferenceRepository:ConferenceRepository
     lateinit var subject: SplashActivityPresenter
+    lateinit var testScheduler: TestScheduler
 
     private var requestConferenceDataEventCalled = false
+    private var conferenceDataPersistedEventCalled: Boolean = false
 
     @Before
     fun setUp() {
-        view = mock(SplashActivityView::class.java)
+        view = mock()
+        conferenceRepository = mock()
+        testScheduler = TestScheduler()
         eventBus = EventBus.getDefault()
         eventBus.register(this)
-        subject = SplashActivityPresenter(eventBus)
+        subject = SplashActivityPresenter(eventBus, conferenceRepository, testScheduler, testScheduler)
         subject.view = view
-    }
-
-    @Test
-    fun openRegistersWithTheBusOnOpen() {
-        eventBus = mock(EventBus::class.java)
-        subject = SplashActivityPresenter(eventBus)
-        subject.open()
-
-        verify(eventBus).register(subject)
-    }
-
-    @Test
-    fun openDoesNotRegisterWithTheBusIfAlreadyRegistered() {
-        eventBus = mock(EventBus::class.java)
-        subject = SplashActivityPresenter(eventBus)
-        `when`(eventBus.isRegistered(subject)).thenReturn(true)
-
-        subject.open()
-
-        verify(eventBus, times(0)).register(subject)
-    }
-
-    @Test
-    fun closeUnregistersWithTheBusOnClose() {
-        eventBus = mock(EventBus::class.java)
-        subject = SplashActivityPresenter(eventBus)
-        `when`(eventBus.isRegistered(subject)).thenReturn(true)
-
-        subject.close()
-
-        verify(eventBus).unregister(subject)
-    }
-
-    @Test
-    fun closeDoesNotUnregisterWithTheBusIfNotRegistered() {
-        eventBus = mock(EventBus::class.java)
-        subject = SplashActivityPresenter(eventBus)
-        `when`(eventBus.isRegistered(subject)).thenReturn(false)
-
-        subject.close()
-
-        verify(eventBus, times(0)).unregister(subject)
+        val emptySpeakers:Array<Speaker> = arrayOf()
+        val emptySpeakersMaybe: Maybe<Array<Speaker>> = Maybe.just(emptySpeakers)
+        whenever(conferenceRepository.getSpeakers()).thenReturn(emptySpeakersMaybe)
     }
 
     @Test
     fun requestConferenceDataEventSendsTheConferenceDataRequestEvent() {
         subject.requestConferenceData()
+        testScheduler.triggerActions()
 
         assertTrue(requestConferenceDataEventCalled)
+    }
+
+    @Test
+    fun requestConferenceDataSendsConferenceDataPersistedEventWhenDataIsAlreadyPresent() {
+        val speakers = buildDefaultSpeakers()
+        val emptySpeakersMaybe: Maybe<Array<Speaker>> = Maybe.just(speakers)
+        whenever(conferenceRepository.getSpeakers()).thenReturn(emptySpeakersMaybe)
+
+        subject.requestConferenceData()
+        testScheduler.triggerActions()
+
+        assertTrue(conferenceDataPersistedEventCalled)
     }
 
     @Test
@@ -86,5 +71,10 @@ class SplashActivityPresenterTest {
     @Subscribe
     fun onRequestConferenceDataEvent(event: RequestConferenceDataEvent) {
         requestConferenceDataEventCalled = true
+    }
+
+    @Subscribe
+    fun onConferenceDataPersistedEvent(event: ConferenceDataPersistedEvent) {
+        conferenceDataPersistedEventCalled = true;
     }
 }
