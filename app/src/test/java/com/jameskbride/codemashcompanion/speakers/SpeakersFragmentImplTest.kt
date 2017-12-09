@@ -18,38 +18,52 @@ import com.nhaarman.mockito_kotlin.*
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations.initMocks
 
 class SpeakersFragmentImplTest {
 
+    @Mock
     private lateinit var layoutInflater: LayoutInflater
+
+    @Mock
     private lateinit var viewGroup: ViewGroup
+
+    @Mock
     private lateinit var speakersFragmentPresenter:SpeakersFragmentPresenter
+
+    @Mock
     private lateinit var speakersViewAdapter:SpeakersRecyclerViewAdapter
+
+    @Mock
     private lateinit var speakersViewAdapterFactory:SpeakersViewAdapterFactory
+
+    @Mock
     private lateinit var speakersFragment:SpeakersFragment
+
+    @Mock
     private lateinit var view:View
+
+    @Mock
     private lateinit var speakersView:RecyclerView
+
+    @Mock
     private lateinit var context:Context
+
+    @Mock
     private lateinit var gridLayoutManager:GridLayoutManager
+
+    @Mock
     private lateinit var intentFactory:IntentFactory
+
+    @Mock
     private lateinit var activity:AppCompatActivity
 
     private lateinit var subject: SpeakersFragmentImpl
 
     @Before
     fun setUp() {
-        layoutInflater = mock()
-        viewGroup = mock()
-        speakersFragmentPresenter = mock()
-        speakersViewAdapter = mock()
-        speakersViewAdapterFactory = mock()
-        speakersFragment = mock()
-        view = mock()
-        speakersView = mock()
-        context = mock()
-        gridLayoutManager = mock()
-        intentFactory = mock()
-        activity = mock()
+        initMocks(this)
         subject = SpeakersFragmentImpl(speakersFragmentPresenter, speakersViewAdapterFactory, intentFactory)
 
         whenever(speakersFragment.getView()).thenReturn(view)

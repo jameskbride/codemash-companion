@@ -4,30 +4,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.R
-import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Assert.assertSame
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations.initMocks
 
 class SessionsFragmentImplTest {
 
-    private lateinit var sessionsFragment: SessionsFragment
-    private lateinit var sessionsFragmentPresenter: SessionsFragmentPresenter
-    private lateinit var view:View
-    private lateinit var layoutInflater:LayoutInflater
-    private lateinit var container:ViewGroup
+    @Mock private lateinit var sessionsFragment: SessionsFragment
+    @Mock private lateinit var sessionsFragmentPresenter: SessionsFragmentPresenter
+    @Mock private lateinit var view:View
+    @Mock private lateinit var layoutInflater:LayoutInflater
+    @Mock private lateinit var container:ViewGroup
+
     private lateinit var subject:SessionsFragmentImpl
 
     @Before
     fun setUp() {
-        sessionsFragment = mock()
-        sessionsFragmentPresenter = mock()
-        view = mock()
-        layoutInflater = mock()
-        container = mock()
-
+        initMocks(this)
         whenever(layoutInflater.inflate(R.layout.fragment_sessions, container)).thenReturn(view)
 
         subject = SessionsFragmentImpl(sessionsFragmentPresenter)

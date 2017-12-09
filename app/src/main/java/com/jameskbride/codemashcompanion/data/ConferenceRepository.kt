@@ -1,6 +1,7 @@
 package com.jameskbride.codemashcompanion.data
 
 import com.jameskbride.codemashcompanion.bus.*
+import com.jameskbride.codemashcompanion.network.Session
 import com.jameskbride.codemashcompanion.network.Speaker
 import io.reactivex.Maybe
 import io.reactivex.Observable
@@ -30,5 +31,9 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
 
     fun getSpeakers(): Maybe<Array<Speaker>> {
         return conferenceDao.getSpeakers()
+    }
+
+    fun getSessions(): Maybe<Array<Session>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

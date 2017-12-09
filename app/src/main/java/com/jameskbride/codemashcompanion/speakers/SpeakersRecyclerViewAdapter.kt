@@ -35,7 +35,7 @@ class SpeakersRecyclerViewAdapterImpl constructor(val speakersFragmentPresenter:
 
     fun onBindViewHolder(holder: SpeakerViewHolder?, position: Int) {
         holder!!.bind(speakers[position])
-        holder!!.view!!.setOnClickListener( {view ->
+        holder!!.view!!.setOnClickListener({ view ->
             speakersFragmentPresenter.navigateToDetails(speakers, position)
         })
     }
@@ -50,7 +50,7 @@ class SpeakersRecyclerViewAdapterImpl constructor(val speakersFragmentPresenter:
         return speakers.size
     }
 
-    fun setSpeakers(speakers:Array<Speaker>, speakersRecyclerViewAdapter: SpeakersRecyclerViewAdapter) {
+    fun setSpeakers(speakers: Array<Speaker>, speakersRecyclerViewAdapter: SpeakersRecyclerViewAdapter) {
         this.speakers = speakers
         speakersRecyclerViewAdapter.notifyDataSetChanged()
     }

@@ -10,15 +10,17 @@ import com.nhaarman.mockito_kotlin.*
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations.initMocks
 
 class MainActivityImplTest {
 
-    private lateinit var mainActivity: MainActivity
-    private lateinit var supportFragmentManager: FragmentManager
-    private lateinit var container: ViewPager
-    private lateinit var tabs: TabLayout
-    private lateinit var toolbar: Toolbar
-    private lateinit var resources: Resources
+    @Mock private lateinit var mainActivity: MainActivity
+    @Mock private lateinit var supportFragmentManager: FragmentManager
+    @Mock private lateinit var container: ViewPager
+    @Mock private lateinit var tabs: TabLayout
+    @Mock private lateinit var toolbar: Toolbar
+    @Mock private lateinit var resources: Resources
 
     private lateinit var subject: MainActivityImpl
 
@@ -28,12 +30,7 @@ class MainActivityImplTest {
 
     @Before
     fun setUp() {
-        mainActivity = mock()
-        supportFragmentManager = mock()
-        container = mock()
-        tabs = mock()
-        toolbar = mock()
-        resources = mock()
+        initMocks(this)
 
         subject = MainActivityImpl()
 

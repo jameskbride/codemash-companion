@@ -17,30 +17,24 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations.initMocks
 
 class SpeakersRecyclerViewAdapterTest {
 
-    private lateinit var speakerImage:ImageView
-    private lateinit var speakerFirstName:TextView
-    private lateinit var speakerLastName:TextView
-    private lateinit var picassoLoader:PicassoLoader
-    private lateinit var view:View
-    private lateinit var viewGroup:ViewGroup
-    private lateinit var layoutInflaterFactory:LayoutInflaterFactory
-    private lateinit var context:Context
-    private lateinit var speakersFragmentPresenter:SpeakersFragmentPresenter
+    @Mock private lateinit var speakerImage:ImageView
+    @Mock private lateinit var speakerFirstName:TextView
+    @Mock private lateinit var speakerLastName:TextView
+    @Mock private lateinit var picassoLoader:PicassoLoader
+    @Mock private lateinit var view:View
+    @Mock private lateinit var viewGroup:ViewGroup
+    @Mock private lateinit var layoutInflaterFactory:LayoutInflaterFactory
+    @Mock private lateinit var context:Context
+    @Mock private lateinit var speakersFragmentPresenter:SpeakersFragmentPresenter
 
     @Before
     fun setUp() {
-        speakerImage = mock()
-        speakerFirstName = mock()
-        speakerLastName = mock()
-        view = mock()
-        viewGroup = mock()
-        layoutInflaterFactory = mock()
-        context = mock()
-        speakersFragmentPresenter = mock()
-        picassoLoader = mock()
+        initMocks(this)
 
         whenever(view.findViewById<ImageView>(R.id.speaker_image)).thenReturn(speakerImage)
         whenever(view.findViewById<TextView>(R.id.speaker_first_name)).thenReturn(speakerFirstName)

@@ -2,14 +2,14 @@ package com.jameskbride.codemashcompanion.speakers
 
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Maybe
 import io.reactivex.schedulers.TestScheduler
 import org.greenrobot.eventbus.EventBus
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations.initMocks
 
 class SpeakersFragmentPresenterTest {
@@ -39,7 +39,7 @@ class SpeakersFragmentPresenterTest {
     fun whenSpeakerDataIsReceivedThenTheDataIsPassedToTheView() {
         val speakers = buildDefaultSpeakers()
 
-        `when`(conferenceRepository.getSpeakers()).thenReturn(Maybe.just(speakers))
+        whenever(conferenceRepository.getSpeakers()).thenReturn(Maybe.just(speakers))
 
         subject.requestSpeakerData()
 

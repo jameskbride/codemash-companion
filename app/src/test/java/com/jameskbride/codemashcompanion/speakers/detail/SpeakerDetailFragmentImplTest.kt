@@ -21,32 +21,34 @@ import com.nhaarman.mockito_kotlin.*
 import org.junit.Assert.assertSame
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations.initMocks
 
 class SpeakerDetailFragmentImplTest {
 
-    private lateinit var layoutInflater:LayoutInflater
-    private lateinit var viewGroup:ViewGroup
-    private lateinit var view:View
-    private lateinit var qtn:SpeakerDetailFragment
-    private lateinit var speakerImage:ImageView
-    private lateinit var bioText:TextView
-    private lateinit var firstName:TextView
-    private lateinit var lastName:TextView
-    private lateinit var linkedinBlock:LinearLayout
-    private lateinit var linkedinText:TextView
-    private lateinit var githubBlock:LinearLayout
-    private lateinit var githubText:TextView
-    private lateinit var twitterBlock:LinearLayout
-    private lateinit var twitterText:TextView
-    private lateinit var blogBlock:LinearLayout
-    private lateinit var blogText:TextView
-    private lateinit var picassoLoader:PicassoLoader
-    private lateinit var bundle:Bundle
-    private lateinit var intent:Intent
-    private lateinit var intentFactory:IntentFactory
-    private lateinit var context:Context
-    private lateinit var uriWrapper:UriWrapper
-    private lateinit var uri:Uri
+    @Mock private lateinit var layoutInflater:LayoutInflater
+    @Mock private lateinit var viewGroup:ViewGroup
+    @Mock private lateinit var view:View
+    @Mock private lateinit var qtn:SpeakerDetailFragment
+    @Mock private lateinit var speakerImage:ImageView
+    @Mock private lateinit var bioText:TextView
+    @Mock private lateinit var firstName:TextView
+    @Mock private lateinit var lastName:TextView
+    @Mock private lateinit var linkedinBlock:LinearLayout
+    @Mock private lateinit var linkedinText:TextView
+    @Mock private lateinit var githubBlock:LinearLayout
+    @Mock private lateinit var githubText:TextView
+    @Mock private lateinit var twitterBlock:LinearLayout
+    @Mock private lateinit var twitterText:TextView
+    @Mock private lateinit var blogBlock:LinearLayout
+    @Mock private lateinit var blogText:TextView
+    @Mock private lateinit var picassoLoader:PicassoLoader
+    @Mock private lateinit var bundle:Bundle
+    @Mock private lateinit var intent:Intent
+    @Mock private lateinit var intentFactory:IntentFactory
+    @Mock private lateinit var context:Context
+    @Mock private lateinit var uriWrapper:UriWrapper
+    @Mock private lateinit var uri:Uri
 
     private lateinit var speaker:Speaker
 
@@ -54,30 +56,7 @@ class SpeakerDetailFragmentImplTest {
 
     @Before
     fun setUp() {
-        layoutInflater = mock()
-        viewGroup = mock()
-        view = mock()
-        qtn = mock()
-        picassoLoader = mock()
-        speakerImage = mock()
-        bundle = mock()
-        bioText = mock()
-        firstName = mock()
-        lastName = mock()
-        linkedinBlock = mock()
-        linkedinText = mock()
-        githubBlock = mock()
-        githubText = mock()
-        twitterBlock = mock()
-        twitterText = mock()
-        blogBlock = mock()
-        blogText = mock()
-        intent = mock()
-        intentFactory = mock()
-        context = mock()
-        uriWrapper = mock()
-        uri = mock()
-
+        initMocks(this)
         speaker = buildDefaultSpeakers()[0]
         speaker.LinkedInProfile = ""
         speaker.BlogUrl = ""
