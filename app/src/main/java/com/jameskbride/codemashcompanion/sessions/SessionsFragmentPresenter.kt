@@ -28,9 +28,9 @@ class SessionsFragmentPresenter @Inject constructor(val eventBus: EventBus,
             dateFormatter.parse(speaker.SessionStartTime)
         }
 
-        var ordered = linkedMapOf<Date, Array<Session>?>()
+        var ordered = linkedMapOf<Date, Array<Session>>()
         groupedSpeakers?.keys?.forEach {
-            ordered[it] = groupedSpeakers!![it]?.toTypedArray()
+            ordered[it] = groupedSpeakers!![it]!!.toTypedArray()
         }
 
         view.onSessionDataRetrieved(ordered)
@@ -38,5 +38,5 @@ class SessionsFragmentPresenter @Inject constructor(val eventBus: EventBus,
 }
 
 interface SessionsFragmentView {
-    fun onSessionDataRetrieved(sessionsData: LinkedHashMap<Date, Array<Session>?>)
+    fun onSessionDataRetrieved(sessionsData: LinkedHashMap<Date, Array<Session>>)
 }

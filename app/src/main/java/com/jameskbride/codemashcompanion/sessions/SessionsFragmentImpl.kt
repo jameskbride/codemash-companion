@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.network.Session
 import java.util.*
+import kotlin.collections.LinkedHashMap
 
 class SessionsFragmentImpl(val sessionsFragmentPresenter: SessionsFragmentPresenter, val sessionsViewAdapterFactory: SessionsViewAdapterFactory = SessionsViewAdapterFactory()): SessionsFragmentView {
     private lateinit var sessionsView: RecyclerView
@@ -32,10 +33,9 @@ class SessionsFragmentImpl(val sessionsFragmentPresenter: SessionsFragmentPresen
     }
 
     fun onPause() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onSessionDataRetrieved(sessionsData: LinkedHashMap<Date, Array<Session>?>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onSessionDataRetrieved(sessionsData: LinkedHashMap<Date, Array<Session>>) {
+        sessionsViewAdapter.setSessions(sessionsData)
     }
 }

@@ -51,7 +51,7 @@ class SessionsFragmentPresenterTest {
         subject.requestSessions()
         testScheduler.triggerActions()
 
-        val sessionsCaptor = argumentCaptor<LinkedHashMap<Date, Array<Session>?>>()
+        val sessionsCaptor = argumentCaptor<LinkedHashMap<Date, Array<Session>>>()
         verify(view).onSessionDataRetrieved(sessionsCaptor.capture())
 
         val result = sessionsCaptor.firstValue
