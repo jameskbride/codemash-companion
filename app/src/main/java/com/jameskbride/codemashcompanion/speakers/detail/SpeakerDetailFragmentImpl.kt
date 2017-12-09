@@ -24,5 +24,11 @@ class SpeakerDetailFragmentImpl constructor(val picassoLoader: PicassoLoader = P
 
         val bioText = view.findViewById<TextView>(R.id.bio)
         bioText.text = speaker.Biography
+
+        val firstName = view.findViewById<TextView>(R.id.speaker_first_name)
+        firstName.text = speaker.FirstName
+
+        val lastName = view.findViewById<TextView>(R.id.speaker_last_name)
+        lastName.text = speaker.LastName
     }
 }

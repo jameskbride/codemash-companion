@@ -25,6 +25,8 @@ class SpeakerDetailFragmentImplTest {
     private lateinit var qtn:SpeakerDetailFragment
     private lateinit var speakerImage:ImageView
     private lateinit var bioText:TextView
+    private lateinit var firstName:TextView
+    private lateinit var lastName:TextView
     private lateinit var picassoLoader:PicassoLoader
     private lateinit var bundle:Bundle
 
@@ -42,6 +44,8 @@ class SpeakerDetailFragmentImplTest {
         speakerImage = mock()
         bundle = mock()
         bioText = mock()
+        firstName = mock()
+        lastName = mock()
 
         speaker = buildDefaultSpeakers()[0]
 
@@ -49,6 +53,8 @@ class SpeakerDetailFragmentImplTest {
         whenever(bundle.getSerializable(SpeakerDetailFragment.SPEAKER_KEY)).thenReturn(speaker)
         whenever(view.findViewById<ImageView>(R.id.speaker_image)).thenReturn(speakerImage)
         whenever(view.findViewById<TextView>(R.id.bio)).thenReturn(bioText)
+        whenever(view.findViewById<TextView>(R.id.speaker_first_name)).thenReturn(firstName)
+        whenever(view.findViewById<TextView>(R.id.speaker_last_name)).thenReturn(lastName)
 
         subject = SpeakerDetailFragmentImpl(picassoLoader)
     }
@@ -75,5 +81,13 @@ class SpeakerDetailFragmentImplTest {
         subject.onViewCreated(view, null, speakerDetailFragment = qtn)
 
         verify(bioText).setText(speaker.Biography)
+    }
+
+    @Test
+    fun onViewCreatedSetsTheSpeakerFirstAndLastNames() {
+        subject.onViewCreated(view, null, speakerDetailFragment = qtn)
+
+        verify(firstName).setText(speaker.FirstName)
+        verify(lastName).setText(speaker.LastName)
     }
 }
