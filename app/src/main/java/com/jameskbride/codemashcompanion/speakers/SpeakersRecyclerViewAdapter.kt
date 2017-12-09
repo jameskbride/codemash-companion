@@ -10,7 +10,8 @@ import com.jameskbride.codemashcompanion.network.Speaker
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
 
-class SpeakersRecyclerViewAdapter constructor(val speakersFragmentPresenter: SpeakersFragmentPresenter, val impl: SpeakersRecyclerViewAdapterImpl = SpeakersRecyclerViewAdapterImpl(speakersFragmentPresenter))
+class SpeakersRecyclerViewAdapter constructor(val speakersFragmentPresenter: SpeakersFragmentPresenter,
+                                              val impl: SpeakersRecyclerViewAdapterImpl = SpeakersRecyclerViewAdapterImpl(speakersFragmentPresenter))
     : RecyclerView.Adapter<SpeakerViewHolder>() {
 
     override fun onBindViewHolder(holder: SpeakerViewHolder?, position: Int) {

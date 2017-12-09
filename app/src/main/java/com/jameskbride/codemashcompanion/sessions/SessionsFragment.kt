@@ -2,6 +2,8 @@ package com.jameskbride.codemashcompanion.sessions
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,5 +27,9 @@ class SessionsFragment: Fragment() {
     override fun onPause() {
         super.onPause()
         impl.onPause()
+    }
+
+    fun makeLinearLayoutManager(): RecyclerView.LayoutManager? {
+        return LinearLayoutManager(view?.context)
     }
 }
