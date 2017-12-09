@@ -1,6 +1,10 @@
 package com.jameskbride.codemashcompanion.speakers.detail
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +13,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.network.Speaker
+import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
+import com.jameskbride.codemashcompanion.utils.UriWrapper
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.never
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockito_kotlin.*
 import org.junit.Assert.assertSame
 import org.junit.Before
 import org.junit.Test
@@ -39,6 +42,11 @@ class SpeakerDetailFragmentImplTest {
     private lateinit var blogText:TextView
     private lateinit var picassoLoader:PicassoLoader
     private lateinit var bundle:Bundle
+    private lateinit var intent:Intent
+    private lateinit var intentFactory:IntentFactory
+    private lateinit var context:Context
+    private lateinit var uriWrapper:UriWrapper
+    private lateinit var uri:Uri
 
     private lateinit var speaker:Speaker
 
@@ -64,6 +72,11 @@ class SpeakerDetailFragmentImplTest {
         twitterText = mock()
         blogBlock = mock()
         blogText = mock()
+        intent = mock()
+        intentFactory = mock()
+        context = mock()
+        uriWrapper = mock()
+        uri = mock()
 
         speaker = buildDefaultSpeakers()[0]
         speaker.LinkedInProfile = ""
@@ -85,9 +98,10 @@ class SpeakerDetailFragmentImplTest {
         whenever(view.findViewById<TextView>(R.id.twitter_link)).thenReturn(twitterText)
         whenever(view.findViewById<LinearLayout>(R.id.blog_block)).thenReturn(blogBlock)
         whenever(view.findViewById<TextView>(R.id.blog_link)).thenReturn(blogText)
+        whenever(view.context).thenReturn(context)
+        whenever(uriWrapper.parse(any())).thenReturn(uri)
 
-
-        subject = SpeakerDetailFragmentImpl(picassoLoader)
+        subject = SpeakerDetailFragmentImpl(picassoLoader, intentFactory = intentFactory, uriWrapper = uriWrapper)
     }
 
     @Test
@@ -153,5 +167,65 @@ class SpeakerDetailFragmentImplTest {
         verify(githubText).setText(speaker.GitHubLink)
         verify(blogBlock).setVisibility(View.VISIBLE)
         verify(blogText).setText(speaker.BlogUrl)
+    }
+
+    @Test
+    fun clickingOnLinkedinLinkLaunchesAnActivity() {
+        speaker.LinkedInProfile = "http://linkedin"
+        whenever(intentFactory.make(Intent.ACTION_VIEW)).thenReturn(intent)
+        subject.onViewCreated(view, null, qtn)
+
+        val onClickListenerCaptor = argumentCaptor<View.OnClickListener>()
+        verify(linkedinBlock).setOnClickListener(onClickListenerCaptor.capture())
+        onClickListenerCaptor.firstValue.onClick(null)
+
+        verify(intentFactory).make(Intent.ACTION_VIEW)
+        verify(intent).setData(uri)
+        verify(qtn).startActivity(intent)
+    }
+
+    @Test
+    fun clickingOnTwitterLinkLaunchesAnActivity() {
+        speaker.TwitterLink = "http://twitter"
+        whenever(intentFactory.make(Intent.ACTION_VIEW)).thenReturn(intent)
+        subject.onViewCreated(view, null, qtn)
+
+        val onClickListenerCaptor = argumentCaptor<View.OnClickListener>()
+        verify(twitterBlock).setOnClickListener(onClickListenerCaptor.capture())
+        onClickListenerCaptor.firstValue.onClick(null)
+
+        verify(intentFactory).make(Intent.ACTION_VIEW)
+        verify(intent).setData(uri)
+        verify(qtn).startActivity(intent)
+    }
+
+    @Test
+    fun clickingOnGithubLinkLaunchesAnActivity() {
+        speaker.GitHubLink = "http://github"
+        whenever(intentFactory.make(Intent.ACTION_VIEW)).thenReturn(intent)
+        subject.onViewCreated(view, null, qtn)
+
+        val onClickListenerCaptor = argumentCaptor<View.OnClickListener>()
+        verify(githubBlock).setOnClickListener(onClickListenerCaptor.capture())
+        onClickListenerCaptor.firstValue.onClick(null)
+
+        verify(intentFactory).make(Intent.ACTION_VIEW)
+        verify(intent).setData(uri)
+        verify(qtn).startActivity(intent)
+    }
+
+    @Test
+    fun clickingOnBlogLinkLaunchesAnActivity() {
+        speaker.BlogUrl = "http://someblog"
+        whenever(intentFactory.make(Intent.ACTION_VIEW)).thenReturn(intent)
+        subject.onViewCreated(view, null, qtn)
+
+        val onClickListenerCaptor = argumentCaptor<View.OnClickListener>()
+        verify(blogBlock).setOnClickListener(onClickListenerCaptor.capture())
+        onClickListenerCaptor.firstValue.onClick(null)
+
+        verify(intentFactory).make(Intent.ACTION_VIEW)
+        verify(intent).setData(uri)
+        verify(qtn).startActivity(intent)
     }
 }

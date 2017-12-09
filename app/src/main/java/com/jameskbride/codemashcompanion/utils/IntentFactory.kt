@@ -9,4 +9,8 @@ class IntentFactory {
     fun make(context: Context?, clazz:Class<out FragmentActivity>):Intent {
         return Intent(context, clazz)
     }
+
+    fun make(intent:String):Intent {
+        return Intent(intent)
+    }
 }
