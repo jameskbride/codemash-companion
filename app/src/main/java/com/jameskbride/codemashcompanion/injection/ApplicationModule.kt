@@ -15,8 +15,7 @@ import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentImpl
 import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentPresenter
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailFragmentImpl
-import com.jameskbride.codemashcompanion.utils.IntentFactory
-import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
+import com.jameskbride.codemashcompanion.utils.*
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler

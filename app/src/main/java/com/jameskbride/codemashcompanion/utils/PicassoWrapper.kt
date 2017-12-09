@@ -5,7 +5,7 @@ import android.widget.ImageView
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.RequestCreator
 
-class PicassoWrapper() {
+class PicassoWrapper {
 
     private var picassoBuilder: Picasso? = null
     private var requestCreator: RequestCreator? = null
