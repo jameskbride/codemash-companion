@@ -107,12 +107,12 @@
                         android:background="@drawable/horizontal_divider" />
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/twitter_block"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone">
                     <LinearLayout
-                        android:id="@+id/twitter_block"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">

@@ -30,9 +30,13 @@ class SpeakerDetailFragmentImplTest {
     private lateinit var firstName:TextView
     private lateinit var lastName:TextView
     private lateinit var linkedinBlock:LinearLayout
+    private lateinit var linkedinText:TextView
     private lateinit var githubBlock:LinearLayout
+    private lateinit var githubText:TextView
     private lateinit var twitterBlock:LinearLayout
+    private lateinit var twitterText:TextView
     private lateinit var blogBlock:LinearLayout
+    private lateinit var blogText:TextView
     private lateinit var picassoLoader:PicassoLoader
     private lateinit var bundle:Bundle
 
@@ -53,9 +57,13 @@ class SpeakerDetailFragmentImplTest {
         firstName = mock()
         lastName = mock()
         linkedinBlock = mock()
+        linkedinText = mock()
         githubBlock = mock()
+        githubText = mock()
         twitterBlock = mock()
+        twitterText = mock()
         blogBlock = mock()
+        blogText = mock()
 
         speaker = buildDefaultSpeakers()[0]
         speaker.LinkedInProfile = ""
@@ -70,9 +78,13 @@ class SpeakerDetailFragmentImplTest {
         whenever(view.findViewById<TextView>(R.id.speaker_first_name)).thenReturn(firstName)
         whenever(view.findViewById<TextView>(R.id.speaker_last_name)).thenReturn(lastName)
         whenever(view.findViewById<LinearLayout>(R.id.linkedin_block)).thenReturn(linkedinBlock)
+        whenever(view.findViewById<TextView>(R.id.linkedin_link)).thenReturn(linkedinText)
         whenever(view.findViewById<LinearLayout>(R.id.github_block)).thenReturn(githubBlock)
+        whenever(view.findViewById<TextView>(R.id.github_link)).thenReturn(githubText)
         whenever(view.findViewById<LinearLayout>(R.id.twitter_block)).thenReturn(twitterBlock)
+        whenever(view.findViewById<TextView>(R.id.twitter_link)).thenReturn(twitterText)
         whenever(view.findViewById<LinearLayout>(R.id.blog_block)).thenReturn(blogBlock)
+        whenever(view.findViewById<TextView>(R.id.blog_link)).thenReturn(blogText)
 
 
         subject = SpeakerDetailFragmentImpl(picassoLoader)
@@ -118,6 +130,10 @@ class SpeakerDetailFragmentImplTest {
         verify(twitterBlock, never()).setVisibility(View.VISIBLE)
         verify(githubBlock, never()).setVisibility(View.VISIBLE)
         verify(blogBlock, never()).setVisibility(View.VISIBLE)
+        verify(linkedinText, never()).setText(speaker.LinkedInProfile)
+        verify(twitterText, never()).setText(speaker.TwitterLink)
+        verify(githubText, never()).setText(speaker.GitHubLink)
+        verify(blogText, never()).setText(speaker.BlogUrl)
     }
 
     @Test
@@ -130,8 +146,12 @@ class SpeakerDetailFragmentImplTest {
         subject.onViewCreated(view, null, speakerDetailFragment = qtn)
 
         verify(linkedinBlock).setVisibility(View.VISIBLE)
+        verify(linkedinText).setText(speaker.LinkedInProfile)
         verify(twitterBlock).setVisibility(View.VISIBLE)
+        verify(twitterText).setText(speaker.TwitterLink)
         verify(githubBlock).setVisibility(View.VISIBLE)
+        verify(githubText).setText(speaker.GitHubLink)
         verify(blogBlock).setVisibility(View.VISIBLE)
+        verify(blogText).setText(speaker.BlogUrl)
     }
 }

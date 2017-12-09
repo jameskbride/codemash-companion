@@ -32,9 +32,25 @@ class SpeakerDetailFragmentImpl constructor(val picassoLoader: PicassoLoader = P
         val lastName = view.findViewById<TextView>(R.id.speaker_last_name)
         lastName.text = speaker.LastName
 
-        if (!speaker.TwitterLink.isNullOrBlank()) { view.findViewById<LinearLayout>(R.id.twitter_block).visibility = View.VISIBLE }
-        if (!speaker.LinkedInProfile.isNullOrBlank()) { view.findViewById<LinearLayout>(R.id.linkedin_block).visibility = View.VISIBLE }
-        if (!speaker.BlogUrl.isNullOrBlank()) { view.findViewById<LinearLayout>(R.id.blog_block).visibility = View.VISIBLE }
-        if (!speaker.GitHubLink.isNullOrBlank()) { view.findViewById<LinearLayout>(R.id.github_block).visibility = View.VISIBLE }
+        configureLinks(speaker, view)
+    }
+
+    private fun configureLinks(speaker: Speaker, view: View) {
+        if (!speaker.TwitterLink.isNullOrBlank()) {
+            view.findViewById<LinearLayout>(R.id.twitter_block).visibility = View.VISIBLE
+            view.findViewById<TextView>(R.id.twitter_link).text = speaker.TwitterLink
+        }
+        if (!speaker.LinkedInProfile.isNullOrBlank()) {
+            view.findViewById<LinearLayout>(R.id.linkedin_block).visibility = View.VISIBLE
+            view.findViewById<TextView>(R.id.linkedin_link).text = speaker.LinkedInProfile
+        }
+        if (!speaker.BlogUrl.isNullOrBlank()) {
+            view.findViewById<LinearLayout>(R.id.blog_block).visibility = View.VISIBLE
+            view.findViewById<TextView>(R.id.blog_link).text = speaker.BlogUrl
+        }
+        if (!speaker.GitHubLink.isNullOrBlank()) {
+            view.findViewById<LinearLayout>(R.id.github_block).visibility = View.VISIBLE
+            view.findViewById<TextView>(R.id.github_link).text = speaker.GitHubLink
+        }
     }
 }
