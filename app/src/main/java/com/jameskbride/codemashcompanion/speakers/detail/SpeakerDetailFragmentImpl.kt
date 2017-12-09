@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.network.Speaker
@@ -30,5 +31,10 @@ class SpeakerDetailFragmentImpl constructor(val picassoLoader: PicassoLoader = P
 
         val lastName = view.findViewById<TextView>(R.id.speaker_last_name)
         lastName.text = speaker.LastName
+
+        if (!speaker.TwitterLink.isNullOrBlank()) { view.findViewById<LinearLayout>(R.id.twitter_block).visibility = View.VISIBLE }
+        if (!speaker.LinkedInProfile.isNullOrBlank()) { view.findViewById<LinearLayout>(R.id.linkedin_block).visibility = View.VISIBLE }
+        if (!speaker.BlogUrl.isNullOrBlank()) { view.findViewById<LinearLayout>(R.id.blog_block).visibility = View.VISIBLE }
+        if (!speaker.GitHubLink.isNullOrBlank()) { view.findViewById<LinearLayout>(R.id.github_block).visibility = View.VISIBLE }
     }
 }
