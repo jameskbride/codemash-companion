@@ -7,8 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
-import com.jameskbride.codemashcompanion.utils.LogWrapper
-import com.jameskbride.codemashcompanion.utils.PicassoWrapper
+import com.jameskbride.codemashcompanion.utils.PicassoLoader
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.mock
@@ -24,8 +23,7 @@ class SpeakersRecyclerViewAdapterTest {
     private lateinit var speakerImage:ImageView
     private lateinit var speakerFirstName:TextView
     private lateinit var speakerLastName:TextView
-    private lateinit var logWrapper:LogWrapper
-    private lateinit var picassoWrapper:PicassoWrapper
+    private lateinit var picassoLoader:PicassoLoader
     private lateinit var view:View
     private lateinit var viewGroup:ViewGroup
     private lateinit var layoutInflaterFactory:LayoutInflaterFactory
@@ -37,13 +35,12 @@ class SpeakersRecyclerViewAdapterTest {
         speakerImage = mock()
         speakerFirstName = mock()
         speakerLastName = mock()
-        logWrapper = mock()
-        picassoWrapper = mock()
         view = mock()
         viewGroup = mock()
         layoutInflaterFactory = mock()
         context = mock()
         speakersFragmentPresenter = mock()
+        picassoLoader = mock()
 
         whenever(view.findViewById<ImageView>(R.id.speaker_image)).thenReturn(speakerImage)
         whenever(view.findViewById<TextView>(R.id.speaker_first_name)).thenReturn(speakerFirstName)
@@ -109,7 +106,7 @@ class SpeakersRecyclerViewAdapterTest {
 
     @Test
     fun speakerViewHolderHoldsTheSpeakerViews() {
-        val subject = SpeakerViewHolder(view, logWrapper = logWrapper, picassoWrapper = picassoWrapper)
+        val subject = SpeakerViewHolder(view, picassoLoader = picassoLoader)
 
         assertSame(speakerImage, subject.speakerImage)
         assertSame(speakerFirstName, subject.speakerFirstName)
@@ -119,20 +116,14 @@ class SpeakersRecyclerViewAdapterTest {
     @Test
     fun bindLoadsTheSpeakerDataIntoTheView() {
         val speaker = buildDefaultSpeakers()[0]
-        whenever(picassoWrapper.with(context)).thenReturn(picassoWrapper)
-        whenever(picassoWrapper.load("${speaker.GravatarUrl}?s=180&d=mm")).thenReturn(picassoWrapper)
-        whenever(picassoWrapper.placeholder(R.drawable.ic_person)).thenReturn(picassoWrapper)
-        whenever(picassoWrapper.resize(500, 500)).thenReturn(picassoWrapper)
-        whenever(picassoWrapper.centerCrop()).thenReturn(picassoWrapper)
 
-        val subject = SpeakerViewHolder(view, logWrapper = logWrapper, picassoWrapper = picassoWrapper)
+        val subject = SpeakerViewHolder(view, picassoLoader = picassoLoader)
 
         subject.bind(speaker)
 
         verify(speakerFirstName).setText(speaker.FirstName)
         verify(speakerLastName).setText(speaker.LastName)
-        verify(picassoWrapper).into(speakerImage)
-
+        verify(picassoLoader).load(speaker, speakerImage)
     }
 }
 

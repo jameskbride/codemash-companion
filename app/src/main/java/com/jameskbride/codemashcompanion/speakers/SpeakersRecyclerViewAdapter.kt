@@ -9,6 +9,7 @@ import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.network.Speaker
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import com.jameskbride.codemashcompanion.utils.LogWrapper
+import com.jameskbride.codemashcompanion.utils.PicassoLoader
 import com.jameskbride.codemashcompanion.utils.PicassoWrapper
 
 class SpeakersRecyclerViewAdapter constructor(val speakersFragmentPresenter: SpeakersFragmentPresenter, val impl: SpeakersRecyclerViewAdapterImpl = SpeakersRecyclerViewAdapterImpl(speakersFragmentPresenter))
@@ -57,7 +58,7 @@ class SpeakersRecyclerViewAdapterImpl constructor(val speakersFragmentPresenter:
     }
 }
 
-class SpeakerViewHolder(itemView: View?, val logWrapper: LogWrapper = LogWrapper(), val picassoWrapper: PicassoWrapper = PicassoWrapper()) : RecyclerView.ViewHolder(itemView) {
+class SpeakerViewHolder(itemView: View?, val picassoLoader: PicassoLoader = PicassoLoader()) : RecyclerView.ViewHolder(itemView) {
     var speakerImage:ImageView?
     var speakerFirstName:TextView?
     var speakerLastName:TextView?
@@ -74,14 +75,7 @@ class SpeakerViewHolder(itemView: View?, val logWrapper: LogWrapper = LogWrapper
         speakerFirstName!!.text = speaker.FirstName
         speakerLastName!!.text = speaker.LastName
 
-        val url = "${speaker.GravatarUrl}?s=180&d=mm"
-        logWrapper.d("SpeakersRecyclerViewAdapter", "Requesting gravatar url: ${url}")
-        picassoWrapper.with(speakerImage!!.context)
-                .load(url)
-                .placeholder(R.drawable.ic_person)
-                .resize(500, 500)
-                .centerCrop()
-                .into(speakerImage)
+        picassoLoader.load(speaker, speakerImage!!)
     }
 }
 
