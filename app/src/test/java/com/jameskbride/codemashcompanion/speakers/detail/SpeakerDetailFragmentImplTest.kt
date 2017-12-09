@@ -1,12 +1,13 @@
 package com.jameskbride.codemashcompanion.speakers.detail
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
+import com.jameskbride.codemashcompanion.network.Speaker
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import com.nhaarman.mockito_kotlin.mock
@@ -23,7 +24,11 @@ class SpeakerDetailFragmentImplTest {
     private lateinit var view:View
     private lateinit var qtn:SpeakerDetailFragment
     private lateinit var speakerImage:ImageView
+    private lateinit var bioText:TextView
     private lateinit var picassoLoader:PicassoLoader
+    private lateinit var bundle:Bundle
+
+    private lateinit var speaker:Speaker
 
     private lateinit var subject:SpeakerDetailFragmentImpl
 
@@ -35,8 +40,15 @@ class SpeakerDetailFragmentImplTest {
         qtn = mock()
         picassoLoader = mock()
         speakerImage = mock()
+        bundle = mock()
+        bioText = mock()
 
+        speaker = buildDefaultSpeakers()[0]
+
+        whenever(qtn.arguments).thenReturn(bundle)
+        whenever(bundle.getSerializable(SpeakerDetailFragment.SPEAKER_KEY)).thenReturn(speaker)
         whenever(view.findViewById<ImageView>(R.id.speaker_image)).thenReturn(speakerImage)
+        whenever(view.findViewById<TextView>(R.id.bio)).thenReturn(bioText)
 
         subject = SpeakerDetailFragmentImpl(picassoLoader)
     }
@@ -53,13 +65,15 @@ class SpeakerDetailFragmentImplTest {
 
     @Test
     fun onViewCreatedLoadsTheSpeakerImage() {
-        val speaker = buildDefaultSpeakers()[0]
-        val bundle = mock<Bundle>()
-        whenever(qtn.arguments).thenReturn(bundle)
-        whenever(bundle.getSerializable(SpeakerDetailFragment.SPEAKER_KEY)).thenReturn(speaker)
-
         subject.onViewCreated(view, null, speakerDetailFragment = qtn)
 
         verify(picassoLoader).load(speaker, speakerImage)
+    }
+
+    @Test
+    fun onViewCreatedSetsTheBioText() {
+        subject.onViewCreated(view, null, speakerDetailFragment = qtn)
+
+        verify(bioText).setText(speaker.Biography)
     }
 }

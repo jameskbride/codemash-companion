@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.network.Speaker
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
@@ -19,7 +20,9 @@ class SpeakerDetailFragmentImpl constructor(val picassoLoader: PicassoLoader = P
         val speaker = speakerDetailFragment.arguments!!.getSerializable(SpeakerDetailFragment.SPEAKER_KEY) as Speaker
 
         val speakerImage = view.findViewById<ImageView>(R.id.speaker_image)
-
         picassoLoader.load(speaker, speakerImage)
+
+        val bioText = view.findViewById<TextView>(R.id.bio)
+        bioText.text = speaker.Biography
     }
 }
