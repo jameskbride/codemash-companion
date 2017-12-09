@@ -41,29 +41,24 @@ class SpeakerDetailFragmentImpl constructor(val picassoLoader: PicassoLoader = P
 
     private fun configureLinks(speaker: Speaker, view: View, speakerDetailFragment: SpeakerDetailFragment) {
         if (!speaker.TwitterLink.isNullOrBlank()) {
-            val twitterBlock = view.findViewById<LinearLayout>(R.id.twitter_block)
-            twitterBlock.visibility = View.VISIBLE
-            twitterBlock.setOnClickListener(LinkOnClickListener(speaker.TwitterLink, intentFactory, speakerDetailFragment, uriWrapper))
-            view.findViewById<TextView>(R.id.twitter_link).text = speaker.TwitterLink
+            makeNavigableLink(view, speaker.TwitterLink, speakerDetailFragment, R.id.twitter_block, R.id.twitter_link)
         }
         if (!speaker.LinkedInProfile.isNullOrBlank()) {
-            val linkedinBlock = view.findViewById<LinearLayout>(R.id.linkedin_block)
-            linkedinBlock.visibility = View.VISIBLE
-            linkedinBlock.setOnClickListener(LinkOnClickListener(speaker.LinkedInProfile, intentFactory, speakerDetailFragment, uriWrapper))
-            view.findViewById<TextView>(R.id.linkedin_link).text = speaker.LinkedInProfile
+            makeNavigableLink(view, speaker.LinkedInProfile, speakerDetailFragment, R.id.linkedin_block, R.id.linkedin_link)
         }
         if (!speaker.BlogUrl.isNullOrBlank()) {
-            val blogBlock = view.findViewById<LinearLayout>(R.id.blog_block)
-            blogBlock.visibility = View.VISIBLE
-            blogBlock.setOnClickListener(LinkOnClickListener(speaker.BlogUrl, intentFactory, speakerDetailFragment, uriWrapper))
-            view.findViewById<TextView>(R.id.blog_link).text = speaker.BlogUrl
+            makeNavigableLink(view, speaker.BlogUrl, speakerDetailFragment, R.id.blog_block, R.id.blog_link)
         }
         if (!speaker.GitHubLink.isNullOrBlank()) {
-            val githubBlock = view.findViewById<LinearLayout>(R.id.github_block)
-            githubBlock.visibility = View.VISIBLE
-            githubBlock.setOnClickListener(LinkOnClickListener(speaker.GitHubLink, intentFactory, speakerDetailFragment, uriWrapper))
-            view.findViewById<TextView>(R.id.github_link).text = speaker.GitHubLink
+            makeNavigableLink(view, speaker.GitHubLink, speakerDetailFragment, R.id.github_block, R.id.github_link)
         }
+    }
+
+    private fun makeNavigableLink(view: View, link: String?, speakerDetailFragment: SpeakerDetailFragment, blockId:Int, linkTextId:Int) {
+        val block = view.findViewById<LinearLayout>(blockId)
+        block.visibility = View.VISIBLE
+        block.setOnClickListener(LinkOnClickListener(link, intentFactory, speakerDetailFragment, uriWrapper))
+        view.findViewById<TextView>(linkTextId).text = link
     }
 }
 
