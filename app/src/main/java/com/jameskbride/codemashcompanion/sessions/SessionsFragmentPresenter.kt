@@ -9,4 +9,7 @@ class SessionsFragmentPresenter @Inject constructor(val eventBus: EventBus,
                                                     val conferenceRepository: ConferenceRepository,
                                                     val processScheduler: Scheduler,
                                                     val androidScheuler: Scheduler) {
+    fun requestSessions() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

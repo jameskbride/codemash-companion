@@ -14,7 +14,7 @@ class SessionsFragmentImpl(val sessionsFragmentPresenter: SessionsFragmentPresen
     }
 
     fun onResume() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        sessionsFragmentPresenter.requestSessions()
     }
 
     fun onPause() {
