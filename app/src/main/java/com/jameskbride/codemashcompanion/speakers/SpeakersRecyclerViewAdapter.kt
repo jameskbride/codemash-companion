@@ -8,9 +8,7 @@ import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.network.Speaker
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
-import com.jameskbride.codemashcompanion.utils.LogWrapper
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
-import com.jameskbride.codemashcompanion.utils.PicassoWrapper
 
 class SpeakersRecyclerViewAdapter constructor(val speakersFragmentPresenter: SpeakersFragmentPresenter, val impl: SpeakersRecyclerViewAdapterImpl = SpeakersRecyclerViewAdapterImpl(speakersFragmentPresenter))
     : RecyclerView.Adapter<SpeakerViewHolder>() {

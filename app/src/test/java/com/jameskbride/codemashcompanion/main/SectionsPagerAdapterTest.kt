@@ -1,6 +1,7 @@
 package com.jameskbride.codemashcompanion.main
 
 import android.support.v4.app.FragmentManager
+import com.jameskbride.codemashcompanion.sessions.SessionsFragment
 import com.jameskbride.codemashcompanion.speakers.SpeakersFragment
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -21,7 +22,11 @@ class SectionsPagerAdapterTest {
 
     @Test
     fun itCanReturnTheSpeakersFragment() {
-        val result = subject.getItem(1)
-        assertTrue(result is SpeakersFragment)
+        assertTrue(subject.getItem(1) is SpeakersFragment)
+    }
+
+    @Test
+    fun itCanReturnTheSessionsFragment() {
+        assertTrue(subject.getItem(0) is SessionsFragment)
     }
 }
