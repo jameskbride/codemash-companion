@@ -97,7 +97,7 @@ class ItemViewHolder constructor(itemView: View): SessionViewHolder(itemView) {
 
 class HeaderViewHolder constructor(itemView: View): SessionViewHolder(itemView) {
     fun bind(firstDate: Date) {
-        val simpleDateFormatter = SimpleDateFormat("HH:mm a")
+        val simpleDateFormatter = SimpleDateFormat("h:mm a")
         itemView.findViewById<TextView>(R.id.session_time).text = simpleDateFormatter.format(firstDate)
     }
 }

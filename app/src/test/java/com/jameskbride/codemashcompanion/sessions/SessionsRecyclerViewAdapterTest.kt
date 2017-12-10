@@ -162,7 +162,7 @@ class SessionsRecyclerViewAdapterTest {
         val subject = HeaderViewHolder(view)
 
         subject.bind(firstDate)
-        val dateFormater = SimpleDateFormat("HH:mm a")
+        val dateFormater = SimpleDateFormat("h:mm a")
         val formattedTimeCaptor = argumentCaptor<String>()
         verify(sessionTime).setText(formattedTimeCaptor.capture())
         val formattedTime = dateFormater.format(firstDate)
