@@ -68,4 +68,26 @@ class SessionsRecyclerViewAdapterTest {
         val thirdItem:SessionListItem = result[4] as SessionListItem
         assertEquals(thirdSession, thirdItem.session)
     }
+
+    @Test
+    fun itGetTheSizeIncludingHeaders() {
+        var sessionData = linkedMapOf<Date, Array<Session>>()
+        val firstStartTime = "2018-01-11T09:15:00"
+        val secondStartTime = "2018-01-11T10:15:00"
+
+        val firstDate = dateFormatter.parse(firstStartTime)
+        val firstSession = Session(SessionStartTime = firstStartTime)
+        sessionData[firstDate] = arrayOf(firstSession)
+        val secondDate = dateFormatter.parse(secondStartTime)
+        val secondSession = Session(SessionStartTime = secondStartTime)
+        val thirdSession = Session(SessionStartTime = secondStartTime)
+        sessionData[secondDate] = arrayOf(
+                secondSession,
+                thirdSession
+        )
+
+        subject.setSessions(sessionData, qtn)
+
+        assertEquals(5, subject.getItemCount())
+    }
 }

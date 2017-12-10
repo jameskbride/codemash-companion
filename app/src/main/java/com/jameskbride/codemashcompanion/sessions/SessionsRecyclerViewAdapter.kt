@@ -10,7 +10,7 @@ import java.util.*
 import kotlin.collections.LinkedHashMap
 
 class SessionsRecyclerViewAdapter constructor(
-        val sessionsRecyclerViewAdapterImpl: SessionsRecyclerViewAdapterImpl = SessionsRecyclerViewAdapterImpl())
+        val impl: SessionsRecyclerViewAdapterImpl = SessionsRecyclerViewAdapterImpl())
     : RecyclerView.Adapter<SessionViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
@@ -18,19 +18,19 @@ class SessionsRecyclerViewAdapter constructor(
     }
 
     override fun onBindViewHolder(holder: SessionViewHolder?, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        impl.onBindViewHolder(holder, position)
     }
 
     override fun getItemCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return impl.getItemCount()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SessionViewHolder {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return impl.onCreateViewHolder(parent, viewType)
     }
 
     fun setSessions(sessionData: LinkedHashMap<Date, Array<Session>>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        impl.setSessions(sessionData, this)
     }
 }
 
@@ -41,6 +41,12 @@ class SessionsViewAdapterFactory {
 }
 
 class SessionsRecyclerViewAdapterImpl {
+    var sessionsList: MutableList<ListItem> = mutableListOf()
+
+    fun getItemCount(): Int {
+        return sessionsList.size
+    }
+
     fun setSessions(sessions: LinkedHashMap<Date, Array<Session>>, qtn: SessionsRecyclerViewAdapter) {
         sessions.keys.sorted().forEach{key ->
             sessionsList.add(HeaderListItem(key))
@@ -51,7 +57,13 @@ class SessionsRecyclerViewAdapterImpl {
         qtn.notifyDataSetChanged()
     }
 
-    var sessionsList: MutableList<ListItem> = mutableListOf()
+    fun onBindViewHolder(holder: SessionViewHolder?, position: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SessionViewHolder {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
 
 class SessionViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView)
