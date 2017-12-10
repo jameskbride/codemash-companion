@@ -3,9 +3,11 @@ package com.jameskbride.codemashcompanion.sessions
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.network.Session
 import com.jameskbride.codemashcompanion.sessions.ListItem.Companion.HEADER_TYPE
 import com.jameskbride.codemashcompanion.sessions.ListItem.Companion.ITEM_TYPE
+import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import java.util.*
 import kotlin.collections.LinkedHashMap
 
@@ -40,7 +42,7 @@ class SessionsViewAdapterFactory {
     }
 }
 
-class SessionsRecyclerViewAdapterImpl {
+class SessionsRecyclerViewAdapterImpl(val layoutInflaterFactory: LayoutInflaterFactory = LayoutInflaterFactory()) {
     var sessionsList: MutableList<ListItem> = mutableListOf()
 
     fun getItemCount(): Int {
@@ -62,7 +64,13 @@ class SessionsRecyclerViewAdapterImpl {
     }
 
     fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SessionViewHolder {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (ListItem.HEADER_TYPE == viewType) {
+            val view = layoutInflaterFactory.inflate(parent!!.context, R.layout.sessions_header, parent!!)
+            return HeaderViewHolder(view!!)
+        }
+
+        val view = layoutInflaterFactory.inflate(parent!!.context, R.layout.sessions_item, parent!!)
+        return ItemViewHolder(view!!)
     }
 
     fun getItemViewType(position: Int): Int {
@@ -70,7 +78,9 @@ class SessionsRecyclerViewAdapterImpl {
     }
 }
 
-class SessionViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView)
+open class SessionViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView)
+class ItemViewHolder constructor(itemView: View): SessionViewHolder(itemView)
+class HeaderViewHolder constructor(itemView: View): SessionViewHolder(itemView)
 
 interface ListItem {
     fun getType(): Int

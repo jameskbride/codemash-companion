@@ -1,8 +1,15 @@
 package com.jameskbride.codemashcompanion.sessions
 
+import android.content.Context
+import android.view.View
+import android.view.ViewGroup
+import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.network.Session
+import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -14,6 +21,11 @@ import kotlin.collections.LinkedHashMap
 class SessionsRecyclerViewAdapterTest {
 
     @Mock private lateinit var qtn: SessionsRecyclerViewAdapter
+    @Mock private lateinit var layoutInflaterFactory: LayoutInflaterFactory
+    @Mock private lateinit var container:ViewGroup
+    @Mock private lateinit var view: View
+    @Mock private lateinit var context:Context
+
     private lateinit var subject: SessionsRecyclerViewAdapterImpl
 
     private val dateFormatter = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss")
@@ -21,7 +33,9 @@ class SessionsRecyclerViewAdapterTest {
     @Before
     fun setUp() {
         initMocks(this)
-        subject = SessionsRecyclerViewAdapterImpl()
+        subject = SessionsRecyclerViewAdapterImpl(layoutInflaterFactory)
+
+        whenever(container.context).thenReturn(context)
 
         buildDefaultSessionData()
     }
@@ -91,5 +105,27 @@ class SessionsRecyclerViewAdapterTest {
         assertEquals(ListItem.HEADER_TYPE, subject.getItemViewType(2))
         assertEquals(ListItem.ITEM_TYPE, subject.getItemViewType(3))
         assertEquals(ListItem.ITEM_TYPE, subject.getItemViewType(4))
+    }
+
+    @Test
+    fun itCreatesAHeaderSessionViewHolderForHeaderListItems() {
+        subject.setSessions(sessionData, qtn)
+        whenever(layoutInflaterFactory.inflate(context, R.layout.sessions_header, container)).thenReturn(view)
+
+        val sessionViewHolder = subject.onCreateViewHolder(container, ListItem.HEADER_TYPE)
+
+        verify(layoutInflaterFactory).inflate(context, R.layout.sessions_header, container)
+        assertTrue(sessionViewHolder is HeaderViewHolder)
+    }
+
+    @Test
+    fun itCreatesAnItemViewHolderForListItems() {
+        subject.setSessions(sessionData, qtn)
+        whenever(layoutInflaterFactory.inflate(context, R.layout.sessions_item, container)).thenReturn(view)
+
+        val sessionViewHolder = subject.onCreateViewHolder(container, ListItem.ITEM_TYPE)
+
+        verify(layoutInflaterFactory).inflate(context, R.layout.sessions_item, container)
+        assertTrue(sessionViewHolder is ItemViewHolder)
     }
 }
