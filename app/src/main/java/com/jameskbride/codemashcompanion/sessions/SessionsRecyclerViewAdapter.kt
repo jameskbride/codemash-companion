@@ -14,7 +14,7 @@ class SessionsRecyclerViewAdapter constructor(
     : RecyclerView.Adapter<SessionViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
+        return impl.getItemViewType(position)
     }
 
     override fun onBindViewHolder(holder: SessionViewHolder?, position: Int) {
@@ -64,6 +64,10 @@ class SessionsRecyclerViewAdapterImpl {
     fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SessionViewHolder {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+    fun getItemViewType(position: Int): Int {
+        return sessionsList[position].getType()
+    }
 }
 
 class SessionViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView)
@@ -72,8 +76,8 @@ interface ListItem {
     fun getType(): Int
 
     companion object {
-        val HEADER_TYPE = 1
-        val ITEM_TYPE = 2
+        val HEADER_TYPE = 0
+        val ITEM_TYPE = 1
     }
 }
 

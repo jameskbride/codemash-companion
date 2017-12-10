@@ -9,6 +9,7 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations.initMocks
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.LinkedHashMap
 
 class SessionsRecyclerViewAdapterTest {
 
@@ -21,6 +22,26 @@ class SessionsRecyclerViewAdapterTest {
     fun setUp() {
         initMocks(this)
         subject = SessionsRecyclerViewAdapterImpl()
+
+        buildDefaultSessionData()
+    }
+
+    private lateinit var sessionData: LinkedHashMap<Date, Array<Session>>
+    private val firstStartTime = "2018-01-11T09:15:00"
+    private val secondStartTime = "2018-01-11T10:15:00"
+    private val firstDate = dateFormatter.parse(firstStartTime)
+    private val secondDate = dateFormatter.parse(secondStartTime)
+    private val firstSession = Session(SessionStartTime = firstStartTime)
+    private val secondSession = Session(SessionStartTime = secondStartTime)
+    private val thirdSession = Session(SessionStartTime = secondStartTime)
+
+    private fun buildDefaultSessionData() {
+        sessionData = linkedMapOf()
+        sessionData[firstDate] = arrayOf(firstSession)
+        sessionData[secondDate] = arrayOf(
+                secondSession,
+                thirdSession
+        )
     }
 
     @Test
@@ -33,21 +54,6 @@ class SessionsRecyclerViewAdapterTest {
 
     @Test
     fun itConvertsSessionsToListItems() {
-        var sessionData = linkedMapOf<Date, Array<Session>>()
-        val firstStartTime = "2018-01-11T09:15:00"
-        val secondStartTime = "2018-01-11T10:15:00"
-
-        val firstDate = dateFormatter.parse(firstStartTime)
-        val firstSession = Session(SessionStartTime = firstStartTime)
-        sessionData[firstDate] = arrayOf(firstSession)
-        val secondDate = dateFormatter.parse(secondStartTime)
-        val secondSession = Session(SessionStartTime = secondStartTime)
-        val thirdSession = Session(SessionStartTime = secondStartTime)
-        sessionData[secondDate] = arrayOf(
-                secondSession,
-                thirdSession
-        )
-
         subject.setSessions(sessionData, qtn)
 
         val result = subject.sessionsList
@@ -71,23 +77,19 @@ class SessionsRecyclerViewAdapterTest {
 
     @Test
     fun itGetTheSizeIncludingHeaders() {
-        var sessionData = linkedMapOf<Date, Array<Session>>()
-        val firstStartTime = "2018-01-11T09:15:00"
-        val secondStartTime = "2018-01-11T10:15:00"
-
-        val firstDate = dateFormatter.parse(firstStartTime)
-        val firstSession = Session(SessionStartTime = firstStartTime)
-        sessionData[firstDate] = arrayOf(firstSession)
-        val secondDate = dateFormatter.parse(secondStartTime)
-        val secondSession = Session(SessionStartTime = secondStartTime)
-        val thirdSession = Session(SessionStartTime = secondStartTime)
-        sessionData[secondDate] = arrayOf(
-                secondSession,
-                thirdSession
-        )
-
         subject.setSessions(sessionData, qtn)
 
         assertEquals(5, subject.getItemCount())
+    }
+
+    @Test
+    fun itGetsTheItemType() {
+        subject.setSessions(sessionData, qtn)
+
+        assertEquals(ListItem.HEADER_TYPE, subject.getItemViewType(0))
+        assertEquals(ListItem.ITEM_TYPE, subject.getItemViewType(1))
+        assertEquals(ListItem.HEADER_TYPE, subject.getItemViewType(2))
+        assertEquals(ListItem.ITEM_TYPE, subject.getItemViewType(3))
+        assertEquals(ListItem.ITEM_TYPE, subject.getItemViewType(4))
     }
 }
