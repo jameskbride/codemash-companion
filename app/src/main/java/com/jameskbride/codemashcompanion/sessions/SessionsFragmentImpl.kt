@@ -16,7 +16,7 @@ class SessionsFragmentImpl(val sessionsFragmentPresenter: SessionsFragmentPresen
     private lateinit var sessionsViewAdapter: SessionsRecyclerViewAdapter
 
     fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?, qtn: SessionsFragment): View? {
-        val view = inflater.inflate(R.layout.fragment_sessions, container)
+        val view = inflater.inflate(R.layout.fragment_sessions, container, false)
 
         sessionsFragmentPresenter.view = this
         sessionsView = view!!.findViewById<RecyclerView>(R.id.sessions)

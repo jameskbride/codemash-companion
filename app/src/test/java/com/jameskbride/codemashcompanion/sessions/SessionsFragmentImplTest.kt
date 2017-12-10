@@ -33,7 +33,7 @@ class SessionsFragmentImplTest {
     @Before
     fun setUp() {
         initMocks(this)
-        whenever(layoutInflater.inflate(R.layout.fragment_sessions, container)).thenReturn(view)
+        whenever(layoutInflater.inflate(R.layout.fragment_sessions, container, false)).thenReturn(view)
         whenever(sessionsViewAdapterFactory.make()).thenReturn(sessionsViewAdapter)
         whenever(view.findViewById<RecyclerView>(R.id.sessions)).thenReturn(sessionsView)
 
