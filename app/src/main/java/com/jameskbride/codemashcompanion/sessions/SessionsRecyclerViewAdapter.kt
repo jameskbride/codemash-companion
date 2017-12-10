@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.network.Session
 import java.util.*
+import kotlin.collections.LinkedHashMap
 
 class SessionsRecyclerViewAdapter constructor(
         val sessionsRecyclerViewAdapterImpl: SessionsRecyclerViewAdapterImpl = SessionsRecyclerViewAdapterImpl())
@@ -37,6 +38,10 @@ class SessionsViewAdapterFactory {
     }
 }
 
-class SessionsRecyclerViewAdapterImpl
+class SessionsRecyclerViewAdapterImpl {
+    fun setSessions(sessions: LinkedHashMap<Date, Array<Session>>, qtn: SessionsRecyclerViewAdapter) {
+        qtn.notifyDataSetChanged()
+    }
+}
 
 class SessionViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView)
