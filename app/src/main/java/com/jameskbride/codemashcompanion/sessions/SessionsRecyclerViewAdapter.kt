@@ -3,11 +3,13 @@ package com.jameskbride.codemashcompanion.sessions
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.network.Session
 import com.jameskbride.codemashcompanion.sessions.ListItem.Companion.HEADER_TYPE
 import com.jameskbride.codemashcompanion.sessions.ListItem.Companion.ITEM_TYPE
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.LinkedHashMap
 
@@ -88,14 +90,15 @@ class SessionsRecyclerViewAdapterImpl(val layoutInflaterFactory: LayoutInflaterF
 
 open class SessionViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView)
 class ItemViewHolder constructor(itemView: View): SessionViewHolder(itemView) {
-    fun bind(arrayOfSessions: Session) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    fun bind(session: Session) {
+        itemView.findViewById<TextView>(R.id.session_title).text = session.Title
     }
 }
 
 class HeaderViewHolder constructor(itemView: View): SessionViewHolder(itemView) {
-    fun bind(firstDate: Date?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    fun bind(firstDate: Date) {
+        val simpleDateFormatter = SimpleDateFormat("HH:mm a")
+        itemView.findViewById<TextView>(R.id.session_time).text = simpleDateFormatter.format(firstDate)
     }
 }
 

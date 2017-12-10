@@ -3,9 +3,11 @@ package com.jameskbride.codemashcompanion.sessions
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.network.Session
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
+import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -150,5 +152,33 @@ class SessionsRecyclerViewAdapterTest {
         subject.onBindViewHolder(itemViewHolder, 1)
 
         verify(itemViewHolder).bind(sessionData[firstDate]!![0])
+    }
+
+    @Test
+    fun headerViewHolderCanBind() {
+        val sessionTime = mock<TextView>()
+        whenever(view.findViewById<TextView>(R.id.session_time)).thenReturn(sessionTime)
+
+        val subject = HeaderViewHolder(view)
+
+        subject.bind(firstDate)
+        val dateFormater = SimpleDateFormat("HH:mm a")
+        val formattedTimeCaptor = argumentCaptor<String>()
+        verify(sessionTime).setText(formattedTimeCaptor.capture())
+        val formattedTime = dateFormater.format(firstDate)
+        assertEquals(formattedTime, formattedTimeCaptor.firstValue)
+    }
+
+    @Test
+    fun itemViewHolderCanBind() {
+        val sessionTitle = mock<TextView>()
+        whenever(view.findViewById<TextView>(R.id.session_title)).thenReturn(sessionTitle)
+
+        val subject = ItemViewHolder(view)
+
+        subject.bind(firstSession)
+        val sessionTitleCaptor = argumentCaptor<String>()
+        verify(sessionTitle).setText(sessionTitleCaptor.capture())
+        assertEquals(firstSession.Title, sessionTitleCaptor.firstValue)
     }
 }

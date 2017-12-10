@@ -82,6 +82,18 @@ class ConferenceRepositoryTest {
         assertEquals(maybe, result)
     }
 
+    @Test
+    fun getSessionsReturnsTheSessionsFromTheDao() {
+        val sessions = buildSessions()
+
+        val maybe = Maybe.just(sessions)
+        whenever(conferenceDao.getSessions()).thenReturn(maybe)
+
+        var result = subject.getSessions()
+
+        assertEquals(maybe, result)
+    }
+
     private fun buildSessions(): Array<Session> {
         return arrayOf(Session(
                 Id = "123",
