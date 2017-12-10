@@ -82,5 +82,4 @@ class SpeakersViewAdapterFactory {
     fun make(speakersFragmentPresenter: SpeakersFragmentPresenter): SpeakersRecyclerViewAdapter {
         return SpeakersRecyclerViewAdapter(speakersFragmentPresenter)
     }
-
 }
