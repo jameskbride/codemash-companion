@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.network.Session
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
+import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Assert.assertEquals
@@ -127,5 +128,27 @@ class SessionsRecyclerViewAdapterTest {
 
         verify(layoutInflaterFactory).inflate(context, R.layout.sessions_item, container)
         assertTrue(sessionViewHolder is ItemViewHolder)
+    }
+
+    @Test
+    fun itBindsHeaderViewHolders() {
+        subject.setSessions(sessionData, qtn)
+
+        val headerViewHolder = mock<HeaderViewHolder>()
+
+        subject.onBindViewHolder(headerViewHolder, 0)
+
+        verify(headerViewHolder).bind(firstDate)
+    }
+
+    @Test
+    fun itBindsItemViewHolders() {
+        subject.setSessions(sessionData, qtn)
+
+        val itemViewHolder = mock<ItemViewHolder>()
+
+        subject.onBindViewHolder(itemViewHolder, 1)
+
+        verify(itemViewHolder).bind(sessionData[firstDate]!![0])
     }
 }

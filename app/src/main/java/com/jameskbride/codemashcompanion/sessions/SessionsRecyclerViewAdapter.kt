@@ -60,7 +60,15 @@ class SessionsRecyclerViewAdapterImpl(val layoutInflaterFactory: LayoutInflaterF
     }
 
     fun onBindViewHolder(holder: SessionViewHolder?, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (ListItem.HEADER_TYPE == getItemViewType(position)) {
+            var headerViewHolder = holder as HeaderViewHolder
+            var headerListItem = sessionsList[position] as HeaderListItem
+            headerViewHolder.bind(headerListItem.sessionTime)
+        } else {
+            var itemViewHolder = holder as ItemViewHolder
+            var headerListItem = sessionsList[position] as SessionListItem
+            itemViewHolder.bind(headerListItem.session)
+        }
     }
 
     fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SessionViewHolder {
@@ -79,8 +87,17 @@ class SessionsRecyclerViewAdapterImpl(val layoutInflaterFactory: LayoutInflaterF
 }
 
 open class SessionViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView)
-class ItemViewHolder constructor(itemView: View): SessionViewHolder(itemView)
-class HeaderViewHolder constructor(itemView: View): SessionViewHolder(itemView)
+class ItemViewHolder constructor(itemView: View): SessionViewHolder(itemView) {
+    fun bind(arrayOfSessions: Session) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+}
+
+class HeaderViewHolder constructor(itemView: View): SessionViewHolder(itemView) {
+    fun bind(firstDate: Date?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+}
 
 interface ListItem {
     fun getType(): Int
