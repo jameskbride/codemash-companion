@@ -51,16 +51,16 @@ class SessionsFragmentPresenterTest {
         subject.requestSessions()
         testScheduler.triggerActions()
 
-        val sessionsCaptor = argumentCaptor<LinkedHashMap<Date, Array<Session>>>()
+        val sessionsCaptor = argumentCaptor<SessionData>()
         verify(view).onSessionDataRetrieved(sessionsCaptor.capture())
 
         val result = sessionsCaptor.firstValue
-        assertEquals(2, result.size)
+        assertEquals(2, result.sessions.size)
 
         val firstStartDatetime = dateFormatter.parse(firstStartTime)
-        assertEquals(1, result[firstStartDatetime]?.size)
+        assertEquals(1, result.sessions[firstStartDatetime]?.size)
 
         val secondStartDatetime = dateFormatter.parse(secondStartTime)
-        assertEquals(2, result[secondStartDatetime]?.size)
+        assertEquals(2, result.sessions[secondStartDatetime]?.size)
     }
 }

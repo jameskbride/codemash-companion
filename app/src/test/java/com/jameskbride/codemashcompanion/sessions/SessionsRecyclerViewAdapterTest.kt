@@ -19,7 +19,6 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations.initMocks
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.LinkedHashMap
 
 class SessionsRecyclerViewAdapterTest {
 
@@ -43,7 +42,7 @@ class SessionsRecyclerViewAdapterTest {
         buildDefaultSessionData()
     }
 
-    private lateinit var sessionData: LinkedHashMap<Date, Array<Session>>
+    private lateinit var sessionData: SessionData
     private val firstStartTime = "2018-01-11T09:15:00"
     private val secondStartTime = "2018-01-11T10:15:00"
     private val firstDate = dateFormatter.parse(firstStartTime)
@@ -53,17 +52,19 @@ class SessionsRecyclerViewAdapterTest {
     private val thirdSession = Session(SessionStartTime = secondStartTime)
 
     private fun buildDefaultSessionData() {
-        sessionData = linkedMapOf()
-        sessionData[firstDate] = arrayOf(firstSession)
-        sessionData[secondDate] = arrayOf(
+        var sessions = linkedMapOf<Date, Array<Session>>()
+        sessions[firstDate] = arrayOf(firstSession)
+        sessions[secondDate] = arrayOf(
                 secondSession,
                 thirdSession
         )
+
+        sessionData = SessionData(sessions)
     }
 
     @Test
     fun itNotifiesOfChangesWhenTheSessionsAreSet() {
-        val sessions = linkedMapOf<Date, Array<Session>>()
+        val sessions = SessionData(linkedMapOf())
         subject.setSessions(sessions, qtn)
 
         verify(qtn).notifyDataSetChanged()
@@ -151,7 +152,7 @@ class SessionsRecyclerViewAdapterTest {
 
         subject.onBindViewHolder(itemViewHolder, 1)
 
-        verify(itemViewHolder).bind(sessionData[firstDate]!![0])
+        verify(itemViewHolder).bind(sessionData.sessions[firstDate]!![0])
     }
 
     @Test

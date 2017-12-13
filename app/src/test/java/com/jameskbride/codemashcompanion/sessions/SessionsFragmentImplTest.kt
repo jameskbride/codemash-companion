@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.R
-import com.jameskbride.codemashcompanion.network.Session
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Assert.assertSame
@@ -14,7 +13,6 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations.initMocks
-import java.util.*
 
 class SessionsFragmentImplTest {
 
@@ -75,7 +73,7 @@ class SessionsFragmentImplTest {
 
     @Test
     fun onSessionDataReceivedSetsTheSessionsOnTheAdapter() {
-        var sessionData = linkedMapOf<Date, Array<Session>>()
+        var sessionData = SessionData()
 
         subject.onCreateView(layoutInflater, container, null, sessionsFragment)
 

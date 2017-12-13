@@ -33,10 +33,10 @@ class SessionsFragmentPresenter @Inject constructor(val eventBus: EventBus,
             ordered[it] = groupedSpeakers!![it]!!.toTypedArray()
         }
 
-        view.onSessionDataRetrieved(ordered)
+        view.onSessionDataRetrieved(SessionData(ordered))
     }
 }
 
 interface SessionsFragmentView {
-    fun onSessionDataRetrieved(sessionsData: LinkedHashMap<Date, Array<Session>>)
+    fun onSessionDataRetrieved(sessionsData: SessionData)
 }

@@ -11,7 +11,6 @@ import com.jameskbride.codemashcompanion.sessions.ListItem.Companion.ITEM_TYPE
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.LinkedHashMap
 
 class SessionsRecyclerViewAdapter constructor(
         val impl: SessionsRecyclerViewAdapterImpl = SessionsRecyclerViewAdapterImpl())
@@ -33,7 +32,7 @@ class SessionsRecyclerViewAdapter constructor(
         return impl.onCreateViewHolder(parent, viewType)
     }
 
-    fun setSessions(sessionData: LinkedHashMap<Date, Array<Session>>) {
+    fun setSessions(sessionData: SessionData) {
         impl.setSessions(sessionData, this)
     }
 }
@@ -51,10 +50,10 @@ class SessionsRecyclerViewAdapterImpl(val layoutInflaterFactory: LayoutInflaterF
         return sessionsList.size
     }
 
-    fun setSessions(sessions: LinkedHashMap<Date, Array<Session>>, qtn: SessionsRecyclerViewAdapter) {
-        sessions.keys.sorted().forEach{key ->
+    fun setSessions(sessionData: SessionData, qtn: SessionsRecyclerViewAdapter) {
+        sessionData.sessions.keys.sorted().forEach{ key ->
             sessionsList.add(HeaderListItem(key))
-            sessions[key]?.forEach { session ->
+            sessionData.sessions[key]?.forEach { session ->
                 sessionsList.add(SessionListItem(session))
             }
         }
