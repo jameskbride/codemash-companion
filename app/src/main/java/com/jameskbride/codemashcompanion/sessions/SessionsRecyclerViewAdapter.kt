@@ -6,11 +6,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.network.Session
-import com.jameskbride.codemashcompanion.sessions.ListItem.Companion.HEADER_TYPE
-import com.jameskbride.codemashcompanion.sessions.ListItem.Companion.ITEM_TYPE
+import com.jameskbride.codemashcompanion.sessions.ListItem.Companion.DATE_HEADER_TYPE
+import com.jameskbride.codemashcompanion.sessions.ListItem.Companion.TIME_HEADER_TYPE
+import com.jameskbride.codemashcompanion.sessions.ListItem.Companion.SESSION_ITEM_TYPE
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.LinkedHashMap
 
 class SessionsRecyclerViewAdapter constructor(
         val impl: SessionsRecyclerViewAdapterImpl = SessionsRecyclerViewAdapterImpl())
@@ -51,30 +53,41 @@ class SessionsRecyclerViewAdapterImpl(val layoutInflaterFactory: LayoutInflaterF
     }
 
     fun setSessions(sessionData: SessionData, qtn: SessionsRecyclerViewAdapter) {
-        val groupedSpeakers = sessionData.sessions?.groupBy { speaker ->
-            val dateFormatter = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss")
-            dateFormatter.parse(speaker.SessionStartTime)
-        }
-
-        var ordered = linkedMapOf<Date, Array<Session>>()
-        groupedSpeakers?.keys?.forEach {
-            ordered[it] = groupedSpeakers!![it]!!.toTypedArray()
-        }
-
-        ordered.keys.sorted().forEach{ key ->
-            sessionsList.add(HeaderListItem(key))
-            ordered[key]?.forEach { session ->
-                sessionsList.add(SessionListItem(session))
+        var dateTimesSessions:LinkedHashMap<Int, Map<Date, List<Session>>> = linkedMapOf()
+        sessionData.sessions.groupBy { session ->
+            val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
+            val calendar = Calendar.getInstance()
+            calendar.time = dateFormatter.parse(session.SessionStartTime)
+            calendar.get(Calendar.DATE)
+        }.forEach{keyValue ->
+            dateTimesSessions[keyValue.key] = keyValue.value.groupBy { session ->
+                val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
+                dateFormatter.parse(session.SessionStartTime)
             }
         }
+
+        dateTimesSessions.keys.sorted().forEachIndexed{ index, date ->
+            sessionsList.add(DateHeaderListItem("Day ${index + 1}"))
+            dateTimesSessions[date]!!.keys.sorted().forEach {time ->
+                sessionsList.add(TimeHeaderListItem(time))
+                dateTimesSessions[date]!![time]!!.forEach { session ->
+                    sessionsList.add(SessionListItem(session))
+                }
+            }
+        }
+
         qtn.notifyDataSetChanged()
     }
 
     fun onBindViewHolder(holder: SessionViewHolder?, position: Int) {
-        if (ListItem.HEADER_TYPE == getItemViewType(position)) {
-            var headerViewHolder = holder as HeaderViewHolder
-            var headerListItem = sessionsList[position] as HeaderListItem
+        if (ListItem.TIME_HEADER_TYPE == getItemViewType(position)) {
+            var headerViewHolder = holder as TimeViewHolder
+            var headerListItem = sessionsList[position] as TimeHeaderListItem
             headerViewHolder.bind(headerListItem.sessionTime)
+        } else if (ListItem.DATE_HEADER_TYPE == getItemViewType(position)) {
+            var dateHeaderViewHolder = holder as DateViewHolder
+            var dateHeaderListItem = sessionsList[position] as DateHeaderListItem
+            dateHeaderViewHolder.bind(dateHeaderListItem.text)
         } else {
             var itemViewHolder = holder as ItemViewHolder
             var headerListItem = sessionsList[position] as SessionListItem
@@ -83,9 +96,12 @@ class SessionsRecyclerViewAdapterImpl(val layoutInflaterFactory: LayoutInflaterF
     }
 
     fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SessionViewHolder {
-        if (ListItem.HEADER_TYPE == viewType) {
-            val view = layoutInflaterFactory.inflate(parent!!.context, R.layout.sessions_header, parent!!)
-            return HeaderViewHolder(view!!)
+        if (ListItem.TIME_HEADER_TYPE == viewType) {
+            val view = layoutInflaterFactory.inflate(parent!!.context, R.layout.sessions_time_header, parent!!)
+            return TimeViewHolder(view!!)
+        } else if (ListItem.DATE_HEADER_TYPE == viewType) {
+            val view = layoutInflaterFactory.inflate(parent!!.context, R.layout.sessions_date_header, parent!!)
+            return DateViewHolder(view!!)
         }
 
         val view = layoutInflaterFactory.inflate(parent!!.context, R.layout.sessions_item, parent!!)
@@ -104,31 +120,46 @@ class ItemViewHolder constructor(itemView: View): SessionViewHolder(itemView) {
     }
 }
 
-class HeaderViewHolder constructor(itemView: View): SessionViewHolder(itemView) {
+class TimeViewHolder constructor(itemView: View): SessionViewHolder(itemView) {
     fun bind(firstDate: Date) {
         val simpleDateFormatter = SimpleDateFormat("h:mm a")
         itemView.findViewById<TextView>(R.id.session_time).text = simpleDateFormatter.format(firstDate)
     }
 }
 
+class DateViewHolder constructor(itemView: View): SessionViewHolder(itemView) {
+    fun bind(text: String) {
+        itemView.findViewById<TextView>(R.id.session_date).text = text
+    }
+
+}
+
 interface ListItem {
     fun getType(): Int
 
     companion object {
-        val HEADER_TYPE = 0
-        val ITEM_TYPE = 1
+        val TIME_HEADER_TYPE = 0
+        val SESSION_ITEM_TYPE = 1
+        val DATE_HEADER_TYPE = 2
     }
 }
 
-class HeaderListItem constructor(val sessionTime:Date): ListItem {
+class DateHeaderListItem constructor(val text:String): ListItem {
+    override fun getType(): Int {
+        return DATE_HEADER_TYPE
+    }
+
+}
+
+class TimeHeaderListItem constructor(val sessionTime:Date): ListItem {
 
     override fun getType(): Int {
-        return HEADER_TYPE
+        return TIME_HEADER_TYPE
     }
 }
 
 class SessionListItem constructor(val session:Session): ListItem {
     override fun getType(): Int {
-        return ITEM_TYPE
+        return SESSION_ITEM_TYPE
     }
 }
