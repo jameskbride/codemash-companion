@@ -8,6 +8,7 @@ import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Maybe
 import io.reactivex.schedulers.TestScheduler
 import org.greenrobot.eventbus.EventBus
+import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -39,8 +40,9 @@ class SessionsFragmentPresenterTest {
     fun whenSessionsDataIsReceivedThenItIsGroupedByStartTime() {
         val firstStartTime = "2018-01-11T10:15:00"
         val secondStartTime = "2018-01-11T09:15:00"
-        val dateFormatter = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss")
+        val thirdStartTime = "2018-01-12T09:15:00"
         val sessions = arrayOf(
+                Session(SessionStartTime = thirdStartTime),
                 Session(SessionStartTime = firstStartTime),
                 Session(SessionStartTime = secondStartTime),
                 Session(SessionStartTime = secondStartTime)
@@ -51,16 +53,8 @@ class SessionsFragmentPresenterTest {
         subject.requestSessions()
         testScheduler.triggerActions()
 
-        val sessionsCaptor = argumentCaptor<SessionData>()
-        verify(view).onSessionDataRetrieved(sessionsCaptor.capture())
-
-        val result = sessionsCaptor.firstValue
-        assertEquals(2, result.sessions.size)
-
-        val firstStartDatetime = dateFormatter.parse(firstStartTime)
-        assertEquals(1, result.sessions[firstStartDatetime]?.size)
-
-        val secondStartDatetime = dateFormatter.parse(secondStartTime)
-        assertEquals(2, result.sessions[secondStartDatetime]?.size)
+        val sessionDataCaptor = argumentCaptor<SessionData>()
+        verify(view).onSessionDataRetrieved(sessionDataCaptor.capture())
+        assertArrayEquals(sessions, sessionDataCaptor.firstValue.sessions)
     }
 }

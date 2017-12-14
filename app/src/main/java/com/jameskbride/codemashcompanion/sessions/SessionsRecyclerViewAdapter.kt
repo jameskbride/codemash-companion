@@ -51,9 +51,19 @@ class SessionsRecyclerViewAdapterImpl(val layoutInflaterFactory: LayoutInflaterF
     }
 
     fun setSessions(sessionData: SessionData, qtn: SessionsRecyclerViewAdapter) {
-        sessionData.sessions.keys.sorted().forEach{ key ->
+        val groupedSpeakers = sessionData.sessions?.groupBy { speaker ->
+            val dateFormatter = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss")
+            dateFormatter.parse(speaker.SessionStartTime)
+        }
+
+        var ordered = linkedMapOf<Date, Array<Session>>()
+        groupedSpeakers?.keys?.forEach {
+            ordered[it] = groupedSpeakers!![it]!!.toTypedArray()
+        }
+
+        ordered.keys.sorted().forEach{ key ->
             sessionsList.add(HeaderListItem(key))
-            sessionData.sessions[key]?.forEach { session ->
+            ordered[key]?.forEach { session ->
                 sessionsList.add(SessionListItem(session))
             }
         }
