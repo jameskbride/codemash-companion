@@ -9,13 +9,10 @@ import io.reactivex.Maybe
 import io.reactivex.schedulers.TestScheduler
 import org.greenrobot.eventbus.EventBus
 import org.junit.Assert.assertArrayEquals
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations.initMocks
-import java.text.SimpleDateFormat
-import java.util.*
 
 class SessionsFragmentPresenterTest {
 
@@ -37,15 +34,10 @@ class SessionsFragmentPresenterTest {
     }
 
     @Test
-    fun whenSessionsDataIsReceivedThenItIsGroupedByStartTime() {
+    fun whenSessionsDataIsReceivedThenItIsPassedToTheView() {
         val firstStartTime = "2018-01-11T10:15:00"
-        val secondStartTime = "2018-01-11T09:15:00"
-        val thirdStartTime = "2018-01-12T09:15:00"
         val sessions = arrayOf(
-                Session(SessionStartTime = thirdStartTime),
-                Session(SessionStartTime = firstStartTime),
-                Session(SessionStartTime = secondStartTime),
-                Session(SessionStartTime = secondStartTime)
+                Session(SessionStartTime = firstStartTime)
         )
 
         whenever(conferenceRepository.getSessions()).thenReturn(Maybe.just(sessions))
