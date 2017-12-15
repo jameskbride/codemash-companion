@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="20dp"
+    android:background="@color/codemash_green"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp">
     <TextView
         android:id="@+id/session_date"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:textColor="@android:color/white"
+        android:gravity="center|center_horizontal"/>
 </android.support.constraint.ConstraintLayout>
