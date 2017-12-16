@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
-import com.jameskbride.codemashcompanion.network.Session
+import com.jameskbride.codemashcompanion.data.model.Session
 import com.jameskbride.codemashcompanion.sessions.ListItem.Companion.DATE_HEADER_TYPE
 import com.jameskbride.codemashcompanion.sessions.ListItem.Companion.TIME_HEADER_TYPE
 import com.jameskbride.codemashcompanion.sessions.ListItem.Companion.SESSION_ITEM_TYPE
@@ -158,7 +158,7 @@ class TimeHeaderListItem constructor(val sessionTime:Date): ListItem {
     }
 }
 
-class SessionListItem constructor(val session:Session): ListItem {
+class SessionListItem constructor(val session: Session): ListItem {
     override fun getType(): Int {
         return SESSION_ITEM_TYPE
     }

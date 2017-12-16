@@ -1,7 +1,7 @@
 package com.jameskbride.codemashcompanion.sessions
 
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
-import com.jameskbride.codemashcompanion.network.Session
+import com.jameskbride.codemashcompanion.data.model.Session
 import io.reactivex.Scheduler
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject

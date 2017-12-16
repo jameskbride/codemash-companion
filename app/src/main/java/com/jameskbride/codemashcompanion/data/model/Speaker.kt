@@ -1,4 +1,4 @@
-package com.jameskbride.codemashcompanion.network
+package com.jameskbride.codemashcompanion.data.model
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity

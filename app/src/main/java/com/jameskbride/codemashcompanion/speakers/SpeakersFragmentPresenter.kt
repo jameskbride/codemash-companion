@@ -2,7 +2,7 @@ package com.jameskbride.codemashcompanion.speakers
 
 import com.jameskbride.codemashcompanion.bus.BusAware
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
-import com.jameskbride.codemashcompanion.network.Speaker
+import com.jameskbride.codemashcompanion.data.model.Speaker
 import io.reactivex.Scheduler
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject

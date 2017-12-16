@@ -1,7 +1,7 @@
 package com.jameskbride.codemashcompanion.speakers.detail
 
 import android.support.v4.app.FragmentManager
-import com.jameskbride.codemashcompanion.network.Speaker
+import com.jameskbride.codemashcompanion.data.model.Speaker
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify

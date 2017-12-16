@@ -4,8 +4,8 @@ import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
 import com.jameskbride.codemashcompanion.bus.SessionsReceivedEvent
 import com.jameskbride.codemashcompanion.bus.SpeakersPersistedEvent
 import com.jameskbride.codemashcompanion.bus.SpeakersReceivedEvent
-import com.jameskbride.codemashcompanion.network.Session
-import com.jameskbride.codemashcompanion.network.Speaker
+import com.jameskbride.codemashcompanion.data.model.Session
+import com.jameskbride.codemashcompanion.data.model.Speaker
 import com.jameskbride.codemashcompanion.network.model.ApiSession
 import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultApiSpeakers
@@ -107,7 +107,7 @@ class ConferenceRepositoryTest {
 
         assertEquals(apiSessions.size, sessions.size)
         val apiSession:ApiSession = apiSessions[0]
-        val session:Session = sessions[0]
+        val session: Session = sessions[0]
         assertEquals(apiSession.id, session.Id)
         assertEquals(apiSession.category, session.Category)
         assertEquals(apiSession.sessionStartTime, session.SessionStartTime)

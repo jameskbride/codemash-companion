@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
-import com.jameskbride.codemashcompanion.network.Speaker
+import com.jameskbride.codemashcompanion.data.model.Speaker
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
 import com.jameskbride.codemashcompanion.utils.UriWrapper
@@ -50,7 +49,7 @@ class SpeakerDetailFragmentImplTest {
     @Mock private lateinit var uriWrapper:UriWrapper
     @Mock private lateinit var uri:Uri
 
-    private lateinit var speaker:Speaker
+    private lateinit var speaker: Speaker
 
     private lateinit var subject:SpeakerDetailFragmentImpl
 

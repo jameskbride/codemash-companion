@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
-import com.jameskbride.codemashcompanion.network.Speaker
+import com.jameskbride.codemashcompanion.data.model.Speaker
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailFragment.Companion.SPEAKER_KEY
 
 class SpeakerPagerAdapter constructor(fm: FragmentManager, val speakerPagerAdapterImpl:SpeakerPagerAdapterImpl = SpeakerPagerAdapterImpl()) : FragmentStatePagerAdapter(fm) {

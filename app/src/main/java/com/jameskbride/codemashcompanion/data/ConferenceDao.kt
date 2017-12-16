@@ -4,8 +4,8 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
-import com.jameskbride.codemashcompanion.network.Session
-import com.jameskbride.codemashcompanion.network.Speaker
+import com.jameskbride.codemashcompanion.data.model.Session
+import com.jameskbride.codemashcompanion.data.model.Speaker
 import io.reactivex.Maybe
 
 @Dao

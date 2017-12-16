@@ -1,6 +1,6 @@
 package com.jameskbride.codemashcompanion.utils.test
 
-import com.jameskbride.codemashcompanion.network.Speaker
+import com.jameskbride.codemashcompanion.data.model.Speaker
 import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
 
 fun buildDefaultSpeakers(count:Int = 1): Array<Speaker> {

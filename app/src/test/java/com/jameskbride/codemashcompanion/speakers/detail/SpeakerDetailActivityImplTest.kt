@@ -4,7 +4,7 @@ import android.content.Intent
 import android.support.v4.app.FragmentManager
 import android.support.v4.view.ViewPager
 import com.jameskbride.codemashcompanion.R
-import com.jameskbride.codemashcompanion.network.Speaker
+import com.jameskbride.codemashcompanion.data.model.Speaker
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl.Companion.PARAMETER_BLOCK
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import com.nhaarman.mockito_kotlin.mock

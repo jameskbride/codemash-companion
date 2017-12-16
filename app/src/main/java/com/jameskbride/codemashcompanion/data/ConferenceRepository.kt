@@ -1,12 +1,11 @@
 package com.jameskbride.codemashcompanion.data
 
 import com.jameskbride.codemashcompanion.bus.*
-import com.jameskbride.codemashcompanion.network.Session
-import com.jameskbride.codemashcompanion.network.Speaker
+import com.jameskbride.codemashcompanion.data.model.Session
+import com.jameskbride.codemashcompanion.data.model.Speaker
 import com.jameskbride.codemashcompanion.network.model.ApiSession
 import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
 import io.reactivex.Maybe
-import io.reactivex.Observable
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode

@@ -1,7 +1,7 @@
 package com.jameskbride.codemashcompanion.sessions
 
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
-import com.jameskbride.codemashcompanion.network.Session
+import com.jameskbride.codemashcompanion.data.model.Session
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
