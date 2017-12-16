@@ -118,6 +118,8 @@ open class SessionViewHolder constructor(itemView: View): RecyclerView.ViewHolde
 class ItemViewHolder constructor(itemView: View): SessionViewHolder(itemView) {
     fun bind(session: FullSession) {
         itemView.findViewById<TextView>(R.id.session_title).text = session.Title
+        val rooms = session.conferenceRooms.map { it.name }.joinToString(", ")
+        itemView.findViewById<TextView>(R.id.rooms).text = rooms
     }
 }
 

@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
+import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import com.nhaarman.mockito_kotlin.argumentCaptor
@@ -201,14 +202,25 @@ class SessionsRecyclerViewAdapterTest {
     @Test
     fun sessionItemViewHolderCanBind() {
         val sessionTitle = mock<TextView>()
+        val rooms = mock<TextView>()
         whenever(view.findViewById<TextView>(R.id.session_title)).thenReturn(sessionTitle)
-
+        whenever(view.findViewById<TextView>(R.id.rooms)).thenReturn(rooms)
         val subject = ItemViewHolder(view)
+        val firstSession =
+                FullSession(SessionStartTime = firstStartTime,
+                        conferenceRooms = listOf(
+                                ConferenceRoom(sessionId = "id", name = "room 1"),
+                                ConferenceRoom(sessionId = "id", name = "room 2"))
+                        )
         subject.bind(firstSession)
 
         val sessionTitleCaptor = argumentCaptor<String>()
         verify(sessionTitle).setText(sessionTitleCaptor.capture())
         assertEquals(firstSession.Title, sessionTitleCaptor.firstValue)
+
+        val roomsCaptor = argumentCaptor<String>()
+        verify(rooms).setText(roomsCaptor.capture())
+        assertEquals("room 1, room 2", roomsCaptor.firstValue)
     }
 
     @Test
