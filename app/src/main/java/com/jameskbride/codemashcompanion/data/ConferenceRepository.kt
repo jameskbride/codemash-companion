@@ -1,6 +1,7 @@
 package com.jameskbride.codemashcompanion.data
 
 import com.jameskbride.codemashcompanion.bus.*
+import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
 import com.jameskbride.codemashcompanion.data.model.Session
 import com.jameskbride.codemashcompanion.data.model.Speaker
 import com.jameskbride.codemashcompanion.network.model.ApiSession
@@ -46,7 +47,18 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         val apiSessions = sessionsReceivedEvent.sessions
         val sessions = mapApiSessionsToDomain(apiSessions)
         conferenceDao.insertAll(sessions)
+
+        var conferenceRooms = buildRooms(apiSessions)
+        conferenceDao.insertAll(conferenceRooms.toTypedArray())
         eventBus.post(ConferenceDataPersistedEvent())
+    }
+
+    private fun buildRooms(apiSessions: List<ApiSession>): MutableList<ConferenceRoom> {
+        var conferenceRooms = mutableListOf<ConferenceRoom>()
+        apiSessions.forEach { session ->
+            session.rooms.forEach { room -> conferenceRooms.add(ConferenceRoom(session.id, room)) }
+        }
+        return conferenceRooms
     }
 
     private fun mapApiSessionsToDomain(apiSessions: List<ApiSession>): Array<Session> {

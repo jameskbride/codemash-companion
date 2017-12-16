@@ -4,6 +4,7 @@ import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
 import com.jameskbride.codemashcompanion.bus.SessionsReceivedEvent
 import com.jameskbride.codemashcompanion.bus.SpeakersPersistedEvent
 import com.jameskbride.codemashcompanion.bus.SpeakersReceivedEvent
+import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
 import com.jameskbride.codemashcompanion.data.model.Session
 import com.jameskbride.codemashcompanion.data.model.Speaker
 import com.jameskbride.codemashcompanion.network.model.ApiSession
@@ -17,6 +18,7 @@ import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Maybe
 import org.greenrobot.eventbus.EventBus
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -118,6 +120,32 @@ class ConferenceRepositoryTest {
     }
 
     @Test
+    fun onSessionsReceivedEventItInsertsAllRooms() {
+        val apiSessions = listOf(
+                ApiSession(
+                    id = "1",
+                    rooms = listOf("banyan", "salon e")),
+                ApiSession(
+                    id = "2",
+                    rooms = listOf("banyan", "salon b")
+                )
+        )
+
+        subject.onSessionsReceivedEvent(SessionsReceivedEvent(sessions = apiSessions))
+
+        val conferenceRoomsCaptor = argumentCaptor<Array<ConferenceRoom>>()
+        verify(conferenceDao).insertAll(conferenceRoomsCaptor.capture())
+
+        val rooms = conferenceRoomsCaptor.firstValue
+        assertEquals(4, rooms.size)
+
+        assertTrue(rooms.contains(ConferenceRoom(id = "1", name = "banyan")))
+        assertTrue(rooms.contains(ConferenceRoom(id = "1", name = "salon e")))
+        assertTrue(rooms.contains(ConferenceRoom(id = "2", name = "banyan")))
+        assertTrue(rooms.contains(ConferenceRoom(id = "2", name = "salon b")))
+    }
+
+    @Test
     fun onSessionsReceivedEventItNotifiesConferenceDataPersisted() {
         val sessions = buildApiSessions()
 
@@ -170,7 +198,8 @@ class ConferenceRepositoryTest {
                 sessionType = "session type",
                 sessionTime = "session time",
                 title = "title",
-                abstract = "abstract"
+                abstract = "abstract",
+                rooms = listOf("banyan", "salon e")
         ))
     }
 }
