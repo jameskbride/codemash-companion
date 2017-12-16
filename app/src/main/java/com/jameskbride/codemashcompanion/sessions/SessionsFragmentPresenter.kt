@@ -24,10 +24,11 @@ class SessionsFragmentPresenter @Inject constructor(val eventBus: EventBus,
     }
 
     fun navigateToSessionDetail(session: FullSession) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        view.navigateToSessionDetail(session)
     }
 }
 
 interface SessionsFragmentView {
     fun onSessionDataRetrieved(sessionsData: SessionData)
+    fun navigateToSessionDetail(session: FullSession)
 }

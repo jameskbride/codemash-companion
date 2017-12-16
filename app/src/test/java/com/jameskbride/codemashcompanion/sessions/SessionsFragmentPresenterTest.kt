@@ -50,4 +50,15 @@ class SessionsFragmentPresenterTest {
         verify(view).onSessionDataRetrieved(sessionDataCaptor.capture())
         assertArrayEquals(sessions, sessionDataCaptor.firstValue.sessions)
     }
+
+    @Test
+    fun itDelegatesToTheViewWhenNavigatingToASession() {
+        val firstStartTime = "2018-01-11T10:15:00"
+        val session = FullSession(SessionStartTime = firstStartTime)
+
+        subject.navigateToSessionDetail(session)
+
+        verify(view).navigateToSessionDetail(session)
+
+    }
 }

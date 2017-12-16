@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.R
+import com.jameskbride.codemashcompanion.data.model.FullSession
 
 class SessionsFragmentImpl(val sessionsFragmentPresenter: SessionsFragmentPresenter, val sessionsViewAdapterFactory: SessionsViewAdapterFactory = SessionsViewAdapterFactory()): SessionsFragmentView {
     private lateinit var sessionsView: RecyclerView
@@ -21,7 +22,7 @@ class SessionsFragmentImpl(val sessionsFragmentPresenter: SessionsFragmentPresen
         sessionsView.setItemViewCacheSize(20)
         sessionsViewAdapter = sessionsViewAdapterFactory.make(sessionsFragmentPresenter)
         sessionsView.adapter = sessionsViewAdapter
-        
+
         return view
     }
 
@@ -34,5 +35,9 @@ class SessionsFragmentImpl(val sessionsFragmentPresenter: SessionsFragmentPresen
 
     override fun onSessionDataRetrieved(sessionsData: SessionData) {
         sessionsViewAdapter.setSessions(sessionsData)
+    }
+
+    override fun navigateToSessionDetail(session: FullSession) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
