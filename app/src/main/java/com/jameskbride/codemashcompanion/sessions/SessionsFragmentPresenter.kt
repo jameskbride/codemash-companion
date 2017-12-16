@@ -9,18 +9,18 @@ import javax.inject.Inject
 class SessionsFragmentPresenter @Inject constructor(val eventBus: EventBus,
                                                     val conferenceRepository: ConferenceRepository,
                                                     val processScheduler: Scheduler,
-                                                    val androidScheuler: Scheduler) {
+                                                    val androidScheduler: Scheduler) {
     lateinit var view: SessionsFragmentView
 
     fun requestSessions() {
         conferenceRepository.getSessions()
                 .subscribeOn(processScheduler)
-                .observeOn(androidScheuler)
+                .observeOn(androidScheduler)
                 .subscribe { results -> notifyView(results) }
     }
 
     private fun notifyView(results: Array<FullSession?>) {
-        view.onSessionDataRetrieved(SessionData(results.map { it?.session }.toTypedArray()))
+        view.onSessionDataRetrieved(SessionData(results))
     }
 }
 

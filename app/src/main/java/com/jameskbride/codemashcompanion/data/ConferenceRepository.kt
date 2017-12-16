@@ -7,14 +7,13 @@ import com.jameskbride.codemashcompanion.data.model.Session
 import com.jameskbride.codemashcompanion.data.model.Speaker
 import com.jameskbride.codemashcompanion.network.model.ApiSession
 import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
-import com.jameskbride.codemashcompanion.utils.LogWrapper
 import io.reactivex.Maybe
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 
-class ConferenceRepository @Inject constructor(private val conferenceDao: ConferenceDao, override val eventBus: EventBus, val logWrapper: LogWrapper = LogWrapper()): BusAware {
+class ConferenceRepository @Inject constructor(private val conferenceDao: ConferenceDao, override val eventBus: EventBus): BusAware {
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onSpeakersReceivedEvent(speakersReceivedEvent: SpeakersReceivedEvent) {
@@ -51,7 +50,6 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         conferenceDao.insertAll(sessions)
 
         var conferenceRooms = buildRooms(apiSessions)
-        logWrapper.d("ConferenceRepository", "inserting rooms: ${conferenceRooms}")
         conferenceDao.insertAll(conferenceRooms.toTypedArray())
         eventBus.post(ConferenceDataPersistedEvent())
     }
@@ -59,7 +57,7 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     private fun buildRooms(apiSessions: List<ApiSession>): MutableList<ConferenceRoom> {
         var conferenceRooms = mutableListOf<ConferenceRoom>()
         apiSessions.forEach { session ->
-            session.rooms.forEach { room -> conferenceRooms.add(ConferenceRoom(session.id, room)) }
+            session.rooms?.forEach { room -> conferenceRooms.add(ConferenceRoom(session.id, room)) }
         }
         return conferenceRooms
     }

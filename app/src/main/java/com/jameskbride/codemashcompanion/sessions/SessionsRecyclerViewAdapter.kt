@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
+import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.Session
 import com.jameskbride.codemashcompanion.sessions.ListItem.Companion.DATE_HEADER_TYPE
 import com.jameskbride.codemashcompanion.sessions.ListItem.Companion.TIME_HEADER_TYPE
@@ -53,7 +54,7 @@ class SessionsRecyclerViewAdapterImpl(val layoutInflaterFactory: LayoutInflaterF
     }
 
     fun setSessions(sessionData: SessionData, qtn: SessionsRecyclerViewAdapter) {
-        var dateTimesSessions:LinkedHashMap<Int, Map<Date, List<Session?>>> = linkedMapOf()
+        var dateTimesSessions:LinkedHashMap<Int, Map<Date, List<FullSession?>>> = linkedMapOf()
         sessionData.sessions.groupBy { session ->
             val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
             val calendar = Calendar.getInstance()
@@ -115,7 +116,7 @@ class SessionsRecyclerViewAdapterImpl(val layoutInflaterFactory: LayoutInflaterF
 
 open class SessionViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView)
 class ItemViewHolder constructor(itemView: View): SessionViewHolder(itemView) {
-    fun bind(session: Session) {
+    fun bind(session: FullSession) {
         itemView.findViewById<TextView>(R.id.session_title).text = session.Title
     }
 }
@@ -158,7 +159,7 @@ class TimeHeaderListItem constructor(val sessionTime:Date): ListItem {
     }
 }
 
-class SessionListItem constructor(val session: Session): ListItem {
+class SessionListItem constructor(val session: FullSession): ListItem {
     override fun getType(): Int {
         return SESSION_ITEM_TYPE
     }

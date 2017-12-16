@@ -5,6 +5,7 @@ import com.jameskbride.codemashcompanion.bus.SessionsReceivedEvent
 import com.jameskbride.codemashcompanion.bus.SpeakersPersistedEvent
 import com.jameskbride.codemashcompanion.bus.SpeakersReceivedEvent
 import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
+import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.Session
 import com.jameskbride.codemashcompanion.data.model.Speaker
 import com.jameskbride.codemashcompanion.network.model.ApiSession
@@ -170,7 +171,7 @@ class ConferenceRepositoryTest {
 
     @Test
     fun getSessionsReturnsTheSessionsFromTheDao() {
-        val sessions = arrayOf(Session(
+        val sessions:Array<FullSession?> = arrayOf(FullSession(
                 Id = "123",
                 Category = "DevOps",
                 SessionStartTime = "start time",

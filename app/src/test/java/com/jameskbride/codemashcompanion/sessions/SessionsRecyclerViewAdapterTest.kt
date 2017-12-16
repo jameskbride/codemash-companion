@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
-import com.jameskbride.codemashcompanion.data.model.Session
+import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.mock
@@ -46,12 +46,12 @@ class SessionsRecyclerViewAdapterTest {
     private val secondStartTime = "2018-01-11T10:15:00"
     private val firstDate = dateFormatter.parse(firstStartTime)
     private val secondDate = dateFormatter.parse(secondStartTime)
-    private val firstSession = Session(SessionStartTime = firstStartTime)
-    private val secondSession = Session(SessionStartTime = secondStartTime)
-    private val thirdSession = Session(SessionStartTime = secondStartTime)
+    private val firstSession = FullSession(SessionStartTime = firstStartTime)
+    private val secondSession = FullSession(SessionStartTime = secondStartTime)
+    private val thirdSession = FullSession(SessionStartTime = secondStartTime)
 
     private fun buildDefaultSessionData() {
-        var sessions = arrayOf(
+        var sessions:Array<FullSession?> = arrayOf(
                 firstSession,
                 secondSession,
                 thirdSession

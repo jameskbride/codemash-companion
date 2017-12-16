@@ -4,23 +4,23 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class ApiSession constructor(
-        @SerializedName("Id") val id: String = "",
-        @SerializedName("Category") val category: String? = "",
-        @SerializedName("SessionStartTime") val sessionStartTime: String? = "",
-        @SerializedName("SessionType") val sessionType: String? = "",
-        @SerializedName("SessionEndTime") val sessionEndTime: String? = "",
-        @SerializedName("SessionTime") val sessionTime: String? = "",
-        @SerializedName("Title") val title: String? = "",
-        @SerializedName("Abstract") val abstract: String? = "",
-        @SerializedName("Tags") val tags:List<String> = listOf(),
-        @SerializedName("Room") val room:String = "",
-        @SerializedName("Rooms") val rooms:List<String> = listOf(),
-        @SerializedName("Speakers") val shortSpeakers:List<ShortSpeaker> = listOf()
+        @SerializedName("Id") var id: String,
+        @SerializedName("Category") var category: String? = "",
+        @SerializedName("SessionStartTime") var sessionStartTime: String? = "",
+        @SerializedName("SessionType") var sessionType: String? = "",
+        @SerializedName("SessionEndTime") var sessionEndTime: String? = "",
+        @SerializedName("SessionTime") var sessionTime: String? = "",
+        @SerializedName("Title") var title: String? = "",
+        @SerializedName("Abstract") var abstract: String? = "",
+        @SerializedName("Tags") var tags:List<String>? = listOf(),
+        @SerializedName("Room") var room:String? = "",
+        @SerializedName("Rooms") var rooms:List<String>? = listOf(),
+        @SerializedName("Speakers") var shortSpeakers:List<ShortSpeaker>? = listOf()
 ): Serializable
 
 data class ShortSpeaker constructor(
-        @SerializedName("Id") val id:String = "",
-        @SerializedName("FirstName") val firstName:String = "",
-        @SerializedName("LastName") val lastName:String =  "",
-        @SerializedName("GravatarUrl") val gravatarUrl:String = ""
+        @SerializedName("Id") var id:String,
+        @SerializedName("FirstName") var firstName:String,
+        @SerializedName("LastName") var lastName:String =  "",
+        @SerializedName("GravatarUrl") var gravatarUrl:String
 ): Serializable

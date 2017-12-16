@@ -1,6 +1,7 @@
 package com.jameskbride.codemashcompanion.sessions
 
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
+import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.Session
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.verify
@@ -36,8 +37,8 @@ class SessionsFragmentPresenterTest {
     @Test
     fun whenSessionsDataIsReceivedThenItIsPassedToTheView() {
         val firstStartTime = "2018-01-11T10:15:00"
-        val sessions = arrayOf(
-                Session(SessionStartTime = firstStartTime)
+        val sessions:Array<FullSession?> = arrayOf(
+                FullSession(SessionStartTime = firstStartTime)
         )
 
         whenever(conferenceRepository.getSessions()).thenReturn(Maybe.just(sessions))
