@@ -3,12 +3,9 @@ package com.jameskbride.codemashcompanion.sessions
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
-import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
-import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -20,7 +17,7 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations.initMocks
 import java.text.SimpleDateFormat
 
-class SessionsRecyclerViewAdapterTest {
+class SessionsRecyclerViewAdapterImplTest {
 
     @Mock private lateinit var qtn: SessionsRecyclerViewAdapter
     @Mock private lateinit var layoutInflaterFactory: LayoutInflaterFactory
@@ -44,10 +41,10 @@ class SessionsRecyclerViewAdapterTest {
 
     private lateinit var sessionData: SessionData
     private val firstStartTime = "2018-01-10T09:15:00"
-    private val secondStartTime = "2018-01-11T10:15:00"
     private val firstDate = dateFormatter.parse(firstStartTime)
-    private val secondDate = dateFormatter.parse(secondStartTime)
     private val firstSession = FullSession(SessionStartTime = firstStartTime)
+    private val secondStartTime = "2018-01-11T10:15:00"
+    private val secondDate = dateFormatter.parse(secondStartTime)
     private val secondSession = FullSession(SessionStartTime = secondStartTime)
     private val thirdSession = FullSession(SessionStartTime = secondStartTime)
 
@@ -182,65 +179,5 @@ class SessionsRecyclerViewAdapterTest {
         subject.onBindViewHolder(itemViewHolder, 2)
 
         verify(itemViewHolder).bind(firstSession)
-    }
-
-    @Test
-    fun timeHeaderViewHolderCanBind() {
-        val sessionTime = mock<TextView>()
-        whenever(view.findViewById<TextView>(R.id.session_time)).thenReturn(sessionTime)
-
-        val subject = TimeViewHolder(view)
-        subject.bind(firstDate)
-
-        val dateFormater = SimpleDateFormat("h:mm a")
-        val formattedTimeCaptor = argumentCaptor<String>()
-        verify(sessionTime).setText(formattedTimeCaptor.capture())
-        val formattedTime = dateFormater.format(firstDate)
-        assertEquals(formattedTime, formattedTimeCaptor.firstValue)
-    }
-
-    @Test
-    fun sessionItemViewHolderCanBind() {
-        val sessionTitle = mock<TextView>()
-        val rooms = mock<TextView>()
-        val category = mock<TextView>()
-        whenever(view.findViewById<TextView>(R.id.session_title)).thenReturn(sessionTitle)
-        whenever(view.findViewById<TextView>(R.id.rooms)).thenReturn(rooms)
-        whenever(view.findViewById<TextView>(R.id.category)).thenReturn(category)
-        val subject = ItemViewHolder(view)
-        val firstSession =
-                FullSession(SessionStartTime = firstStartTime,
-                        Category = "some category",
-                        conferenceRooms = listOf(
-                                ConferenceRoom(sessionId = "id", name = "room 1"),
-                                ConferenceRoom(sessionId = "id", name = "room 2"))
-                        )
-        subject.bind(firstSession)
-
-        val sessionTitleCaptor = argumentCaptor<String>()
-        verify(sessionTitle).setText(sessionTitleCaptor.capture())
-        assertEquals(firstSession.Title, sessionTitleCaptor.firstValue)
-
-        val roomsCaptor = argumentCaptor<String>()
-        verify(rooms).setText(roomsCaptor.capture())
-        assertEquals("room 1, room 2", roomsCaptor.firstValue)
-
-        val categoryCaptor = argumentCaptor<String>()
-        verify(category).setText(categoryCaptor.capture())
-        assertEquals("some category", categoryCaptor.firstValue)
-    }
-
-    @Test
-    fun dateItemViewHolderCanBind() {
-        val dateText = mock<TextView>()
-        whenever(view.findViewById<TextView>(R.id.session_date)).thenReturn(dateText)
-
-        val subject = DateViewHolder(view)
-        val day = "Day 1"
-        subject.bind(day)
-
-        val dayCaptor = argumentCaptor<String>()
-        verify(dateText).setText(dayCaptor.capture())
-        assertEquals(day, dayCaptor.firstValue)
     }
 }
