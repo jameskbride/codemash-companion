@@ -5,9 +5,8 @@ import com.jameskbride.codemashcompanion.bus.SessionsReceivedEvent
 import com.jameskbride.codemashcompanion.bus.SpeakersPersistedEvent
 import com.jameskbride.codemashcompanion.bus.SpeakersReceivedEvent
 import com.jameskbride.codemashcompanion.network.CodemashApi
-import com.jameskbride.codemashcompanion.network.Session
-import com.jameskbride.codemashcompanion.network.Speaker
-import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
+import com.jameskbride.codemashcompanion.network.model.ApiSession
+import com.jameskbride.codemashcompanion.utils.test.buildDefaultApiSpeakers
 import io.reactivex.Observable
 import io.reactivex.schedulers.TestScheduler
 import org.greenrobot.eventbus.EventBus
@@ -50,9 +49,9 @@ class CodemashServiceTest {
 
     @Test
     fun onRequestConferenceDataEventSendsTheSpeakersReceivedEvent() {
-        val speaker = buildDefaultSpeakers()[0]
+        val speaker = buildDefaultApiSpeakers()[0]
 
-        `when`(codemashApi.getSpeakers()).thenReturn(Observable.fromArray(arrayOf(speaker)))
+        `when`(codemashApi.getSpeakers()).thenReturn(Observable.fromArray(listOf(speaker)))
 
         eventBus.post(RequestConferenceDataEvent())
 
@@ -64,18 +63,18 @@ class CodemashServiceTest {
 
     @Test
     fun onSpeakersPersistedEventRequestsTheSessionsData() {
-        val session = Session(
-                Id  = "123",
-                Category = "DevOps",
-                SessionStartTime = "start time",
-                SessionEndTime = "end time",
-                SessionType = "session type",
-                SessionTime = "session time",
-                Title = "title",
-                Abstract = "abstract"
+        val session = ApiSession(
+                id  = "123",
+                category = "DevOps",
+                sessionStartTime = "start time",
+                sessionEndTime = "end time",
+                sessionType = "session type",
+                sessionTime = "session time",
+                title = "title",
+                abstract = "abstract"
         )
 
-        `when`(codemashApi.getSessions()).thenReturn(Observable.fromArray(arrayOf(session)))
+        `when`(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(session)))
 
         eventBus.post(SpeakersPersistedEvent())
 

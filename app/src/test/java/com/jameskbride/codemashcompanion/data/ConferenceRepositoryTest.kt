@@ -6,8 +6,14 @@ import com.jameskbride.codemashcompanion.bus.SpeakersPersistedEvent
 import com.jameskbride.codemashcompanion.bus.SpeakersReceivedEvent
 import com.jameskbride.codemashcompanion.network.Session
 import com.jameskbride.codemashcompanion.network.Speaker
+import com.jameskbride.codemashcompanion.network.model.ApiSession
+import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
+import com.jameskbride.codemashcompanion.utils.test.buildDefaultApiSpeakers
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockito_kotlin.argumentCaptor
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Maybe
 import org.greenrobot.eventbus.EventBus
 import org.junit.Assert.assertEquals
@@ -29,21 +35,60 @@ class ConferenceRepositoryTest {
 
     @Test
     fun onSpeakersReceivedEventItInsertsAllSpeakers() {
-        val speakers = buildDefaultSpeakers()
-        speakers[0].GravatarUrl = "//${speakers[0].GravatarUrl}"
+        val apiSpeakers = listOf(ApiSpeaker(
+                id = "1234",
+                firstName = "John",
+                lastName = "Smith",
+                linkedInProfile = "linkedin",
+                twitterLink = "twitter",
+                gitHubLink = "github",
+                biography = "biography",
+                blogUrl = "blog"
+        ))
 
-        subject.onSpeakersReceivedEvent(SpeakersReceivedEvent(speakers))
+        subject.onSpeakersReceivedEvent(SpeakersReceivedEvent(apiSpeakers))
+
         val speakersCaptor = argumentCaptor<Array<Speaker>>()
         verify(conferenceDao).insertAll(speakersCaptor.capture())
+
         val actualSpeakers = speakersCaptor.firstValue
-        assertEquals("http://gravitar", actualSpeakers[0].GravatarUrl)
+        assertEquals(apiSpeakers.size, actualSpeakers.size)
+
+        val apiSpeaker = apiSpeakers[0]
+        val actualSpeaker = actualSpeakers[0]
+        assertEquals(apiSpeaker.id, actualSpeaker.Id)
+        assertEquals(apiSpeaker.firstName, actualSpeaker.FirstName)
+        assertEquals(apiSpeaker.lastName, actualSpeaker.LastName)
+        assertEquals(apiSpeaker.linkedInProfile, actualSpeaker.LinkedInProfile)
+        assertEquals(apiSpeaker.twitterLink, actualSpeaker.TwitterLink)
+        assertEquals(apiSpeaker.gitHubLink, actualSpeaker.GitHubLink)
+        assertEquals(apiSpeaker.biography, actualSpeaker.Biography)
+        assertEquals(apiSpeaker.blogUrl, actualSpeaker.BlogUrl)
+    }
+
+    @Test
+    fun onSpeakersReceivedEventItInsertsSpeakersWithTheCorrectedGravatarUrl() {
+        val apiSpeakers = listOf(ApiSpeaker(
+                gravatarUrl = "//gravitar"
+        ))
+
+        subject.onSpeakersReceivedEvent(SpeakersReceivedEvent(apiSpeakers))
+
+        val speakersCaptor = argumentCaptor<Array<Speaker>>()
+        verify(conferenceDao).insertAll(speakersCaptor.capture())
+
+        val actualSpeakers = speakersCaptor.firstValue
+
+        val apiSpeaker = apiSpeakers[0]
+        val actualSpeaker = actualSpeakers[0]
+        assertEquals("http:${apiSpeaker.gravatarUrl}", actualSpeaker.GravatarUrl)
     }
 
     @Test
     fun onSpeakersReceivedEventItNotifiesSpeakersPersisted() {
-        val speakers = buildDefaultSpeakers()
+        val speakers = buildDefaultApiSpeakers()
 
-        subject.onSpeakersReceivedEvent(SpeakersReceivedEvent(speakers))
+        subject.onSpeakersReceivedEvent(SpeakersReceivedEvent(speakers.asList()))
 
         val speakersPersistedEventCaptor = argumentCaptor<SpeakersPersistedEvent>()
 
@@ -52,16 +97,29 @@ class ConferenceRepositoryTest {
 
     @Test
     fun onSessionsReceivedEventItInsertsAllSessions() {
-        val sessions = buildSessions()
+        val apiSessions:List<ApiSession> = buildApiSessions()
 
-        subject.onSessionsReceivedEvent(SessionsReceivedEvent(sessions = sessions))
+        subject.onSessionsReceivedEvent(SessionsReceivedEvent(sessions = apiSessions))
 
-        verify(conferenceDao).insertAll(sessions)
+        val sessionsCaptor = argumentCaptor<Array<Session>>()
+        verify(conferenceDao).insertAll(sessionsCaptor.capture())
+        val sessions = sessionsCaptor.firstValue
+
+        assertEquals(apiSessions.size, sessions.size)
+        val apiSession:ApiSession = apiSessions[0]
+        val session:Session = sessions[0]
+        assertEquals(apiSession.id, session.Id)
+        assertEquals(apiSession.category, session.Category)
+        assertEquals(apiSession.sessionStartTime, session.SessionStartTime)
+        assertEquals(apiSession.sessionEndTime, session.SessionEndTime)
+        assertEquals(apiSession.sessionType, session.SessionType)
+        assertEquals(apiSession.title, session.Title)
+        assertEquals(apiSession.abstract, session.Abstract)
     }
 
     @Test
     fun onSessionsReceivedEventItNotifiesConferenceDataPersisted() {
-        val sessions = buildSessions()
+        val sessions = buildApiSessions()
 
         subject.onSessionsReceivedEvent(SessionsReceivedEvent(sessions))
 
@@ -84,7 +142,16 @@ class ConferenceRepositoryTest {
 
     @Test
     fun getSessionsReturnsTheSessionsFromTheDao() {
-        val sessions = buildSessions()
+        val sessions = arrayOf(Session(
+                Id = "123",
+                Category = "DevOps",
+                SessionStartTime = "start time",
+                SessionEndTime = "end time",
+                SessionType = "session type",
+                SessionTime = "session time",
+                Title = "title",
+                Abstract = "abstract"
+        ))
 
         val maybe = Maybe.just(sessions)
         whenever(conferenceDao.getSessions()).thenReturn(maybe)
@@ -94,16 +161,16 @@ class ConferenceRepositoryTest {
         assertEquals(maybe, result)
     }
 
-    private fun buildSessions(): Array<Session> {
-        return arrayOf(Session(
-                Id = "123",
-                Category = "DevOps",
-                SessionStartTime = "start time",
-                SessionEndTime = "end time",
-                SessionType = "session type",
-                SessionTime = "session time",
-                Title = "title",
-                Abstract = "abstract"
+    private fun buildApiSessions(): List<ApiSession> {
+        return listOf(ApiSession(
+                id = "123",
+                category = "DevOps",
+                sessionStartTime = "start time",
+                sessionEndTime = "end time",
+                sessionType = "session type",
+                sessionTime = "session time",
+                title = "title",
+                abstract = "abstract"
         ))
     }
 }
