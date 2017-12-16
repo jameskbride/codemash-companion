@@ -3,8 +3,8 @@ package com.jameskbride.codemashcompanion.sessions
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 
-class SessionsRecyclerViewAdapter constructor(
-        val impl: SessionsRecyclerViewAdapterImpl = SessionsRecyclerViewAdapterImpl())
+class SessionsRecyclerViewAdapter constructor(val sessionsFragmentPresenter: SessionsFragmentPresenter,
+        val impl: SessionsRecyclerViewAdapterImpl = SessionsRecyclerViewAdapterImpl(sessionsFragmentPresenter))
     : RecyclerView.Adapter<SessionViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
@@ -29,7 +29,7 @@ class SessionsRecyclerViewAdapter constructor(
 }
 
 class SessionsViewAdapterFactory {
-    fun make(): SessionsRecyclerViewAdapter {
-        return SessionsRecyclerViewAdapter()
+    fun make(sessionsFragmentPresenter: SessionsFragmentPresenter): SessionsRecyclerViewAdapter {
+        return SessionsRecyclerViewAdapter(sessionsFragmentPresenter)
     }
 }

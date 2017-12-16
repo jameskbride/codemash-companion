@@ -19,7 +19,7 @@ class SessionsFragmentImpl(val sessionsFragmentPresenter: SessionsFragmentPresen
         sessionsView = view!!.findViewById<RecyclerView>(R.id.sessions)
         sessionsView.layoutManager = qtn.makeLinearLayoutManager()
         sessionsView.setItemViewCacheSize(20)
-        sessionsViewAdapter = sessionsViewAdapterFactory.make()
+        sessionsViewAdapter = sessionsViewAdapterFactory.make(sessionsFragmentPresenter)
         sessionsView.adapter = sessionsViewAdapter
         
         return view

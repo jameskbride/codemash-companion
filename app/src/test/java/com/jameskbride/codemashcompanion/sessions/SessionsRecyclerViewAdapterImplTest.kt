@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
+import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -24,6 +25,7 @@ class SessionsRecyclerViewAdapterImplTest {
     @Mock private lateinit var container:ViewGroup
     @Mock private lateinit var view: View
     @Mock private lateinit var context:Context
+    @Mock private lateinit var sessionsFragmentPresenter:SessionsFragmentPresenter
 
     private lateinit var subject: SessionsRecyclerViewAdapterImpl
 
@@ -32,7 +34,7 @@ class SessionsRecyclerViewAdapterImplTest {
     @Before
     fun setUp() {
         initMocks(this)
-        subject = SessionsRecyclerViewAdapterImpl(layoutInflaterFactory)
+        subject = SessionsRecyclerViewAdapterImpl(sessionsFragmentPresenter, layoutInflaterFactory)
 
         whenever(container.context).thenReturn(context)
 
@@ -172,12 +174,19 @@ class SessionsRecyclerViewAdapterImplTest {
 
     @Test
     fun itBindsSessionItemViewHolders() {
+
         subject.setSessions(sessionData, qtn)
 
         val itemViewHolder = mock<ItemViewHolder>()
+        whenever(itemViewHolder.view).thenReturn(view)
 
         subject.onBindViewHolder(itemViewHolder, 2)
-
         verify(itemViewHolder).bind(firstSession)
+
+        val onClickCaptor = argumentCaptor<View.OnClickListener>()
+        verify(view).setOnClickListener(onClickCaptor.capture())
+        onClickCaptor.firstValue.onClick(null)
+        verify(sessionsFragmentPresenter).navigateToSessionDetail(firstSession)
+
     }
 }

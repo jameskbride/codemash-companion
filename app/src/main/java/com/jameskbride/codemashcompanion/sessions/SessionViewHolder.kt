@@ -10,7 +10,7 @@ import java.util.*
 
 open class SessionViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView)
 
-class ItemViewHolder constructor(itemView: View): SessionViewHolder(itemView) {
+class ItemViewHolder constructor(val view: View): SessionViewHolder(view) {
     fun bind(session: FullSession) {
         itemView.findViewById<TextView>(R.id.session_title).text = session.Title
         val rooms = session.conferenceRooms.map { it.name }.joinToString(", ")

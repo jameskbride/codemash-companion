@@ -1,5 +1,6 @@
 package com.jameskbride.codemashcompanion.sessions
 
+import android.view.View
 import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
@@ -8,7 +9,7 @@ import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SessionsRecyclerViewAdapterImpl(val layoutInflaterFactory: LayoutInflaterFactory = LayoutInflaterFactory()) {
+class SessionsRecyclerViewAdapterImpl(val sessionsFragmentPresenter: SessionsFragmentPresenter, val layoutInflaterFactory: LayoutInflaterFactory = LayoutInflaterFactory()) {
     var sessionsList: MutableList<ListItem> = mutableListOf()
 
     fun getItemCount(): Int {
@@ -44,18 +45,33 @@ class SessionsRecyclerViewAdapterImpl(val layoutInflaterFactory: LayoutInflaterF
 
     fun onBindViewHolder(holder: SessionViewHolder?, position: Int) {
         if (ListItem.TIME_HEADER_TYPE == getItemViewType(position)) {
-            var headerViewHolder = holder as TimeViewHolder
-            var headerListItem = sessionsList[position] as TimeHeaderListItem
-            headerViewHolder.bind(headerListItem.sessionTime)
+            bindTimeHeaderListItem(holder, position)
         } else if (ListItem.DATE_HEADER_TYPE == getItemViewType(position)) {
-            var dateHeaderViewHolder = holder as DateViewHolder
-            var dateHeaderListItem = sessionsList[position] as DateHeaderListItem
-            dateHeaderViewHolder.bind(dateHeaderListItem.text)
+            bindDateHeaderListItem(holder, position)
         } else {
-            var itemViewHolder = holder as ItemViewHolder
-            var headerListItem = sessionsList[position] as SessionListItem
-            itemViewHolder.bind(headerListItem.session)
+            bindSessionListItem(holder, position)
         }
+    }
+
+    private fun bindSessionListItem(holder: SessionViewHolder?, position: Int) {
+        var itemViewHolder = holder as ItemViewHolder
+        var sessionListItem = sessionsList[position] as SessionListItem
+        itemViewHolder.bind(sessionListItem.session)
+        itemViewHolder.view.setOnClickListener { view: View? ->
+            sessionsFragmentPresenter.navigateToSessionDetail(sessionListItem.session)
+        }
+    }
+
+    private fun bindDateHeaderListItem(holder: SessionViewHolder?, position: Int) {
+        var dateHeaderViewHolder = holder as DateViewHolder
+        var dateHeaderListItem = sessionsList[position] as DateHeaderListItem
+        dateHeaderViewHolder.bind(dateHeaderListItem.text)
+    }
+
+    private fun bindTimeHeaderListItem(holder: SessionViewHolder?, position: Int) {
+        var headerViewHolder = holder as TimeViewHolder
+        var headerListItem = sessionsList[position] as TimeHeaderListItem
+        headerViewHolder.bind(headerListItem.sessionTime)
     }
 
     fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SessionViewHolder {
