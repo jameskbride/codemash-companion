@@ -120,6 +120,7 @@ class ItemViewHolder constructor(itemView: View): SessionViewHolder(itemView) {
         itemView.findViewById<TextView>(R.id.session_title).text = session.Title
         val rooms = session.conferenceRooms.map { it.name }.joinToString(", ")
         itemView.findViewById<TextView>(R.id.rooms).text = rooms
+        itemView.findViewById<TextView>(R.id.category).text = session.Category
     }
 }
 

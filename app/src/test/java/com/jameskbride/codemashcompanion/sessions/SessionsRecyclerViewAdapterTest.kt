@@ -203,11 +203,14 @@ class SessionsRecyclerViewAdapterTest {
     fun sessionItemViewHolderCanBind() {
         val sessionTitle = mock<TextView>()
         val rooms = mock<TextView>()
+        val category = mock<TextView>()
         whenever(view.findViewById<TextView>(R.id.session_title)).thenReturn(sessionTitle)
         whenever(view.findViewById<TextView>(R.id.rooms)).thenReturn(rooms)
+        whenever(view.findViewById<TextView>(R.id.category)).thenReturn(category)
         val subject = ItemViewHolder(view)
         val firstSession =
                 FullSession(SessionStartTime = firstStartTime,
+                        Category = "some category",
                         conferenceRooms = listOf(
                                 ConferenceRoom(sessionId = "id", name = "room 1"),
                                 ConferenceRoom(sessionId = "id", name = "room 2"))
@@ -221,6 +224,10 @@ class SessionsRecyclerViewAdapterTest {
         val roomsCaptor = argumentCaptor<String>()
         verify(rooms).setText(roomsCaptor.capture())
         assertEquals("room 1, room 2", roomsCaptor.firstValue)
+
+        val categoryCaptor = argumentCaptor<String>()
+        verify(category).setText(categoryCaptor.capture())
+        assertEquals("some category", categoryCaptor.firstValue)
     }
 
     @Test
