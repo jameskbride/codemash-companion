@@ -53,16 +53,16 @@ class SessionsRecyclerViewAdapterImpl(val layoutInflaterFactory: LayoutInflaterF
     }
 
     fun setSessions(sessionData: SessionData, qtn: SessionsRecyclerViewAdapter) {
-        var dateTimesSessions:LinkedHashMap<Int, Map<Date, List<Session>>> = linkedMapOf()
+        var dateTimesSessions:LinkedHashMap<Int, Map<Date, List<Session?>>> = linkedMapOf()
         sessionData.sessions.groupBy { session ->
             val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
             val calendar = Calendar.getInstance()
-            calendar.time = dateFormatter.parse(session.SessionStartTime)
+            calendar.time = dateFormatter.parse(session?.SessionStartTime)
             calendar.get(Calendar.DATE)
         }.forEach{keyValue ->
             dateTimesSessions[keyValue.key] = keyValue.value.groupBy { session ->
                 val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
-                dateFormatter.parse(session.SessionStartTime)
+                dateFormatter.parse(session?.SessionStartTime)
             }
         }
 
@@ -71,7 +71,7 @@ class SessionsRecyclerViewAdapterImpl(val layoutInflaterFactory: LayoutInflaterF
             dateTimesSessions[date]!!.keys.sorted().forEach {time ->
                 sessionsList.add(TimeHeaderListItem(time))
                 dateTimesSessions[date]!![time]!!.forEach { session ->
-                    sessionsList.add(SessionListItem(session))
+                    sessionsList.add(SessionListItem(session!!))
                 }
             }
         }

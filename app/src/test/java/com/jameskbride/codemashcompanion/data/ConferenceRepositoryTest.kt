@@ -139,10 +139,10 @@ class ConferenceRepositoryTest {
         val rooms = conferenceRoomsCaptor.firstValue
         assertEquals(4, rooms.size)
 
-        assertTrue(rooms.contains(ConferenceRoom(id = "1", name = "banyan")))
-        assertTrue(rooms.contains(ConferenceRoom(id = "1", name = "salon e")))
-        assertTrue(rooms.contains(ConferenceRoom(id = "2", name = "banyan")))
-        assertTrue(rooms.contains(ConferenceRoom(id = "2", name = "salon b")))
+        assertTrue(rooms.contains(ConferenceRoom(sessionId = "1", name = "banyan")))
+        assertTrue(rooms.contains(ConferenceRoom(sessionId = "1", name = "salon e")))
+        assertTrue(rooms.contains(ConferenceRoom(sessionId = "2", name = "banyan")))
+        assertTrue(rooms.contains(ConferenceRoom(sessionId = "2", name = "salon b")))
     }
 
     @Test

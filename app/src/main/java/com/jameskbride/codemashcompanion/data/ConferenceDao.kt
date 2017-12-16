@@ -5,6 +5,7 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
+import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.Session
 import com.jameskbride.codemashcompanion.data.model.Speaker
 import io.reactivex.Maybe
@@ -25,5 +26,5 @@ interface ConferenceDao {
     fun getSpeakers(): Maybe<Array<Speaker>>
 
     @Query("SELECT * FROM Session")
-    fun getSessions(): Maybe<Array<Session>>
+    fun getSessions(): Maybe<Array<FullSession?>>
 }
