@@ -28,6 +28,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
+                    android:textColor="@color/codemash_blue"
                     android:textSize="24sp"/>
                 <android.support.v4.widget.Space
                     android:layout_width="5dp"
@@ -36,6 +37,7 @@
                     android:id="@+id/speaker_last_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/codemash_blue"
                     android:textStyle="bold"
                     android:textSize="24sp"/>
             </LinearLayout>
@@ -64,6 +66,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
+                            android:textColor="@color/codemash_orange"
                             android:layout_gravity="center|center_vertical"
                             />
                     </LinearLayout>
@@ -95,6 +98,7 @@
                             android:id="@+id/github_link"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/codemash_orange"
                             android:layout_gravity="center|center_vertical"
                             android:layout_marginStart="5dp"
                             />
@@ -125,6 +129,7 @@
                             android:id="@+id/twitter_link"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/codemash_orange"
                             android:layout_marginStart="5dp"
                             />
                     </LinearLayout>
@@ -153,6 +158,7 @@
                             android:id="@+id/blog_link"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/codemash_orange"
                             android:layout_gravity="center|center_vertical"
                             android:layout_marginStart="5dp"
                             />
