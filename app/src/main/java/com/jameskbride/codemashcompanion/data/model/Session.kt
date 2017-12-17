@@ -16,6 +16,6 @@ data class Session constructor(
         @ColumnInfo(name = "title") var Title: String? = null,
         @ColumnInfo(name = "abstract") var Abstract: String? = null) {
     companion object {
-        val TIMESTAMP_FORMAT = "yyyy-MM-dd'T'hh:mm:ss"
+        val TIMESTAMP_FORMAT = "yyyy-MM-dd'T'hh:mm"
     }
 }

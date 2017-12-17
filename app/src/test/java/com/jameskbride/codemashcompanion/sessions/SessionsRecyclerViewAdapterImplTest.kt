@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
+import com.jameskbride.codemashcompanion.data.model.Session
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.mock
@@ -29,7 +30,7 @@ class SessionsRecyclerViewAdapterImplTest {
 
     private lateinit var subject: SessionsRecyclerViewAdapterImpl
 
-    private val dateFormatter = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss")
+    private val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
 
     @Before
     fun setUp() {
@@ -45,7 +46,7 @@ class SessionsRecyclerViewAdapterImplTest {
     private val firstStartTime = "2018-01-10T09:15:00"
     private val firstDate = dateFormatter.parse(firstStartTime)
     private val firstSession = FullSession(SessionStartTime = firstStartTime)
-    private val secondStartTime = "2018-01-11T10:15:00"
+    private val secondStartTime = "2018-01-11T10:15:01"
     private val secondDate = dateFormatter.parse(secondStartTime)
     private val secondSession = FullSession(SessionStartTime = secondStartTime)
     private val thirdSession = FullSession(SessionStartTime = secondStartTime)
