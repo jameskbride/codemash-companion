@@ -15,5 +15,4 @@
                 android:color="@android:color/black" />
         </shape>
     </item>
-
 </layer-list>

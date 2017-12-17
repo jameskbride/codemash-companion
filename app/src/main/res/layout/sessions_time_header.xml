@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:minHeight="20dp"
     android:paddingTop="10dp"
     android:paddingBottom="10dp"
     android:paddingLeft="10dp"
-    android:background="@android:color/white">
+    android:paddingRight="10dp"
+    android:background="@android:color/white"
+    android:weightSum="100">
     <TextView
         android:id="@+id/session_time"
         android:layout_width="match_parent"
@@ -16,4 +19,4 @@
         android:textSize="16dp"
         android:textColor="@color/codemash_blue"
         />
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
