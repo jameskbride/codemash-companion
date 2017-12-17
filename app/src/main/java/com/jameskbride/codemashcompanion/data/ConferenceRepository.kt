@@ -48,7 +48,7 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
 
         var conferenceRooms = buildRooms(apiSessions)
         conferenceDao.insertAll(conferenceRooms.toTypedArray())
-        
+
         val tags = buildTags(apiSessions)
         conferenceDao.insertAll(tags.toTypedArray())
 

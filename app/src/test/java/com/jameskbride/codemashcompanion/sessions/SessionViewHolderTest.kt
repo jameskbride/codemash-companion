@@ -51,7 +51,7 @@ class SessionViewHolderTest {
         val category = mock<TextView>()
         whenever(view.findViewById<TextView>(R.id.session_title)).thenReturn(sessionTitle)
         whenever(view.findViewById<TextView>(R.id.rooms)).thenReturn(rooms)
-        whenever(view.findViewById<TextView>(R.id.category)).thenReturn(category)
+        whenever(view.findViewById<TextView>(R.id.session_category)).thenReturn(category)
         val subject = ItemViewHolder(view)
         val firstSession =
                 FullSession(SessionStartTime = firstStartTime,
