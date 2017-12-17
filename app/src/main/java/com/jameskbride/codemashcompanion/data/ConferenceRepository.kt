@@ -1,10 +1,7 @@
 package com.jameskbride.codemashcompanion.data
 
 import com.jameskbride.codemashcompanion.bus.*
-import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
-import com.jameskbride.codemashcompanion.data.model.FullSession
-import com.jameskbride.codemashcompanion.data.model.Session
-import com.jameskbride.codemashcompanion.data.model.Speaker
+import com.jameskbride.codemashcompanion.data.model.*
 import com.jameskbride.codemashcompanion.network.model.ApiSession
 import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
 import io.reactivex.Maybe
@@ -51,15 +48,27 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
 
         var conferenceRooms = buildRooms(apiSessions)
         conferenceDao.insertAll(conferenceRooms.toTypedArray())
+        
+        val tags = buildTags(apiSessions)
+        conferenceDao.insertAll(tags.toTypedArray())
+
         eventBus.post(ConferenceDataPersistedEvent())
     }
 
     private fun buildRooms(apiSessions: List<ApiSession>): MutableList<ConferenceRoom> {
         var conferenceRooms = mutableListOf<ConferenceRoom>()
         apiSessions.forEach { session ->
-            session.rooms?.forEach { room -> conferenceRooms.add(ConferenceRoom(session.id, room)) }
+            session.rooms?.forEach { room -> conferenceRooms.add(ConferenceRoom(sessionId = session.id, name = room)) }
         }
         return conferenceRooms
+    }
+
+    private fun buildTags(apiSessions: List<ApiSession>): MutableList<Tag> {
+        var tags = mutableListOf<Tag>()
+        apiSessions.forEach { session ->
+            session.tags?.forEach { tag -> tags.add(Tag(sessionId = session.id, name = tag)) }
+        }
+        return tags
     }
 
     private fun mapApiSessionsToDomain(apiSessions: List<ApiSession>): Array<Session> {

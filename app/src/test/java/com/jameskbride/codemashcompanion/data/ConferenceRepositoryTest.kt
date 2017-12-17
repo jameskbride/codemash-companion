@@ -4,10 +4,7 @@ import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
 import com.jameskbride.codemashcompanion.bus.SessionsReceivedEvent
 import com.jameskbride.codemashcompanion.bus.SpeakersPersistedEvent
 import com.jameskbride.codemashcompanion.bus.SpeakersReceivedEvent
-import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
-import com.jameskbride.codemashcompanion.data.model.FullSession
-import com.jameskbride.codemashcompanion.data.model.Session
-import com.jameskbride.codemashcompanion.data.model.Speaker
+import com.jameskbride.codemashcompanion.data.model.*
 import com.jameskbride.codemashcompanion.network.model.ApiSession
 import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultApiSpeakers
@@ -144,6 +141,27 @@ class ConferenceRepositoryTest {
         assertTrue(rooms.contains(ConferenceRoom(sessionId = "1", name = "salon e")))
         assertTrue(rooms.contains(ConferenceRoom(sessionId = "2", name = "banyan")))
         assertTrue(rooms.contains(ConferenceRoom(sessionId = "2", name = "salon b")))
+    }
+
+    @Test
+    fun onSessionsReceivedEventItInsertsAllTags() {
+        val apiSessions = listOf(
+                ApiSession(id = "1", tags = listOf("tag 1", "tag 2")),
+                ApiSession(id = "2", tags = listOf("tag 1", "tag 3"))
+        )
+
+        subject.onSessionsReceivedEvent(SessionsReceivedEvent(apiSessions))
+
+        val tagsCaptor = argumentCaptor<Array<Tag>>()
+        verify(conferenceDao).insertAll(tagsCaptor.capture())
+
+        val tags = tagsCaptor.firstValue
+        assertEquals(4, tags.size)
+
+        assertTrue(tags.contains(Tag(sessionId = "1", name = "tag 1")))
+        assertTrue(tags.contains(Tag(sessionId = "1", name = "tag 2")))
+        assertTrue(tags.contains(Tag(sessionId = "2", name = "tag 1")))
+        assertTrue(tags.contains(Tag(sessionId = "2", name = "tag 3")))
     }
 
     @Test
