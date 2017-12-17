@@ -1,9 +1,9 @@
 package com.jameskbride.codemashcompanion.data.model
 
 import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Embedded
 import android.arch.persistence.room.PrimaryKey
 import android.arch.persistence.room.Relation
+import java.io.Serializable
 
 class FullSession constructor(
         @ColumnInfo(name = "id") @PrimaryKey var Id: String = "",
@@ -16,4 +16,5 @@ class FullSession constructor(
         @ColumnInfo(name = "title") var Title: String? = null,
         @ColumnInfo(name = "abstract") var Abstract: String? = null,
 
-        @Relation(parentColumn = "id", entityColumn = "sessionId") var conferenceRooms:List<ConferenceRoom> = listOf())
+        @Relation(parentColumn = "id", entityColumn = "sessionId") var conferenceRooms:List<ConferenceRoom> = listOf()
+): Serializable

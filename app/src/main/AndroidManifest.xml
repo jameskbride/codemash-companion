@@ -31,6 +31,11 @@
             android:label="@string/speaker_detail"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".sessions.detail.SessionDetailActivity"
+            android:label="@string/session_detail"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

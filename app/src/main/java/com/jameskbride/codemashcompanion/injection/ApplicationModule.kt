@@ -7,8 +7,6 @@ import com.jameskbride.codemashcompanion.data.ConferenceDao
 import com.jameskbride.codemashcompanion.data.ConferenceDatabase
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.main.MainActivityImpl
-import com.jameskbride.codemashcompanion.splash.SplashActivityImpl
-import com.jameskbride.codemashcompanion.splash.SplashActivityPresenter
 import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.service.CodemashService
 import com.jameskbride.codemashcompanion.sessions.SessionsFragmentImpl
@@ -17,7 +15,10 @@ import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentImpl
 import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentPresenter
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailFragmentImpl
-import com.jameskbride.codemashcompanion.utils.*
+import com.jameskbride.codemashcompanion.splash.SplashActivityImpl
+import com.jameskbride.codemashcompanion.splash.SplashActivityPresenter
+import com.jameskbride.codemashcompanion.utils.IntentFactory
+import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler
