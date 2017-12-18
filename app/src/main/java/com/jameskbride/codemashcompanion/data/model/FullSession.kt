@@ -16,5 +16,6 @@ class FullSession constructor(
         @ColumnInfo(name = "title") var Title: String? = null,
         @ColumnInfo(name = "abstract") var Abstract: String? = null,
         @Relation(parentColumn = "id", entityColumn = "sessionId") var conferenceRooms:List<ConferenceRoom> = listOf(),
-        @Relation(parentColumn = "id", entityColumn = "sessionId") var tags:List<Tag> = listOf()
+        @Relation(parentColumn = "id", entityColumn = "sessionId") var tags:List<Tag> = listOf(),
+        @Relation(parentColumn = "id", entityColumn = "sessionId") var sessionSpeakers:List<SessionSpeaker> = listOf()
 ): Serializable

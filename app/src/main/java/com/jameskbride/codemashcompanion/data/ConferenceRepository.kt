@@ -60,7 +60,8 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     private fun buildSessionSpeakers(sessions:List<ApiSession>):Array<SessionSpeaker> {
         var sessionSpeakers = mutableListOf<SessionSpeaker>()
         sessions.forEach { session ->
-            session.shortSpeakers?.forEach { speaker -> sessionSpeakers.add(SessionSpeaker(sessionId = session.id.toInt(), speakerId = speaker.id!!)) }
+            session.shortSpeakers?.forEach { speaker ->
+                sessionSpeakers.add(SessionSpeaker(sessionId = session.id.toInt(), speakerId = speaker.id!!)) }
         }
         return sessionSpeakers.toTypedArray()
     }
@@ -68,7 +69,8 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     private fun buildRooms(apiSessions: List<ApiSession>): MutableList<ConferenceRoom> {
         var conferenceRooms = mutableListOf<ConferenceRoom>()
         apiSessions.forEach { session ->
-            session.rooms?.forEach { room -> conferenceRooms.add(ConferenceRoom(sessionId = session.id, name = room)) }
+            session.rooms?.forEach { room ->
+                conferenceRooms.add(ConferenceRoom(sessionId = session.id, name = room)) }
         }
         return conferenceRooms
     }
