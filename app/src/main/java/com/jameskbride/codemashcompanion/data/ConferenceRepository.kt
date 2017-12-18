@@ -45,6 +45,8 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         val apiSessions = sessionsReceivedEvent.sessions
         val sessions = mapApiSessionsToDomain(apiSessions)
         conferenceDao.insertAll(sessions)
+        val sessionSpeakers = buildSessionSpeakers(apiSessions)
+        conferenceDao.insertAll(sessionSpeakers)
 
         var conferenceRooms = buildRooms(apiSessions)
         conferenceDao.insertAll(conferenceRooms.toTypedArray())
@@ -53,6 +55,14 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         conferenceDao.insertAll(tags.toTypedArray())
 
         eventBus.post(ConferenceDataPersistedEvent())
+    }
+
+    private fun buildSessionSpeakers(sessions:List<ApiSession>):Array<SessionSpeaker> {
+        var sessionSpeakers = mutableListOf<SessionSpeaker>()
+        sessions.forEach { session ->
+            session.shortSpeakers?.forEach { speaker -> sessionSpeakers.add(SessionSpeaker(sessionId = session.id.toInt(), speakerId = speaker.id!!)) }
+        }
+        return sessionSpeakers.toTypedArray()
     }
 
     private fun buildRooms(apiSessions: List<ApiSession>): MutableList<ConferenceRoom> {

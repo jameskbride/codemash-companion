@@ -19,8 +19,8 @@ data class ApiSession constructor(
 ): Serializable
 
 data class ShortSpeaker constructor(
-        @SerializedName("Id") var id:String,
-        @SerializedName("FirstName") var firstName:String,
+        @SerializedName("Id") var id:String? = "",
+        @SerializedName("FirstName") var firstName:String? = "",
         @SerializedName("LastName") var lastName:String =  "",
-        @SerializedName("GravatarUrl") var gravatarUrl:String
+        @SerializedName("GravatarUrl") var gravatarUrl:String? = ""
 ): Serializable

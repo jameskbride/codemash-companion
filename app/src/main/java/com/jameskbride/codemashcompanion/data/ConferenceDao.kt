@@ -22,6 +22,9 @@ interface ConferenceDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(arrayOfTags: Array<Tag>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(arrayOfSessionSpeakers: Array<SessionSpeaker>)
+
     @Query("SELECT * FROM Speaker ORDER BY first_name")
     fun getSpeakers(): Maybe<Array<Speaker>>
 

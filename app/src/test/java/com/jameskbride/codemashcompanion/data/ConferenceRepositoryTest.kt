@@ -7,6 +7,7 @@ import com.jameskbride.codemashcompanion.bus.SpeakersReceivedEvent
 import com.jameskbride.codemashcompanion.data.model.*
 import com.jameskbride.codemashcompanion.network.model.ApiSession
 import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
+import com.jameskbride.codemashcompanion.network.model.ShortSpeaker
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultApiSpeakers
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import com.nhaarman.mockito_kotlin.argumentCaptor
@@ -162,6 +163,39 @@ class ConferenceRepositoryTest {
         assertTrue(tags.contains(Tag(sessionId = "1", name = "tag 2")))
         assertTrue(tags.contains(Tag(sessionId = "2", name = "tag 1")))
         assertTrue(tags.contains(Tag(sessionId = "2", name = "tag 3")))
+    }
+
+    @Test
+    fun onSessionsReceivedEventItInsertsAllSessionSpeakers() {
+        val apiSessions = listOf(
+                ApiSession(
+                        shortSpeakers = listOf(
+                            ShortSpeaker(id = "1"),
+                            ShortSpeaker(id = "2")
+                        ),
+                        id = "1"
+                ),
+                ApiSession(
+                        shortSpeakers = listOf(
+                                ShortSpeaker(id = "3"),
+                                ShortSpeaker(id = "4")
+                        ),
+                        id = "2"
+                )
+        )
+
+        subject.onSessionsReceivedEvent(SessionsReceivedEvent(apiSessions))
+
+        val sessionSpeakerCaptor = argumentCaptor<Array<SessionSpeaker>>()
+        verify(conferenceDao).insertAll(sessionSpeakerCaptor.capture())
+
+        val sessionSpeakers = sessionSpeakerCaptor.firstValue
+        assertEquals(4, sessionSpeakers.size)
+
+        assertTrue((sessionSpeakers.contains(SessionSpeaker(sessionId = 1, speakerId = "1"))))
+        assertTrue((sessionSpeakers.contains(SessionSpeaker(sessionId = 1, speakerId = "2"))))
+        assertTrue((sessionSpeakers.contains(SessionSpeaker(sessionId = 2, speakerId = "3"))))
+        assertTrue((sessionSpeakers.contains(SessionSpeaker(sessionId = 2, speakerId = "4"))))
     }
 
     @Test
