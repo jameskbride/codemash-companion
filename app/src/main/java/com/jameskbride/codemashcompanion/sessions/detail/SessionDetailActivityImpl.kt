@@ -27,13 +27,15 @@ class SessionDetailActivityImpl {
 
         val sessionStartTime = SimpleDateFormat(Session.TIMESTAMP_FORMAT).parse(sessionDetail.session.SessionStartTime)
         val dateFormat = SimpleDateFormat("M/d/yyyy")
-        qtn.findViewById<TextView>(R.id.session_date).text = dateFormat.format(sessionStartTime)
+        val formattedDate = dateFormat.format(sessionStartTime)
+        qtn.findViewById<TextView>(R.id.session_date).text = formattedDate
 
         val timeFormat = SimpleDateFormat("h:mm a")
-        qtn.findViewById<TextView>(R.id.session_start_time).text = timeFormat.format(sessionStartTime)
+        val formattedStartTime = timeFormat.format(sessionStartTime)
 
         val sessionEndTime = SimpleDateFormat(Session.TIMESTAMP_FORMAT).parse(sessionDetail.session.SessionEndTime)
-        qtn.findViewById<TextView>(R.id.session_end_time).text = timeFormat.format(sessionEndTime)
+        val formattedEndTime = timeFormat.format(sessionEndTime)
+        qtn.findViewById<TextView>(R.id.session_time).text = "${formattedStartTime} - ${formattedEndTime}"
     }
 
     class SessionDetailParam(val session: FullSession): Serializable

@@ -19,8 +19,7 @@ class SessionDetailActivityImplTest {
     @Mock private lateinit var qtn: SessionDetailActivity
     @Mock private lateinit var intent:Intent
     @Mock private lateinit var category:TextView
-    @Mock private lateinit var sessionStartTime:TextView
-    @Mock private lateinit var sessionEndTime:TextView
+    @Mock private lateinit var sessionTime:TextView
     @Mock private lateinit var sessionType:TextView
     @Mock private lateinit var title:TextView
     @Mock private lateinit var abstract:TextView
@@ -59,8 +58,7 @@ class SessionDetailActivityImplTest {
         whenever(qtn.findViewById<TextView>(R.id.session_category)).thenReturn(category)
         whenever(qtn.findViewById<TextView>(R.id.session_tags)).thenReturn(tags)
         whenever(qtn.findViewById<TextView>(R.id.session_rooms)).thenReturn(rooms)
-        whenever(qtn.findViewById<TextView>(R.id.session_start_time)).thenReturn(sessionStartTime)
-        whenever(qtn.findViewById<TextView>(R.id.session_end_time)).thenReturn(sessionEndTime)
+        whenever(qtn.findViewById<TextView>(R.id.session_time)).thenReturn(sessionTime)
         whenever(qtn.findViewById<TextView>(R.id.session_type)).thenReturn(sessionType)
         whenever(qtn.findViewById<TextView>(R.id.session_date)).thenReturn(sessionDate)
         whenever(qtn.intent).thenReturn(intent)
@@ -85,8 +83,7 @@ class SessionDetailActivityImplTest {
         verify(abstract).setText(fullSession.Abstract)
         verify(category).setText(fullSession.Category)
         verify(sessionType).setText(fullSession.SessionType)
-        verify(sessionStartTime).setText("9:15 AM")
-        verify(sessionEndTime).setText("10:15 AM")
+        verify(sessionTime).setText("9:15 AM - 10:15 AM")
         verify(sessionDate).setText("1/10/2018")
         verify(rooms).setText("banyan, salon e")
         verify(tags).setText("tag 1, tag 2")
