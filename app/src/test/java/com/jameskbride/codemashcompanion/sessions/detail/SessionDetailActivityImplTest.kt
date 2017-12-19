@@ -26,6 +26,7 @@ class SessionDetailActivityImplTest {
     @Mock private lateinit var rooms:TextView
     @Mock private lateinit var tags:TextView
     @Mock private lateinit var sessionDate:TextView
+    @Mock private lateinit var presenter:SessionDetailActivityPresenter
 
     private lateinit var subject: SessionDetailActivityImpl
 
@@ -36,7 +37,7 @@ class SessionDetailActivityImplTest {
     fun setUp() {
         initMocks(this)
 
-        subject = SessionDetailActivityImpl()
+        subject = SessionDetailActivityImpl(presenter)
 
         fullSession = FullSession(
                 Id = "123",
@@ -87,5 +88,12 @@ class SessionDetailActivityImplTest {
         verify(sessionDate).setText("1/10/2018")
         verify(rooms).setText("banyan, salon e")
         verify(tags).setText("tag 1, tag 2")
+    }
+
+    @Test
+    fun onCreateRequestsTheSpeakersForTheSession() {
+        subject.onCreate(null, qtn)
+
+        verify(presenter).retrieveSpeakers(fullSession)
     }
 }

@@ -11,6 +11,8 @@ import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.service.CodemashService
 import com.jameskbride.codemashcompanion.sessions.SessionsFragmentImpl
 import com.jameskbride.codemashcompanion.sessions.SessionsFragmentPresenter
+import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityImpl
+import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityPresenter
 import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentImpl
 import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentPresenter
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
@@ -176,5 +178,17 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     @Provides
     fun makeSessionsFragmentImpl(sessionsFragmentPresenter: SessionsFragmentPresenter): SessionsFragmentImpl {
         return SessionsFragmentImpl(sessionsFragmentPresenter)
+    }
+
+    @Provides
+    fun makeSessionDetailActivityPresenter(conferenceRepository: ConferenceRepository,
+                                           @Named("process") processScheduler: Scheduler,
+                                           @Named("main") androidScheduler: Scheduler): SessionDetailActivityPresenter {
+        return SessionDetailActivityPresenter(conferenceRepository, processScheduler, androidScheduler)
+    }
+
+    @Provides
+    fun makeSessionDetailActivityImpl(sessionDetailActivityPresenter: SessionDetailActivityPresenter):SessionDetailActivityImpl {
+        return SessionDetailActivityImpl(sessionDetailActivityPresenter)
     }
 }

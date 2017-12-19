@@ -5,11 +5,12 @@ import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.Session
+import com.jameskbride.codemashcompanion.data.model.Speaker
 import java.io.Serializable
 import java.text.SimpleDateFormat
+import javax.inject.Inject
 
-class SessionDetailActivityImpl {
-
+class SessionDetailActivityImpl @Inject constructor(val presenter:SessionDetailActivityPresenter) : SessionDetailActivityView {
     fun onCreate(savedInstanceState: Bundle?, qtn: SessionDetailActivity) {
         qtn.setContentView(R.layout.activity_session_detail)
 
@@ -36,6 +37,12 @@ class SessionDetailActivityImpl {
         val sessionEndTime = SimpleDateFormat(Session.TIMESTAMP_FORMAT).parse(sessionDetail.session.SessionEndTime)
         val formattedEndTime = timeFormat.format(sessionEndTime)
         qtn.findViewById<TextView>(R.id.session_time).text = "${formattedStartTime} - ${formattedEndTime}"
+
+        presenter.retrieveSpeakers(sessionDetail.session)
+    }
+
+    override fun displaySpeakers(speakers: Array<Speaker>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     class SessionDetailParam(val session: FullSession): Serializable

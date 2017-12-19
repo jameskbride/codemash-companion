@@ -151,6 +151,12 @@
                     android:layout_weight="1"
                     android:textColor="@color/codemash_orange"/>
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/speakers_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"

@@ -3,6 +3,7 @@ package com.jameskbride.codemashcompanion.injection
 import com.jameskbride.codemashcompanion.application.CodemashCompanionApplication
 import com.jameskbride.codemashcompanion.main.MainActivity
 import com.jameskbride.codemashcompanion.sessions.SessionsFragment
+import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivity
 import com.jameskbride.codemashcompanion.speakers.SpeakersFragment
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailFragment
@@ -20,4 +21,5 @@ interface ApplicationComponent {
     fun inject(speakerDetailActivity: SpeakerDetailActivity)
     fun inject(speakerDetailFragment: SpeakerDetailFragment)
     fun inject(sessionsFragment: SessionsFragment)
+    fun inject(sessionDetailActivity: SessionDetailActivity)
 }
