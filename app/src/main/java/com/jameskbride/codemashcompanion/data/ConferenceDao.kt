@@ -28,6 +28,9 @@ interface ConferenceDao {
     @Query("SELECT * FROM Speaker ORDER BY first_name")
     fun getSpeakers(): Maybe<Array<Speaker>>
 
+    @Query("SELECT * FROM Speaker WHERE id IN (:ids) ORDER BY first_name")
+    fun getSpeakers(ids:Array<String>): Maybe<Array<Speaker>>
+
     @Query("SELECT * FROM Session")
     fun getSessions(): Maybe<Array<FullSession?>>
 }

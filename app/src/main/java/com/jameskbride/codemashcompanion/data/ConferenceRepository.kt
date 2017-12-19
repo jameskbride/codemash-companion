@@ -84,7 +84,7 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     }
 
     private fun mapApiSessionsToDomain(apiSessions: List<ApiSession>): Array<Session> {
-        val sessions = apiSessions.map {
+        return apiSessions.map {
             Session(
                     Id = it.id,
                     Category = it.category,
@@ -96,7 +96,6 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
                     Abstract = it.abstract
             )
         }.toTypedArray()
-        return sessions
     }
 
     fun getSessions(): Maybe<Array<FullSession?>> {
@@ -104,6 +103,6 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     }
 
     fun getSpeakers(ids: List<String>):Maybe<Array<Speaker>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return conferenceDao.getSpeakers(ids.toTypedArray())
     }
 }
