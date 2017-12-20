@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,16 +14,22 @@ import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
+import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivity
+import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityImpl
+import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailParam
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
 import com.jameskbride.codemashcompanion.utils.UriWrapper
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import com.nhaarman.mockito_kotlin.*
+import org.junit.Assert
 import org.junit.Assert.assertSame
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentCaptor
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations.initMocks
+import java.io.Serializable
 
 class SpeakerDetailFragmentImplTest {
 
@@ -52,6 +59,7 @@ class SpeakerDetailFragmentImplTest {
     @Mock private lateinit var presenter: SpeakerDetailFragmentPresenter
     @Mock private lateinit var sessionsHolder:LinearLayout
     @Mock private lateinit var sessionHolderFactory:SessionHolderFactory
+    @Mock private lateinit var activity:AppCompatActivity
 
     private lateinit var speaker: FullSpeaker
 
@@ -69,6 +77,7 @@ class SpeakerDetailFragmentImplTest {
         whenever(qtn.arguments).thenReturn(bundle)
         whenever(qtn.view).thenReturn(view)
         whenever(qtn.context).thenReturn(context)
+        whenever(qtn.activity).thenReturn(activity)
         whenever(view.findViewById<ImageView>(R.id.speaker_image)).thenReturn(speakerImage)
         whenever(view.findViewById<TextView>(R.id.bio)).thenReturn(bioText)
         whenever(view.findViewById<TextView>(R.id.speaker_first_name)).thenReturn(firstName)
@@ -239,5 +248,34 @@ class SpeakerDetailFragmentImplTest {
         verify(sessionHolder, times(2)).setLayoutParams(any<LinearLayout.LayoutParams>())
 
         verify(sessionsHolder, times(2)).addView(sessionHolder)
+    }
+
+    @Test
+    fun sessionHolderNavigatesToSessionDetailOnClick() {
+        subject.onViewCreated(view, null, qtn)
+
+        val sessions = arrayOf(
+                FullSession("1"),
+                FullSession("2")
+        )
+
+        val sessionHolder = mock<SessionHolder>()
+        whenever(sessionHolderFactory.make(any(), eq(context))).thenReturn(sessionHolder)
+
+        subject.displaySessions(sessions)
+
+        val onClickCaptor = argumentCaptor<View.OnClickListener>()
+        verify(sessionHolder, atLeastOnce()).setOnClickListener(onClickCaptor.capture())
+
+        whenever(intentFactory.make(context, SessionDetailActivity::class.java)).thenReturn(intent)
+
+        onClickCaptor.firstValue.onClick(null)
+
+        val extraCaptor = argumentCaptor<SessionDetailParam>()
+        verify(intent, atLeastOnce()).putExtra(eq(SessionDetailActivityImpl.PARAMETER_BLOCK), extraCaptor.capture())
+        val speakerDetailParams = extraCaptor.firstValue
+        Assert.assertEquals(sessions[0], speakerDetailParams.session)
+
+        verify(qtn).startActivity(intent)
     }
 }

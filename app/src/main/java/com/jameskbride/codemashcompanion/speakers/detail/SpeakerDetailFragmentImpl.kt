@@ -11,6 +11,8 @@ import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
+import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivity
+import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailParam
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
 import com.jameskbride.codemashcompanion.utils.UriWrapper
@@ -77,8 +79,18 @@ class SpeakerDetailFragmentImpl @Inject constructor(
         sessions.forEach { session ->
             val sessionHolder = sessionHolderFactory.make(session, qtn.context!!)
             sessionHolder.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            sessionHolder.setOnClickListener { view: View? ->
+                navigateToSessionDetail(session)
+            }
             sessionsHolder.addView(sessionHolder)
         }
+    }
+
+    private fun navigateToSessionDetail(session: FullSession) {
+        val intent = intentFactory.make(qtn.context, SessionDetailActivity::class.java)
+        intent.putExtra(SpeakerDetailActivityImpl.PARAMETER_BLOCK, SessionDetailParam(session))
+
+        qtn.startActivity(intent)
     }
 }
 

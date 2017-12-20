@@ -12,6 +12,7 @@ import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivity
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityImpl
+import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailParam
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.eq
@@ -106,7 +107,7 @@ class SessionsFragmentImplTest {
 
         subject.navigateToSessionDetail(session)
 
-        val extraCaptor = argumentCaptor<SessionDetailActivityImpl.SessionDetailParam>()
+        val extraCaptor = argumentCaptor<SessionDetailParam>()
 
         verify(intent).putExtra(eq(SessionDetailActivityImpl.PARAMETER_BLOCK), extraCaptor.capture())
         val speakerDetailParams = extraCaptor.firstValue

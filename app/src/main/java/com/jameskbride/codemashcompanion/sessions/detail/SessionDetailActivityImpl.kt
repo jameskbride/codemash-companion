@@ -75,9 +75,10 @@ class SessionDetailActivityImpl @Inject constructor(
         qtn.startActivity(intent)
     }
 
-    class SessionDetailParam(val session: FullSession): Serializable
-
     companion object {
+
         val PARAMETER_BLOCK:String = "PARAMETER_BLOCK"
     }
 }
+
+class SessionDetailParam(val session: FullSession): Serializable
