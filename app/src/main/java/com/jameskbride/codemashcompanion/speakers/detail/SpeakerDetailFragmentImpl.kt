@@ -16,12 +16,21 @@ import com.jameskbride.codemashcompanion.utils.PicassoLoader
 import com.jameskbride.codemashcompanion.utils.UriWrapper
 import javax.inject.Inject
 
-class SpeakerDetailFragmentImpl @Inject constructor(val presenter: SpeakerDetailFragmentPresenter, val picassoLoader: PicassoLoader = PicassoLoader(), val intentFactory: IntentFactory = IntentFactory(), val uriWrapper: UriWrapper = UriWrapper()) : SpeakerDetailFragmentView {
+class SpeakerDetailFragmentImpl @Inject constructor(
+        val presenter: SpeakerDetailFragmentPresenter,
+        val picassoLoader: PicassoLoader = PicassoLoader(),
+        val intentFactory: IntentFactory = IntentFactory(),
+        val uriWrapper: UriWrapper = UriWrapper(),
+        val sessionHolderFactory: SessionHolderFactory = SessionHolderFactory()) : SpeakerDetailFragmentView {
+
+    private lateinit var qtn: SpeakerDetailFragment
+
     fun onCreate(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?, speakerDetailFragment: SpeakerDetailFragment):View {
         return inflater.inflate(R.layout.fragment_speaker_detail, container, false)
     }
 
     fun onViewCreated(view: View, savedInstanceState: Bundle?, speakerDetailFragment: SpeakerDetailFragment) {
+        qtn = speakerDetailFragment
         presenter.view = this
         val speaker = speakerDetailFragment.arguments!!.getSerializable(SpeakerDetailFragment.SPEAKER_KEY) as FullSpeaker
 
@@ -64,7 +73,12 @@ class SpeakerDetailFragmentImpl @Inject constructor(val presenter: SpeakerDetail
     }
 
     override fun displaySessions(sessions: Array<FullSession>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val sessionsHolder = qtn.view!!.findViewById<LinearLayout>(R.id.sessions_holder)
+        sessions.forEach { session ->
+            val sessionHolder = sessionHolderFactory.make(session, qtn.context!!)
+            sessionHolder.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            sessionsHolder.addView(sessionHolder)
+        }
     }
 }
 

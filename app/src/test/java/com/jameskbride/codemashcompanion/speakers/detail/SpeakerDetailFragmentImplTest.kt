@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
+import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
@@ -49,6 +50,8 @@ class SpeakerDetailFragmentImplTest {
     @Mock private lateinit var uriWrapper:UriWrapper
     @Mock private lateinit var uri:Uri
     @Mock private lateinit var presenter: SpeakerDetailFragmentPresenter
+    @Mock private lateinit var sessionsHolder:LinearLayout
+    @Mock private lateinit var sessionHolderFactory:SessionHolderFactory
 
     private lateinit var speaker: FullSpeaker
 
@@ -64,7 +67,8 @@ class SpeakerDetailFragmentImplTest {
         speaker.TwitterLink = ""
 
         whenever(qtn.arguments).thenReturn(bundle)
-        whenever(bundle.getSerializable(SpeakerDetailFragment.SPEAKER_KEY)).thenReturn(speaker)
+        whenever(qtn.view).thenReturn(view)
+        whenever(qtn.context).thenReturn(context)
         whenever(view.findViewById<ImageView>(R.id.speaker_image)).thenReturn(speakerImage)
         whenever(view.findViewById<TextView>(R.id.bio)).thenReturn(bioText)
         whenever(view.findViewById<TextView>(R.id.speaker_first_name)).thenReturn(firstName)
@@ -77,10 +81,12 @@ class SpeakerDetailFragmentImplTest {
         whenever(view.findViewById<TextView>(R.id.twitter_link)).thenReturn(twitterText)
         whenever(view.findViewById<LinearLayout>(R.id.blog_block)).thenReturn(blogBlock)
         whenever(view.findViewById<TextView>(R.id.blog_link)).thenReturn(blogText)
+        whenever(view.findViewById<LinearLayout>(R.id.sessions_holder)).thenReturn(sessionsHolder)
         whenever(view.context).thenReturn(context)
         whenever(uriWrapper.parse(any())).thenReturn(uri)
+        whenever(bundle.getSerializable(SpeakerDetailFragment.SPEAKER_KEY)).thenReturn(speaker)
 
-        subject = SpeakerDetailFragmentImpl(presenter, picassoLoader, intentFactory = intentFactory, uriWrapper = uriWrapper)
+        subject = SpeakerDetailFragmentImpl(presenter, picassoLoader, intentFactory = intentFactory, uriWrapper = uriWrapper, sessionHolderFactory = sessionHolderFactory)
     }
 
     @Test
@@ -213,5 +219,25 @@ class SpeakerDetailFragmentImplTest {
         verify(intentFactory).make(Intent.ACTION_VIEW)
         verify(intent).setData(uri)
         verify(qtn).startActivity(intent)
+    }
+
+    @Test
+    fun itCanDisplaySessions() {
+        subject.onViewCreated(view, null, qtn)
+
+        val sessions = arrayOf(
+                FullSession("1"),
+                FullSession("2")
+        )
+
+        val sessionHolder = mock<SessionHolder>()
+        whenever(sessionHolderFactory.make(any(), eq(context))).thenReturn(sessionHolder)
+
+        subject.displaySessions(sessions)
+
+        verify(sessionHolderFactory, times(2)).make(any(), eq(context))
+        verify(sessionHolder, times(2)).setLayoutParams(any<LinearLayout.LayoutParams>())
+
+        verify(sessionsHolder, times(2)).addView(sessionHolder)
     }
 }
