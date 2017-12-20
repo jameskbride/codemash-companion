@@ -3,11 +3,14 @@ package com.jameskbride.codemashcompanion.utils
 import android.content.Context
 import android.widget.ImageView
 import com.jameskbride.codemashcompanion.R
+import com.jameskbride.codemashcompanion.data.model.Speaker
 import com.jameskbride.codemashcompanion.speakers.SpeakerViewHolder
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
+import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
+import com.squareup.picasso.Transformation
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -36,14 +39,32 @@ class PicassoLoaderTest {
     @Test
     fun bindLoadsTheSpeakerDataIntoTheView() {
         val speaker = buildDefaultSpeakers()[0]
+        setupBasicBuilderSteps(speaker)
+
+        picassoLoader.load(speaker, speakerImage)
+
+        verify(picassoWrapper).into(speakerImage)
+    }
+
+    @Test
+    fun itAddsATransformationWhenOneIsProvided() {
+        val speaker = buildDefaultSpeakers()[0]
+        setupBasicBuilderSteps(speaker)
+
+        val transformation = CircleTransform()
+        picassoLoader.load(speaker, speakerImage, transformation = transformation)
+
+        verify(picassoWrapper).into(speakerImage)
+        verify(picassoWrapper).transform(transformation)
+
+    }
+
+    private fun setupBasicBuilderSteps(speaker: Speaker) {
         whenever(picassoWrapper.with(context)).thenReturn(picassoWrapper)
         whenever(picassoWrapper.load("${speaker.GravatarUrl}?s=180&d=mm")).thenReturn(picassoWrapper)
         whenever(picassoWrapper.placeholder(R.drawable.ic_person)).thenReturn(picassoWrapper)
         whenever(picassoWrapper.resize(500, 500)).thenReturn(picassoWrapper)
         whenever(picassoWrapper.centerCrop()).thenReturn(picassoWrapper)
-
-        picassoLoader.load(speaker, speakerImage)
-
-        verify(picassoWrapper).into(speakerImage)
+        whenever(picassoWrapper.transform(any<Transformation>())).thenReturn(picassoWrapper)
     }
 }

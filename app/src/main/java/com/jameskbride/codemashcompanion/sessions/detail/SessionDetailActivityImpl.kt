@@ -1,6 +1,9 @@
 package com.jameskbride.codemashcompanion.sessions.detail
 
+import android.app.ActionBar
 import android.os.Bundle
+import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
@@ -10,8 +13,12 @@ import java.io.Serializable
 import java.text.SimpleDateFormat
 import javax.inject.Inject
 
-class SessionDetailActivityImpl @Inject constructor(val presenter:SessionDetailActivityPresenter) : SessionDetailActivityView {
+class SessionDetailActivityImpl @Inject constructor(val presenter:SessionDetailActivityPresenter, val speakerHeadshotFactory: SpeakerHeadshotFactory = SpeakerHeadshotFactory()) : SessionDetailActivityView {
+    private lateinit var qtn: SessionDetailActivity
+
     fun onCreate(savedInstanceState: Bundle?, qtn: SessionDetailActivity) {
+        this.qtn = qtn
+        presenter.view = this
         qtn.setContentView(R.layout.activity_session_detail)
 
         val sessionDetail:SessionDetailParam =
@@ -42,7 +49,16 @@ class SessionDetailActivityImpl @Inject constructor(val presenter:SessionDetailA
     }
 
     override fun displaySpeakers(speakers: Array<Speaker>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val speakersHolder = qtn.findViewById<LinearLayout>(R.id.speakers_holder)
+        speakers.forEach { speaker ->
+            val speakerHeadshot = speakerHeadshotFactory.make(speaker, qtn)
+            speakerHeadshot.layoutParams =
+                    LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+            speakersHolder.addView(speakerHeadshot)
+        }
     }
 
     class SessionDetailParam(val session: FullSession): Serializable

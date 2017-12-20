@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.RequestCreator
+import com.squareup.picasso.Transformation
 
 class PicassoWrapper {
 
@@ -37,6 +38,11 @@ class PicassoWrapper {
 
     fun resize(width: Int, height:Int): PicassoWrapper {
         this.requestCreator = this.requestCreator?.resize(width, height)
+        return this
+    }
+
+    fun transform(transformation: Transformation): PicassoWrapper {
+        this.requestCreator = this.requestCreator?.transform(transformation)
         return this
     }
 

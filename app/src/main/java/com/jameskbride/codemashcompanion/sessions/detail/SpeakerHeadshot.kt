@@ -4,14 +4,12 @@ import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
-import android.widget.ImageView
 import android.widget.LinearLayout
-import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.Speaker
-import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
-import com.jameskbride.codemashcompanion.utils.PicassoLoader
 
 class SpeakerHeadshot :LinearLayout {
+
+    val impl:SpeakerHeadshotImpl = SpeakerHeadshotImpl()
 
     @JvmOverloads
     constructor(
@@ -20,7 +18,7 @@ class SpeakerHeadshot :LinearLayout {
             attrs: AttributeSet? = null,
             defStyleAttr: Int = 0)
             : super(context, attrs, defStyleAttr) {
-        onInflate(speaker, context)
+        impl.onInflate(speaker, context, this)
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -31,14 +29,12 @@ class SpeakerHeadshot :LinearLayout {
             defStyleAttr: Int,
             defStyleRes: Int)
             : super(context, attrs, defStyleAttr, defStyleRes) {
-        onInflate(speaker, context)
+        impl.onInflate(speaker, context, this)
     }
+}
 
-    fun onInflate(speaker: Speaker, context: Context,
-                  layoutInflaterFactory: LayoutInflaterFactory = LayoutInflaterFactory(),
-                  picassoLoader: PicassoLoader = PicassoLoader()) {
-        val view = layoutInflaterFactory.inflate(context, R.layout.view_speaker_headshot, this, false)
-        val headshotImageView = view?.findViewById<ImageView>(R.id.speaker_headshot)
-        picassoLoader.load(speaker, headshotImageView!!)
+class SpeakerHeadshotFactory {
+    fun make(speaker: Speaker, context: Context): SpeakerHeadshot {
+        return SpeakerHeadshot(speaker, context)
     }
 }
