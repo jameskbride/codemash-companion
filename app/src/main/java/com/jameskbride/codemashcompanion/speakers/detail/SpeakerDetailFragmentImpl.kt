@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
+import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
@@ -16,7 +17,6 @@ import com.jameskbride.codemashcompanion.utils.UriWrapper
 import javax.inject.Inject
 
 class SpeakerDetailFragmentImpl @Inject constructor(val presenter: SpeakerDetailFragmentPresenter, val picassoLoader: PicassoLoader = PicassoLoader(), val intentFactory: IntentFactory = IntentFactory(), val uriWrapper: UriWrapper = UriWrapper()) : SpeakerDetailFragmentView {
-
     fun onCreate(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?, speakerDetailFragment: SpeakerDetailFragment):View {
         return inflater.inflate(R.layout.fragment_speaker_detail, container, false)
     }
@@ -61,6 +61,10 @@ class SpeakerDetailFragmentImpl @Inject constructor(val presenter: SpeakerDetail
         block.visibility = View.VISIBLE
         block.setOnClickListener(LinkOnClickListener(link, intentFactory, speakerDetailFragment, uriWrapper))
         view.findViewById<TextView>(linkTextId).text = link
+    }
+
+    override fun displaySessions(sessions: Array<FullSession>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
 

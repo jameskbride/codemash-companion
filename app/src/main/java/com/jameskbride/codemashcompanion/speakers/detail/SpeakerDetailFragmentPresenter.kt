@@ -1,6 +1,7 @@
 package com.jameskbride.codemashcompanion.speakers.detail
 
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
+import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import io.reactivex.Scheduler
 import javax.inject.Inject
@@ -13,10 +14,14 @@ class SpeakerDetailFragmentPresenter @Inject constructor(
     lateinit var view:SpeakerDetailFragmentView
 
     fun retrieveSessions(speaker: FullSpeaker) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val sessionIds = speaker.sessionSpeakers.map { it.sessionId }.toTypedArray()
+        conferenceRepository.getSessions(sessionIds)
+                .subscribeOn(processScheduler)
+                .observeOn(androidScheduler)
+                .subscribe { results -> view.displaySessions(results) }
     }
 }
 
 interface SpeakerDetailFragmentView {
-
+    fun displaySessions(sessions: Array<FullSession>)
 }
