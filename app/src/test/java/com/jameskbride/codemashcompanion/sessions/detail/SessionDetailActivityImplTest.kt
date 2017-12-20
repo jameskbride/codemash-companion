@@ -1,6 +1,7 @@
 package com.jameskbride.codemashcompanion.sessions.detail
 
 import android.content.Intent
+import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -115,5 +116,22 @@ class SessionDetailActivityImplTest {
         verify(speakersHolder, times(2)).addView(speakerHeadshot)
         verify(speakerHeadshot, times(2))
                 .setLayoutParams(any())
+    }
+    
+    @Test
+    fun onClickOfSpeakerHeadshotItNavigatesToSpeakerDetail() {
+        val speaker = Speaker()
+        val speakers = arrayOf(speaker)
+        val speakerHeadshot:SpeakerHeadshot = mock()
+        whenever(speakerHeadshotFactory.make(any(), eq(qtn))).thenReturn(speakerHeadshot)
+
+        subject.onCreate(null, qtn)
+        subject.displaySpeakers(speakers)
+
+        val onClickCaptor = argumentCaptor<View.OnClickListener>()
+
+        verify(speakerHeadshot).setOnClickListener(onClickCaptor.capture())
+        onClickCaptor.firstValue.onClick(null)
+        verify(presenter).navigateToSpeakerDetail(speaker)
     }
 }

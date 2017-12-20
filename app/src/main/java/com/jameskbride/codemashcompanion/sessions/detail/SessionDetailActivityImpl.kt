@@ -2,6 +2,7 @@ package com.jameskbride.codemashcompanion.sessions.detail
 
 import android.app.ActionBar
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -57,6 +58,7 @@ class SessionDetailActivityImpl @Inject constructor(val presenter:SessionDetailA
                             LinearLayout.LayoutParams.WRAP_CONTENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                     )
+            speakerHeadshot.setOnClickListener { view: View? -> presenter.navigateToSpeakerDetail(speaker) }
             speakersHolder.addView(speakerHeadshot)
         }
     }

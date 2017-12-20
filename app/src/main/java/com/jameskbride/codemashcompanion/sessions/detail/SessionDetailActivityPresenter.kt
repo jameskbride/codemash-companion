@@ -19,6 +19,10 @@ class SessionDetailActivityPresenter @Inject constructor(val conferenceRepositor
                 .observeOn(androidScheduler)
                 .subscribe { results -> view.displaySpeakers(results) }
     }
+
+    fun navigateToSpeakerDetail(speaker: Speaker) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
 
 interface SessionDetailActivityView {
