@@ -1,13 +1,13 @@
 package com.jameskbride.codemashcompanion.utils.test
 
-import com.jameskbride.codemashcompanion.data.model.Speaker
+import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
 
-fun buildDefaultSpeakers(count:Int = 1): Array<Speaker> {
+fun buildDefaultSpeakers(count:Int = 1): Array<FullSpeaker> {
 
-    val speakers = mutableListOf<Speaker>()
+    val speakers = mutableListOf<FullSpeaker>()
     for (i in 0 until count) {
-        speakers.add(Speaker(
+        speakers.add(FullSpeaker(
                 LinkedInProfile = "linkedin",
                 Id = "1234",
                 LastName = "Smith",

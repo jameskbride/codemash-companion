@@ -223,7 +223,7 @@ class ConferenceRepositoryTest {
 
     @Test
     fun getSpeakersByIdsReturnsTheSpeakersFromTheDao() {
-        val speakers = arrayOf(Speaker("1"), Speaker("2"))
+        val speakers = arrayOf(FullSpeaker("1"), FullSpeaker("2"))
 
         val maybe = Maybe.just(speakers)
         val speakerIds = listOf("1", "2")

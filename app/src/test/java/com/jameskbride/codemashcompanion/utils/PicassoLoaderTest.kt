@@ -3,15 +3,13 @@ package com.jameskbride.codemashcompanion.utils
 import android.content.Context
 import android.widget.ImageView
 import com.jameskbride.codemashcompanion.R
-import com.jameskbride.codemashcompanion.data.model.Speaker
-import com.jameskbride.codemashcompanion.speakers.SpeakerViewHolder
+import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import com.squareup.picasso.Transformation
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
@@ -59,7 +57,7 @@ class PicassoLoaderTest {
 
     }
 
-    private fun setupBasicBuilderSteps(speaker: Speaker) {
+    private fun setupBasicBuilderSteps(speaker: FullSpeaker) {
         whenever(picassoWrapper.with(context)).thenReturn(picassoWrapper)
         whenever(picassoWrapper.load("${speaker.GravatarUrl}?s=180&d=mm")).thenReturn(picassoWrapper)
         whenever(picassoWrapper.placeholder(R.drawable.ic_person)).thenReturn(picassoWrapper)

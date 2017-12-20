@@ -36,7 +36,7 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         }.toTypedArray()
     }
 
-    fun getSpeakers(): Maybe<Array<Speaker>> {
+    fun getSpeakers(): Maybe<Array<FullSpeaker>> {
         return conferenceDao.getSpeakers()
     }
 
@@ -102,7 +102,7 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         return conferenceDao.getSessions()
     }
 
-    fun getSpeakers(ids: List<String>):Maybe<Array<Speaker>> {
+    fun getSpeakers(ids: List<String>):Maybe<Array<FullSpeaker>> {
         return conferenceDao.getSpeakers(ids.toTypedArray())
     }
 }

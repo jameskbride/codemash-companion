@@ -9,19 +9,21 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
-import com.jameskbride.codemashcompanion.data.model.Speaker
+import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
 import com.jameskbride.codemashcompanion.utils.UriWrapper
+import javax.inject.Inject
 
-class SpeakerDetailFragmentImpl constructor(val picassoLoader: PicassoLoader = PicassoLoader(), val intentFactory: IntentFactory = IntentFactory(), val uriWrapper: UriWrapper = UriWrapper()) {
+class SpeakerDetailFragmentImpl @Inject constructor(val presenter: SpeakerDetailFragmentPresenter, val picassoLoader: PicassoLoader = PicassoLoader(), val intentFactory: IntentFactory = IntentFactory(), val uriWrapper: UriWrapper = UriWrapper()) : SpeakerDetailFragmentView {
 
     fun onCreate(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?, speakerDetailFragment: SpeakerDetailFragment):View {
         return inflater.inflate(R.layout.fragment_speaker_detail, container, false)
     }
 
     fun onViewCreated(view: View, savedInstanceState: Bundle?, speakerDetailFragment: SpeakerDetailFragment) {
-        val speaker = speakerDetailFragment.arguments!!.getSerializable(SpeakerDetailFragment.SPEAKER_KEY) as Speaker
+        presenter.view = this
+        val speaker = speakerDetailFragment.arguments!!.getSerializable(SpeakerDetailFragment.SPEAKER_KEY) as FullSpeaker
 
         val speakerImage = view.findViewById<ImageView>(R.id.speaker_image)
         picassoLoader.load(speaker, speakerImage)
@@ -36,9 +38,10 @@ class SpeakerDetailFragmentImpl constructor(val picassoLoader: PicassoLoader = P
         lastName.text = speaker.LastName
 
         configureLinks(speaker, view, speakerDetailFragment)
+        presenter.retrieveSessions(speaker)
     }
 
-    private fun configureLinks(speaker: Speaker, view: View, speakerDetailFragment: SpeakerDetailFragment) {
+    private fun configureLinks(speaker: FullSpeaker, view: View, speakerDetailFragment: SpeakerDetailFragment) {
         if (!speaker.TwitterLink.isNullOrBlank()) {
             makeNavigableLink(view, speaker.TwitterLink, speakerDetailFragment, R.id.twitter_block, R.id.twitter_link)
         }

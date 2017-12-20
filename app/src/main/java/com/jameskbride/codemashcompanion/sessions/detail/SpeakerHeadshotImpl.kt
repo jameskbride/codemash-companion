@@ -5,13 +5,13 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
-import com.jameskbride.codemashcompanion.data.model.Speaker
+import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.utils.CircleTransform
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
 
 class SpeakerHeadshotImpl {
-    fun onInflate(speaker: Speaker,
+    fun onInflate(speaker: FullSpeaker,
                   context: Context,
                   qtn:SpeakerHeadshot,
                   attrs: AttributeSet? = null,

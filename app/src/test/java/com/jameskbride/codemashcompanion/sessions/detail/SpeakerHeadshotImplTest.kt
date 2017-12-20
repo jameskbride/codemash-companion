@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
-import com.jameskbride.codemashcompanion.data.model.Speaker
+import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.utils.CircleTransform
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
@@ -41,7 +41,7 @@ class SpeakerHeadshotImplTest {
 
     @Test
     fun itInflatesTheView() {
-        val speaker = Speaker()
+        val speaker = FullSpeaker()
         setupHeadshotExpectations()
 
         subject.onInflate(speaker, context, qtn, layoutInflaterFactory = layoutInflaterFactory, picassoLoader = picassoLoader)
@@ -51,7 +51,7 @@ class SpeakerHeadshotImplTest {
 
     @Test
     fun itSetsTheSpeakerName() {
-        val speaker = Speaker(FirstName = "John", LastName = "Smith")
+        val speaker = FullSpeaker(FirstName = "John", LastName = "Smith")
         setupHeadshotExpectations()
 
         subject.onInflate(speaker, context, qtn, layoutInflaterFactory = layoutInflaterFactory, picassoLoader = picassoLoader)

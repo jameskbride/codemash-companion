@@ -11,7 +11,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
-import com.jameskbride.codemashcompanion.data.model.Speaker
+import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
 import com.jameskbride.codemashcompanion.utils.UriWrapper
@@ -48,8 +48,9 @@ class SpeakerDetailFragmentImplTest {
     @Mock private lateinit var context:Context
     @Mock private lateinit var uriWrapper:UriWrapper
     @Mock private lateinit var uri:Uri
+    @Mock private lateinit var presenter: SpeakerDetailFragmentPresenter
 
-    private lateinit var speaker: Speaker
+    private lateinit var speaker: FullSpeaker
 
     private lateinit var subject:SpeakerDetailFragmentImpl
 
@@ -79,7 +80,7 @@ class SpeakerDetailFragmentImplTest {
         whenever(view.context).thenReturn(context)
         whenever(uriWrapper.parse(any())).thenReturn(uri)
 
-        subject = SpeakerDetailFragmentImpl(picassoLoader, intentFactory = intentFactory, uriWrapper = uriWrapper)
+        subject = SpeakerDetailFragmentImpl(presenter, picassoLoader, intentFactory = intentFactory, uriWrapper = uriWrapper)
     }
 
     @Test
@@ -112,6 +113,13 @@ class SpeakerDetailFragmentImplTest {
 
         verify(firstName).setText(speaker.FirstName)
         verify(lastName).setText(speaker.LastName)
+    }
+
+    @Test
+    fun onViewCreatedRequestsTheSpeakers() {
+        subject.onViewCreated(view, null, qtn)
+
+        verify(presenter).retrieveSessions(speaker)
     }
 
     @Test

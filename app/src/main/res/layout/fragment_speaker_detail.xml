@@ -181,6 +181,25 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"/>
             </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:minHeight="20dp"
+                android:text="@string/sessions"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:background="@color/codemash_green"
+                android:gravity="center"/>
+            <LinearLayout
+                android:id="@+id/sessions_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            </LinearLayout>
         </LinearLayout>
     </FrameLayout>
 

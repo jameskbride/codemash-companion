@@ -2,7 +2,7 @@ package com.jameskbride.codemashcompanion.sessions.detail
 
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSession
-import com.jameskbride.codemashcompanion.data.model.Speaker
+import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import io.reactivex.Scheduler
 import javax.inject.Inject
@@ -23,6 +23,6 @@ class SessionDetailActivityPresenter @Inject constructor(val conferenceRepositor
 }
 
 interface SessionDetailActivityView {
-    fun displaySpeakers(speakers: Array<Speaker>)
+    fun displaySpeakers(speakers: Array<FullSpeaker>)
 
 }

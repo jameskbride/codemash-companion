@@ -2,12 +2,12 @@ package com.jameskbride.codemashcompanion.utils
 
 import android.widget.ImageView
 import com.jameskbride.codemashcompanion.R
-import com.jameskbride.codemashcompanion.data.model.Speaker
+import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.squareup.picasso.Transformation
 
 class PicassoLoader constructor(val picassoWrapper: PicassoWrapper = PicassoWrapper(), val logWrapper: LogWrapper = LogWrapper()) {
 
-    fun load(speaker: Speaker, speakerImage: ImageView, width:Int = 500, height:Int = 500, transformation: Transformation? = null) {
+    fun load(speaker: FullSpeaker, speakerImage: ImageView, width:Int = 500, height:Int = 500, transformation: Transformation? = null) {
         val url = "${speaker.GravatarUrl}?s=180&d=mm"
         logWrapper.d("PicassoLoader", "Requesting gravatar url: ${url}")
         picassoWrapper.with(speakerImage.context)

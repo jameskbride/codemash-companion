@@ -3,7 +3,7 @@ package com.jameskbride.codemashcompanion.splash
 import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
 import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
-import com.jameskbride.codemashcompanion.data.model.Speaker
+import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
@@ -36,8 +36,8 @@ class SplashActivityPresenterTest {
         eventBus.register(this)
         subject = SplashActivityPresenter(eventBus, conferenceRepository, testScheduler, testScheduler)
         subject.view = view
-        val emptySpeakers:Array<Speaker> = arrayOf()
-        val emptySpeakersMaybe: Maybe<Array<Speaker>> = Maybe.just(emptySpeakers)
+        val emptySpeakers:Array<FullSpeaker> = arrayOf()
+        val emptySpeakersMaybe: Maybe<Array<FullSpeaker>> = Maybe.just(emptySpeakers)
         whenever(conferenceRepository.getSpeakers()).thenReturn(emptySpeakersMaybe)
     }
 
@@ -52,7 +52,7 @@ class SplashActivityPresenterTest {
     @Test
     fun requestConferenceDataSendsConferenceDataPersistedEventWhenDataIsAlreadyPresent() {
         val speakers = buildDefaultSpeakers()
-        val emptySpeakersMaybe: Maybe<Array<Speaker>> = Maybe.just(speakers)
+        val emptySpeakersMaybe: Maybe<Array<FullSpeaker>> = Maybe.just(speakers)
         whenever(conferenceRepository.getSpeakers()).thenReturn(emptySpeakersMaybe)
 
         subject.requestConferenceData()

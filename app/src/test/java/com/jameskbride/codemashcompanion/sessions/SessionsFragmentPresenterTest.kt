@@ -2,13 +2,11 @@ package com.jameskbride.codemashcompanion.sessions
 
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSession
-import com.jameskbride.codemashcompanion.data.model.Session
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Maybe
 import io.reactivex.schedulers.TestScheduler
-import org.greenrobot.eventbus.EventBus
 import org.junit.Assert.assertArrayEquals
 import org.junit.Before
 import org.junit.Test
@@ -18,7 +16,6 @@ import org.mockito.MockitoAnnotations.initMocks
 class SessionsFragmentPresenterTest {
 
     @Mock private lateinit var conferenceRepository:ConferenceRepository
-    @Mock private lateinit var eventBus:EventBus
     @Mock private lateinit var view:SessionsFragmentView
 
     private lateinit var subject:SessionsFragmentPresenter
@@ -30,7 +27,7 @@ class SessionsFragmentPresenterTest {
         initMocks(this)
         testScheduler = TestScheduler()
 
-        subject = SessionsFragmentPresenter(eventBus, conferenceRepository, testScheduler, testScheduler)
+        subject = SessionsFragmentPresenter(conferenceRepository, testScheduler, testScheduler)
         subject.view = view
     }
 

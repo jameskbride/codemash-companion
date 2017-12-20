@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
-import com.jameskbride.codemashcompanion.data.model.Speaker
+import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
 
@@ -26,13 +26,13 @@ class SpeakersRecyclerViewAdapter constructor(val speakersFragmentPresenter: Spe
         return impl.getItemCount()
     }
 
-    fun setSpeakers(speakers:Array<Speaker>) {
+    fun setSpeakers(speakers:Array<FullSpeaker>) {
         impl.setSpeakers(speakers, this)
     }
 }
 
 class SpeakersRecyclerViewAdapterImpl constructor(val speakersFragmentPresenter: SpeakersFragmentPresenter, val layoutInflaterFactory: LayoutInflaterFactory = LayoutInflaterFactory()) {
-    private var speakers: Array<Speaker> = arrayOf()
+    private var speakers: Array<FullSpeaker> = arrayOf()
 
     fun onBindViewHolder(holder: SpeakerViewHolder?, position: Int) {
         holder!!.bind(speakers[position])
@@ -51,7 +51,7 @@ class SpeakersRecyclerViewAdapterImpl constructor(val speakersFragmentPresenter:
         return speakers.size
     }
 
-    fun setSpeakers(speakers: Array<Speaker>, speakersRecyclerViewAdapter: SpeakersRecyclerViewAdapter) {
+    fun setSpeakers(speakers: Array<FullSpeaker>, speakersRecyclerViewAdapter: SpeakersRecyclerViewAdapter) {
         this.speakers = speakers
         speakersRecyclerViewAdapter.notifyDataSetChanged()
     }
@@ -70,7 +70,7 @@ class SpeakerViewHolder(itemView: View?, val picassoLoader: PicassoLoader = Pica
         speakerLastName = itemView?.findViewById(R.id.speaker_last_name)
     }
 
-    fun bind(speaker: Speaker) {
+    fun bind(speaker: FullSpeaker) {
         speakerFirstName!!.text = speaker.FirstName
         speakerLastName!!.text = speaker.LastName
 

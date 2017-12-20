@@ -1,15 +1,13 @@
 package com.jameskbride.codemashcompanion.sessions.detail
 
-import android.app.ActionBar
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
+import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.data.model.Session
-import com.jameskbride.codemashcompanion.data.model.Speaker
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailParams
@@ -56,7 +54,7 @@ class SessionDetailActivityImpl @Inject constructor(
         presenter.retrieveSpeakers(sessionDetail.session)
     }
 
-    override fun displaySpeakers(speakers: Array<Speaker>) {
+    override fun displaySpeakers(speakers: Array<FullSpeaker>) {
         val speakersHolder = qtn.findViewById<LinearLayout>(R.id.speakers_holder)
         speakers.forEachIndexed{ index, speaker ->
             val speakerHeadshot = speakerHeadshotFactory.make(speaker, qtn)
@@ -70,7 +68,7 @@ class SessionDetailActivityImpl @Inject constructor(
         }
     }
 
-    private fun navigateToSpeakerDetail(speakers: Array<Speaker>, index:Int) {
+    private fun navigateToSpeakerDetail(speakers: Array<FullSpeaker>, index:Int) {
         val intent = intentFactory.make(qtn, SpeakerDetailActivity::class.java)
         intent.putExtra(SpeakerDetailActivityImpl.PARAMETER_BLOCK, SpeakerDetailParams(speakers, index))
 

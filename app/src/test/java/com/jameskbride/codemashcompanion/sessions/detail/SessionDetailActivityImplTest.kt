@@ -2,22 +2,19 @@ package com.jameskbride.codemashcompanion.sessions.detail
 
 import android.content.Context
 import android.content.Intent
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
 import com.jameskbride.codemashcompanion.data.model.FullSession
-import com.jameskbride.codemashcompanion.data.model.Speaker
+import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.data.model.Tag
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityImpl.SessionDetailParam
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailParams
 import com.jameskbride.codemashcompanion.utils.IntentFactory
-import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import com.nhaarman.mockito_kotlin.*
 import org.junit.Assert
 import org.junit.Assert.assertEquals
@@ -116,7 +113,7 @@ class SessionDetailActivityImplTest {
 
     @Test
     fun itDisplaysAllSpeakersForTheSession() {
-        val speakers = arrayOf(Speaker(), Speaker())
+        val speakers = arrayOf(FullSpeaker(), FullSpeaker())
         val speakerHeadshot:SpeakerHeadshot = mock()
         whenever(speakerHeadshotFactory.make(any(), eq(qtn))).thenReturn(speakerHeadshot)
 
@@ -130,7 +127,7 @@ class SessionDetailActivityImplTest {
 
     @Test
     fun onClickOfSpeakerHeadshotItNavigatesToSpeakerDetail() {
-        val speaker = Speaker()
+        val speaker = FullSpeaker()
         val speakers = arrayOf(speaker)
         val speakerHeadshot:SpeakerHeadshot = mock()
         whenever(speakerHeadshotFactory.make(any(), eq(qtn))).thenReturn(speakerHeadshot)

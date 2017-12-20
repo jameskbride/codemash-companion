@@ -2,14 +2,13 @@ package com.jameskbride.codemashcompanion.sessions.detail
 
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSession
+import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.data.model.SessionSpeaker
-import com.jameskbride.codemashcompanion.data.model.Speaker
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Maybe
 import io.reactivex.schedulers.TestScheduler
-import org.greenrobot.eventbus.EventBus
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -42,7 +41,7 @@ class SessionDetailActivityPresenterTest {
                 )
         )
 
-        val speakers = arrayOf(Speaker("1"), Speaker("2"))
+        val speakers = arrayOf(FullSpeaker("1"), FullSpeaker("2"))
         val speakerObservable = Maybe.just(speakers)
         whenever(conferenceRepository.getSpeakers(anyList<String>())).thenReturn(speakerObservable)
 

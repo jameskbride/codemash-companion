@@ -2,7 +2,7 @@ package com.jameskbride.codemashcompanion.speakers
 
 import com.jameskbride.codemashcompanion.bus.BusAware
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
-import com.jameskbride.codemashcompanion.data.model.Speaker
+import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import io.reactivex.Scheduler
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
@@ -21,12 +21,12 @@ class SpeakersFragmentPresenter @Inject constructor(override val eventBus: Event
                 .subscribe {speakers -> view.onSpeakerDataRetrieved(speakers)}
     }
 
-    fun navigateToDetails(speakers: Array<Speaker>, index: Int) {
+    fun navigateToDetails(speakers: Array<FullSpeaker>, index: Int) {
         view.navigateToDetails(speakers, index)
     }
 }
 
 interface SpeakersFragmentView {
-    fun onSpeakerDataRetrieved(speakers: Array<Speaker>)
-    fun navigateToDetails(speakers: Array<Speaker>, index: Int)
+    fun onSpeakerDataRetrieved(speakers: Array<FullSpeaker>)
+    fun navigateToDetails(speakers: Array<FullSpeaker>, index: Int)
 }

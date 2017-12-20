@@ -17,6 +17,7 @@ import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentImpl
 import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentPresenter
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailFragmentImpl
+import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailFragmentPresenter
 import com.jameskbride.codemashcompanion.splash.SplashActivityImpl
 import com.jameskbride.codemashcompanion.splash.SplashActivityPresenter
 import com.jameskbride.codemashcompanion.utils.IntentFactory
@@ -164,15 +165,22 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     }
 
     @Provides
-    fun makeSpeakerDetailFragmentImpl(): SpeakerDetailFragmentImpl {
-        return SpeakerDetailFragmentImpl()
+    fun makeSpeakerDetailFragmentPresenter(conferenceRepository: ConferenceRepository,
+                                           @Named("process") processScheduler: Scheduler,
+                                           @Named("main") androidScheduler: Scheduler): SpeakerDetailFragmentPresenter {
+        return SpeakerDetailFragmentPresenter(conferenceRepository, processScheduler, androidScheduler)
     }
 
     @Provides
-    fun makeSessionsFragmentPresenter(eventBus: EventBus, conferenceRepository: ConferenceRepository,
+    fun makeSpeakerDetailFragmentImpl(presenter: SpeakerDetailFragmentPresenter): SpeakerDetailFragmentImpl {
+        return SpeakerDetailFragmentImpl(presenter)
+    }
+
+    @Provides
+    fun makeSessionsFragmentPresenter(conferenceRepository: ConferenceRepository,
                                       @Named("process") processScheduler: Scheduler,
                                       @Named("main") androidScheduler: Scheduler): SessionsFragmentPresenter {
-        return SessionsFragmentPresenter(eventBus, conferenceRepository, processScheduler, androidScheduler)
+        return SessionsFragmentPresenter(conferenceRepository, processScheduler, androidScheduler)
     }
 
     @Provides

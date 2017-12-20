@@ -5,7 +5,7 @@ import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
 import android.widget.LinearLayout
-import com.jameskbride.codemashcompanion.data.model.Speaker
+import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 
 class SpeakerHeadshot :LinearLayout {
 
@@ -13,7 +13,7 @@ class SpeakerHeadshot :LinearLayout {
 
     @JvmOverloads
     constructor(
-            speaker:Speaker,
+            speaker:FullSpeaker,
             context: Context,
             attrs: AttributeSet? = null,
             defStyleAttr: Int = 0)
@@ -23,7 +23,7 @@ class SpeakerHeadshot :LinearLayout {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
-            speaker: Speaker,
+            speaker: FullSpeaker,
             context: Context,
             attrs: AttributeSet?,
             defStyleAttr: Int,
@@ -34,7 +34,7 @@ class SpeakerHeadshot :LinearLayout {
 }
 
 class SpeakerHeadshotFactory {
-    fun make(speaker: Speaker, context: Context): SpeakerHeadshot {
+    fun make(speaker: FullSpeaker, context: Context): SpeakerHeadshot {
         return SpeakerHeadshot(speaker, context)
     }
 }

@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.R
-import com.jameskbride.codemashcompanion.data.model.Speaker
+import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl.Companion.PARAMETER_BLOCK
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailParams
@@ -42,14 +42,14 @@ class SpeakersFragmentImpl @Inject constructor(val speakersFragmentPresenter: Sp
     fun onPause() {
     }
 
-    override fun navigateToDetails(speakers: Array<Speaker>, index: Int) {
+    override fun navigateToDetails(speakers: Array<FullSpeaker>, index: Int) {
         val intent = intentFactory.make(qtn.context, SpeakerDetailActivity::class.java)
         intent.putExtra(PARAMETER_BLOCK, SpeakerDetailParams(speakers, index))
 
         qtn.activity!!.startActivity(intent)
     }
 
-    override fun onSpeakerDataRetrieved(speakers: Array<Speaker>) {
+    override fun onSpeakerDataRetrieved(speakers: Array<FullSpeaker>) {
         speakersViewAdapter.setSpeakers(speakers)
     }
 }
