@@ -51,7 +51,10 @@ class SessionDetailActivityImpl @Inject constructor(
         val formattedEndTime = timeFormat.format(sessionEndTime)
         qtn.findViewById<TextView>(R.id.session_time).text = "${formattedStartTime} - ${formattedEndTime}"
 
-        presenter.retrieveSpeakers(sessionDetail.session)
+        when (sessionDetail.showSpeakers) {
+            true -> presenter.retrieveSpeakers(sessionDetail.session)
+            else -> qtn.findViewById<LinearLayout>(R.id.speakers_block).visibility = View.GONE
+        }
     }
 
     override fun displaySpeakers(speakers: Array<FullSpeaker>) {
@@ -81,4 +84,4 @@ class SessionDetailActivityImpl @Inject constructor(
     }
 }
 
-class SessionDetailParam(val session: FullSession): Serializable
+class SessionDetailParam(val session: FullSession, val showSpeakers:Boolean = true): Serializable

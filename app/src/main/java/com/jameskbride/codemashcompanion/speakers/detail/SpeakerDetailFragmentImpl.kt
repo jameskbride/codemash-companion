@@ -88,7 +88,7 @@ class SpeakerDetailFragmentImpl @Inject constructor(
 
     private fun navigateToSessionDetail(session: FullSession) {
         val intent = intentFactory.make(qtn.context, SessionDetailActivity::class.java)
-        intent.putExtra(SpeakerDetailActivityImpl.PARAMETER_BLOCK, SessionDetailParam(session))
+        intent.putExtra(SpeakerDetailActivityImpl.PARAMETER_BLOCK, SessionDetailParam(session, showSpeakers = false))
 
         qtn.startActivity(intent)
     }

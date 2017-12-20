@@ -23,7 +23,7 @@ import com.jameskbride.codemashcompanion.utils.UriWrapper
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import com.nhaarman.mockito_kotlin.*
 import org.junit.Assert
-import org.junit.Assert.assertSame
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentCaptor
@@ -273,8 +273,9 @@ class SpeakerDetailFragmentImplTest {
 
         val extraCaptor = argumentCaptor<SessionDetailParam>()
         verify(intent, atLeastOnce()).putExtra(eq(SessionDetailActivityImpl.PARAMETER_BLOCK), extraCaptor.capture())
-        val speakerDetailParams = extraCaptor.firstValue
-        Assert.assertEquals(sessions[0], speakerDetailParams.session)
+        val sessionDetailParam = extraCaptor.firstValue
+        assertEquals(sessions[0], sessionDetailParam.session)
+        assertFalse(sessionDetailParam.showSpeakers)
 
         verify(qtn).startActivity(intent)
     }

@@ -35,10 +35,10 @@ class SessionDetailActivityImplTest {
     @Mock private lateinit var tags:TextView
     @Mock private lateinit var sessionDate:TextView
     @Mock private lateinit var speakersHolder:LinearLayout
+    @Mock private lateinit var speakersBlock:LinearLayout
     @Mock private lateinit var presenter:SessionDetailActivityPresenter
     @Mock private lateinit var speakerHeadshotFactory:SpeakerHeadshotFactory
     @Mock private lateinit var intentFactory:IntentFactory
-    @Mock private lateinit var context:Context
 
     private lateinit var subject: SessionDetailActivityImpl
 
@@ -64,7 +64,7 @@ class SessionDetailActivityImplTest {
                 tags = listOf(Tag(sessionId = "123", name = "tag 1"),
                         Tag(sessionId = "123", name = "tag 2"))
         )
-        sessionDetailParam = SessionDetailParam(fullSession)
+        buildSessionDetailParam()
 
         whenever(qtn.findViewById<TextView>(R.id.session_title)).thenReturn(title)
         whenever(qtn.findViewById<TextView>(R.id.session_abstract)).thenReturn(abstract)
@@ -75,8 +75,13 @@ class SessionDetailActivityImplTest {
         whenever(qtn.findViewById<TextView>(R.id.session_type)).thenReturn(sessionType)
         whenever(qtn.findViewById<TextView>(R.id.session_date)).thenReturn(sessionDate)
         whenever(qtn.findViewById<LinearLayout>(R.id.speakers_holder)).thenReturn(speakersHolder)
+        whenever(qtn.findViewById<LinearLayout>(R.id.speakers_block)).thenReturn(speakersBlock)
         whenever(qtn.intent).thenReturn(intent)
         whenever(intent.getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
+    }
+
+    private fun buildSessionDetailParam(showSpeakers: Boolean = true) {
+        sessionDetailParam = SessionDetailParam(fullSession, showSpeakers = showSpeakers)
     }
 
     @Test
@@ -108,6 +113,17 @@ class SessionDetailActivityImplTest {
         subject.onCreate(null, qtn)
 
         verify(presenter).retrieveSpeakers(fullSession)
+    }
+    
+    @Test
+    fun onCreateDoesNotRequestSpeakersWhenShowSpeakersIsFalse() {
+        buildSessionDetailParam(false)
+        whenever(intent.getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
+
+        subject.onCreate(null, qtn)
+
+        verify(speakersBlock).setVisibility(View.GONE)
+        verify(presenter, never()).retrieveSpeakers(any())
     }
 
     @Test
