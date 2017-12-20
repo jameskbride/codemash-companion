@@ -17,7 +17,7 @@ class SessionsFragmentPresenter @Inject constructor(val conferenceRepository: Co
                 .subscribe { results -> notifyView(results) }
     }
 
-    private fun notifyView(results: Array<FullSession?>) {
+    private fun notifyView(results: Array<FullSession>) {
         view.onSessionDataRetrieved(SessionData(results))
     }
 

@@ -34,7 +34,7 @@ class SessionsFragmentPresenterTest {
     @Test
     fun whenSessionsDataIsReceivedThenItIsPassedToTheView() {
         val firstStartTime = "2018-01-11T10:15:00"
-        val sessions:Array<FullSession?> = arrayOf(
+        val sessions:Array<FullSession> = arrayOf(
                 FullSession(SessionStartTime = firstStartTime)
         )
 

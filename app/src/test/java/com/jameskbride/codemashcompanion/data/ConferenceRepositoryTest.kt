@@ -235,7 +235,7 @@ class ConferenceRepositoryTest {
 
     @Test
     fun getSessionsReturnsTheSessionsFromTheDao() {
-        val sessions:Array<FullSession?> = arrayOf(FullSession(
+        val sessions:Array<FullSession> = arrayOf(FullSession(
                 Id = "123",
                 Category = "DevOps",
                 SessionStartTime = "start time",
@@ -250,6 +250,26 @@ class ConferenceRepositoryTest {
         whenever(conferenceDao.getSessions()).thenReturn(maybe)
 
         var result = subject.getSessions()
+
+        assertEquals(maybe, result)
+    }
+
+    @Test
+    fun getSessionsByIdsReturnsTheSessionsFromDao() {
+        val sessions:Array<FullSession> = arrayOf(
+                FullSession(
+                    Id = "1"
+                ),
+                FullSession(
+                   Id = "2"
+                )
+        )
+
+        val maybe = Maybe.just(sessions)
+        val ids = arrayOf(1, 2)
+        whenever(conferenceDao.getSessions(ids)).thenReturn(maybe)
+
+        var result = subject.getSessions(ids)
 
         assertEquals(maybe, result)
     }

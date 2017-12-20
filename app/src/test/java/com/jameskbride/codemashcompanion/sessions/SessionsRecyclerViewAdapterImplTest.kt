@@ -52,7 +52,7 @@ class SessionsRecyclerViewAdapterImplTest {
     private val thirdSession = FullSession(SessionStartTime = secondStartTime)
 
     private fun buildDefaultSessionData() {
-        var sessions:Array<FullSession?> = arrayOf(
+        var sessions:Array<FullSession> = arrayOf(
                 firstSession,
                 secondSession,
                 thirdSession

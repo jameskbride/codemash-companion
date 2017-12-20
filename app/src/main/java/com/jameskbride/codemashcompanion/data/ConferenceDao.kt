@@ -32,5 +32,8 @@ interface ConferenceDao {
     fun getSpeakers(ids:Array<String>): Maybe<Array<FullSpeaker>>
 
     @Query("SELECT * FROM Session")
-    fun getSessions(): Maybe<Array<FullSession?>>
+    fun getSessions(): Maybe<Array<FullSession>>
+
+    @Query("SELECT * FROM Session WHERE id IN (:ids) ORDER BY title")
+    fun getSessions(ids:Array<Int>): Maybe<Array<FullSession>>
 }
