@@ -10,11 +10,18 @@ import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.Session
 import com.jameskbride.codemashcompanion.data.model.Speaker
+import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
+import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
+import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailParams
+import com.jameskbride.codemashcompanion.utils.IntentFactory
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import javax.inject.Inject
 
-class SessionDetailActivityImpl @Inject constructor(val presenter:SessionDetailActivityPresenter, val speakerHeadshotFactory: SpeakerHeadshotFactory = SpeakerHeadshotFactory()) : SessionDetailActivityView {
+class SessionDetailActivityImpl @Inject constructor(
+        val presenter:SessionDetailActivityPresenter,
+        val speakerHeadshotFactory: SpeakerHeadshotFactory = SpeakerHeadshotFactory(),
+        val intentFactory: IntentFactory = IntentFactory()) : SessionDetailActivityView {
     private lateinit var qtn: SessionDetailActivity
 
     fun onCreate(savedInstanceState: Bundle?, qtn: SessionDetailActivity) {
@@ -51,16 +58,23 @@ class SessionDetailActivityImpl @Inject constructor(val presenter:SessionDetailA
 
     override fun displaySpeakers(speakers: Array<Speaker>) {
         val speakersHolder = qtn.findViewById<LinearLayout>(R.id.speakers_holder)
-        speakers.forEach { speaker ->
+        speakers.forEachIndexed{ index, speaker ->
             val speakerHeadshot = speakerHeadshotFactory.make(speaker, qtn)
             speakerHeadshot.layoutParams =
                     LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                     )
-            speakerHeadshot.setOnClickListener { view: View? -> presenter.navigateToSpeakerDetail(speaker) }
+            speakerHeadshot.setOnClickListener { view: View? -> navigateToSpeakerDetail(speakers, index) }
             speakersHolder.addView(speakerHeadshot)
         }
+    }
+
+    private fun navigateToSpeakerDetail(speakers: Array<Speaker>, index:Int) {
+        val intent = intentFactory.make(qtn, SpeakerDetailActivity::class.java)
+        intent.putExtra(SpeakerDetailActivityImpl.PARAMETER_BLOCK, SpeakerDetailParams(speakers, index))
+
+        qtn.startActivity(intent)
     }
 
     class SessionDetailParam(val session: FullSession): Serializable

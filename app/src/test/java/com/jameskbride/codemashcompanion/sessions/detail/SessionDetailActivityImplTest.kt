@@ -1,6 +1,8 @@
 package com.jameskbride.codemashcompanion.sessions.detail
 
+import android.content.Context
 import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -11,7 +13,13 @@ import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.Speaker
 import com.jameskbride.codemashcompanion.data.model.Tag
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityImpl.SessionDetailParam
+import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
+import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
+import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailParams
+import com.jameskbride.codemashcompanion.utils.IntentFactory
+import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import com.nhaarman.mockito_kotlin.*
+import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -33,6 +41,8 @@ class SessionDetailActivityImplTest {
     @Mock private lateinit var speakersHolder:LinearLayout
     @Mock private lateinit var presenter:SessionDetailActivityPresenter
     @Mock private lateinit var speakerHeadshotFactory:SpeakerHeadshotFactory
+    @Mock private lateinit var intentFactory:IntentFactory
+    @Mock private lateinit var context:Context
 
     private lateinit var subject: SessionDetailActivityImpl
 
@@ -43,7 +53,7 @@ class SessionDetailActivityImplTest {
     fun setUp() {
         initMocks(this)
 
-        subject = SessionDetailActivityImpl(presenter, speakerHeadshotFactory)
+        subject = SessionDetailActivityImpl(presenter, speakerHeadshotFactory, intentFactory)
 
         fullSession = FullSession(
                 Id = "123",
@@ -117,7 +127,7 @@ class SessionDetailActivityImplTest {
         verify(speakerHeadshot, times(2))
                 .setLayoutParams(any())
     }
-    
+
     @Test
     fun onClickOfSpeakerHeadshotItNavigatesToSpeakerDetail() {
         val speaker = Speaker()
@@ -128,10 +138,19 @@ class SessionDetailActivityImplTest {
         subject.onCreate(null, qtn)
         subject.displaySpeakers(speakers)
 
+        val intent = mock<Intent>()
+        whenever(intentFactory.make(qtn, SpeakerDetailActivity::class.java)).thenReturn(intent)
+
         val onClickCaptor = argumentCaptor<View.OnClickListener>()
 
         verify(speakerHeadshot).setOnClickListener(onClickCaptor.capture())
         onClickCaptor.firstValue.onClick(null)
-        verify(presenter).navigateToSpeakerDetail(speaker)
+
+        val extraCaptor = argumentCaptor<SpeakerDetailParams>()
+
+        verify(intent).putExtra(eq(SpeakerDetailActivityImpl.PARAMETER_BLOCK), extraCaptor.capture())
+        val speakerDetailParams = extraCaptor.firstValue
+        Assert.assertArrayEquals(speakers, speakerDetailParams.speakers)
+        assertEquals(0, speakerDetailParams.index)
     }
 }

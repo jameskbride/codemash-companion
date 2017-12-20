@@ -3,12 +3,13 @@ package com.jameskbride.codemashcompanion.sessions.detail
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.Speaker
+import com.jameskbride.codemashcompanion.utils.IntentFactory
 import io.reactivex.Scheduler
 import javax.inject.Inject
 
 class SessionDetailActivityPresenter @Inject constructor(val conferenceRepository: ConferenceRepository,
                                                  val processScheduler: Scheduler,
-                                                 val androidScheduler: Scheduler) {
+                                                 val androidScheduler: Scheduler, intentFactory: IntentFactory = IntentFactory()) {
 
     lateinit var view:SessionDetailActivityView
 
@@ -18,10 +19,6 @@ class SessionDetailActivityPresenter @Inject constructor(val conferenceRepositor
                 .subscribeOn(processScheduler)
                 .observeOn(androidScheduler)
                 .subscribe { results -> view.displaySpeakers(results) }
-    }
-
-    fun navigateToSpeakerDetail(speaker: Speaker) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
 
