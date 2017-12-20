@@ -16,5 +16,5 @@ class FullSpeaker constructor(
         @ColumnInfo(name = "gravatar_url") var GravatarUrl: String? = "",
         @ColumnInfo(name = "biography") var Biography: String? = "",
         @ColumnInfo(name = "blog_url") var BlogUrl: String? = "",
-        @Relation(parentColumn = "id", entityColumn = "sessionId") var sessionSpeakers:List<SessionSpeaker> = listOf()
+        @Relation(parentColumn = "id", entityColumn = "speakerId") var sessionSpeakers:List<SessionSpeaker> = listOf()
 ):Serializable

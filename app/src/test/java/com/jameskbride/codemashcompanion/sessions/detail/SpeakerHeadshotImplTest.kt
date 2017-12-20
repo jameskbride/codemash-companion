@@ -22,11 +22,11 @@ import org.mockito.MockitoAnnotations.initMocks
 class SpeakerHeadshotImplTest {
 
     @Mock private lateinit var qtn:SpeakerHeadshot
-    @Mock private lateinit var layoutInflaterFactory:LayoutInflaterFactory
     @Mock private lateinit var picassoLoader:PicassoLoader
+    @Mock private lateinit var speakerHeadShot:ImageView
+    @Mock private lateinit var layoutInflaterFactory:LayoutInflaterFactory
     @Mock private lateinit var view:View
     @Mock private lateinit var context:Context
-    @Mock private lateinit var speakerHeadShot:ImageView
     @Mock private lateinit var firstName:TextView
     @Mock private lateinit var lastName:TextView
 
