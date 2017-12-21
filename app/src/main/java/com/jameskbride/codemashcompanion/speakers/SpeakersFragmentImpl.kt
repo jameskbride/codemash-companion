@@ -13,7 +13,7 @@ import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailParams
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import javax.inject.Inject
 
-class SpeakersFragmentImpl @Inject constructor(val speakersFragmentPresenter: SpeakersFragmentPresenter,
+class SpeakersFragmentImpl @Inject constructor(val presenter: SpeakersFragmentPresenter,
                                                val speakersViewAdapterFactory: SpeakersViewAdapterFactory = SpeakersViewAdapterFactory(),
                                                val intentFactory:IntentFactory = IntentFactory()): SpeakersFragmentView {
     private lateinit var speakersView: RecyclerView
@@ -23,23 +23,25 @@ class SpeakersFragmentImpl @Inject constructor(val speakersFragmentPresenter: Sp
     fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?, qtn: SpeakersFragment): View? {
         this.qtn = qtn
         val view = inflater?.inflate(R.layout.fragment_speakers, container, false)
-        speakersFragmentPresenter.view = this
+        presenter.view = this
         speakersView = view!!.findViewById(R.id.speakers)
         speakersView.layoutManager = qtn.makeGridLayoutManager(2)
         speakersView.isDrawingCacheEnabled = true
         speakersView.setItemViewCacheSize(20)
         speakersView.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
-        speakersViewAdapter = speakersViewAdapterFactory.make(speakersFragmentPresenter)
+        speakersViewAdapter = speakersViewAdapterFactory.make(presenter)
         speakersView.adapter = speakersViewAdapter
 
         return view
     }
 
     fun onResume() {
-        speakersFragmentPresenter.requestSpeakerData()
+        presenter.open()
+        presenter.requestSpeakerData()
     }
 
     fun onPause() {
+        presenter.close()
     }
 
     override fun navigateToDetails(speakers: Array<FullSpeaker>, index: Int) {

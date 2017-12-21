@@ -25,10 +25,10 @@ class SpeakersFragmentImplTest {
 
     @Mock private lateinit var layoutInflater: LayoutInflater
     @Mock private lateinit var viewGroup: ViewGroup
-    @Mock private lateinit var speakersFragmentPresenter:SpeakersFragmentPresenter
+    @Mock private lateinit var presenter:SpeakersFragmentPresenter
     @Mock private lateinit var speakersViewAdapter:SpeakersRecyclerViewAdapter
     @Mock private lateinit var speakersViewAdapterFactory:SpeakersViewAdapterFactory
-    @Mock private lateinit var speakersFragment:SpeakersFragment
+    @Mock private lateinit var qtn:SpeakersFragment
     @Mock private lateinit var view:View
     @Mock private lateinit var speakersView:RecyclerView
     @Mock private lateinit var context:Context
@@ -41,19 +41,19 @@ class SpeakersFragmentImplTest {
     @Before
     fun setUp() {
         initMocks(this)
-        subject = SpeakersFragmentImpl(speakersFragmentPresenter, speakersViewAdapterFactory, intentFactory)
+        subject = SpeakersFragmentImpl(presenter, speakersViewAdapterFactory, intentFactory)
 
-        whenever(speakersFragment.getView()).thenReturn(view)
-        whenever(speakersFragment.getContext()).thenReturn(context)
-        whenever(speakersFragment.activity).thenReturn(activity)
+        whenever(qtn.getView()).thenReturn(view)
+        whenever(qtn.getContext()).thenReturn(context)
+        whenever(qtn.activity).thenReturn(activity)
         whenever(view.findViewById<RecyclerView>(R.id.speakers)).thenReturn(speakersView)
-        whenever(speakersViewAdapterFactory.make(speakersFragmentPresenter)).thenReturn(speakersViewAdapter)
+        whenever(speakersViewAdapterFactory.make(presenter)).thenReturn(speakersViewAdapter)
         whenever(layoutInflater.inflate(R.layout.fragment_speakers, viewGroup, false)).thenReturn(view)
     }
 
     @Test
     fun itInflatesTheViewOnCreateView() {
-        val inflatedView = subject.onCreateView(layoutInflater, viewGroup, null, speakersFragment)
+        val inflatedView = subject.onCreateView(layoutInflater, viewGroup, null, qtn)
 
         assertSame(view, inflatedView)
         verify(layoutInflater).inflate(R.layout.fragment_speakers, viewGroup, false)
@@ -61,21 +61,21 @@ class SpeakersFragmentImplTest {
 
     @Test
     fun itSetsTheViewOnThePresenterOnCreate() {
-        subject.onCreateView(layoutInflater, viewGroup, null, speakersFragment)
+        subject.onCreateView(layoutInflater, viewGroup, null, qtn)
     }
 
     @Test
     fun itSetsTheSpeakersViewAdapterOnCreate() {
-        subject.onCreateView(layoutInflater, viewGroup, null, speakersFragment)
+        subject.onCreateView(layoutInflater, viewGroup, null, qtn)
 
         verify(speakersView).setAdapter(speakersViewAdapter)
     }
 
     @Test
     fun itConfiguresTheViewForASmoothScrollingGridview() {
-        whenever(speakersFragment.makeGridLayoutManager(2)).thenReturn(gridLayoutManager)
+        whenever(qtn.makeGridLayoutManager(2)).thenReturn(gridLayoutManager)
 
-        subject.onCreateView(layoutInflater, viewGroup, null, speakersFragment)
+        subject.onCreateView(layoutInflater, viewGroup, null, qtn)
 
         verify(speakersView).setLayoutManager(gridLayoutManager)
         verify(speakersView).setDrawingCacheEnabled(true)
@@ -87,12 +87,26 @@ class SpeakersFragmentImplTest {
     fun itRequestsTheSpeakerDataOnResume() {
         subject.onResume()
 
-        verify(speakersFragmentPresenter).requestSpeakerData()
+        verify(presenter).requestSpeakerData()
+    }
+
+    @Test
+    fun itOpensThePresenterOnResume() {
+        subject.onResume()
+
+        verify(presenter).open()
+    }
+
+    @Test
+    fun itClosesThePresenterOnPause() {
+        subject.onPause()
+
+        verify(presenter).close()
     }
 
     @Test
     fun itSetsTheSpeakersOnSpeakerDataReceived() {
-        subject.onCreateView(layoutInflater, viewGroup, null, speakersFragment)
+        subject.onCreateView(layoutInflater, viewGroup, null, qtn)
         val speakers = buildDefaultSpeakers()
 
         subject.onSpeakerDataRetrieved(speakers)
@@ -105,7 +119,7 @@ class SpeakersFragmentImplTest {
         val intent = mock<Intent>()
         val speakers = buildDefaultSpeakers()
         whenever(intentFactory.make(context, SpeakerDetailActivity::class.java)).thenReturn(intent)
-        subject.onCreateView(layoutInflater, viewGroup, null, speakersFragment)
+        subject.onCreateView(layoutInflater, viewGroup, null, qtn)
 
         subject.navigateToDetails(speakers, 0)
 
