@@ -2,6 +2,7 @@ package com.jameskbride.codemashcompanion.speakers
 
 import android.content.Context
 import android.content.Intent
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -31,6 +32,7 @@ class SpeakersFragmentImplTest {
     @Mock private lateinit var qtn:SpeakersFragment
     @Mock private lateinit var view:View
     @Mock private lateinit var speakersView:RecyclerView
+    @Mock private lateinit var speakersRefresh:SwipeRefreshLayout
     @Mock private lateinit var context:Context
     @Mock private lateinit var gridLayoutManager:GridLayoutManager
     @Mock private lateinit var intentFactory:IntentFactory
@@ -47,6 +49,7 @@ class SpeakersFragmentImplTest {
         whenever(qtn.getContext()).thenReturn(context)
         whenever(qtn.activity).thenReturn(activity)
         whenever(view.findViewById<RecyclerView>(R.id.speakers)).thenReturn(speakersView)
+        whenever(view.findViewById<SwipeRefreshLayout>(R.id.speakers_refresh)).thenReturn(speakersRefresh)
         whenever(speakersViewAdapterFactory.make(presenter)).thenReturn(speakersViewAdapter)
         whenever(layoutInflater.inflate(R.layout.fragment_speakers, viewGroup, false)).thenReturn(view)
     }
@@ -69,6 +72,18 @@ class SpeakersFragmentImplTest {
         subject.onCreateView(layoutInflater, viewGroup, null, qtn)
 
         verify(speakersView).setAdapter(speakersViewAdapter)
+    }
+
+    @Test
+    fun itSetsTheRefreshListenerOnCreate() {
+        subject.onCreateView(layoutInflater, viewGroup, null, qtn)
+
+        val refreshListenerCaptor = argumentCaptor<SwipeRefreshLayout.OnRefreshListener>()
+        verify(speakersRefresh).setOnRefreshListener(refreshListenerCaptor.capture())
+
+        refreshListenerCaptor.firstValue.onRefresh()
+        verify(presenter).refreshConferenceData()
+        verify(speakersRefresh).setRefreshing(true)
     }
 
     @Test
@@ -112,6 +127,7 @@ class SpeakersFragmentImplTest {
         subject.onSpeakerDataRetrieved(speakers)
 
         verify(speakersViewAdapter).setSpeakers(speakers)
+        verify(speakersRefresh).setRefreshing(false)
     }
     
     @Test

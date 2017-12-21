@@ -24,6 +24,10 @@ class SpeakersFragmentPresenter @Inject constructor(override val eventBus: Event
     fun navigateToDetails(speakers: Array<FullSpeaker>, index: Int) {
         view.navigateToDetails(speakers, index)
     }
+
+    fun refreshConferenceData() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
 
 interface SpeakersFragmentView {

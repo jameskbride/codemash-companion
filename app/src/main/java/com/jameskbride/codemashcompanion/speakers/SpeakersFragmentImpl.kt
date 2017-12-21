@@ -1,6 +1,7 @@
 package com.jameskbride.codemashcompanion.speakers
 
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,8 @@ class SpeakersFragmentImpl @Inject constructor(val presenter: SpeakersFragmentPr
     private lateinit var qtn:SpeakersFragment
 
     private lateinit var speakersViewAdapter: SpeakersRecyclerViewAdapter
+    private lateinit var speakersRefresh: SwipeRefreshLayout
+
     fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?, qtn: SpeakersFragment): View? {
         this.qtn = qtn
         val view = inflater?.inflate(R.layout.fragment_speakers, container, false)
@@ -31,6 +34,12 @@ class SpeakersFragmentImpl @Inject constructor(val presenter: SpeakersFragmentPr
         speakersView.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
         speakersViewAdapter = speakersViewAdapterFactory.make(presenter)
         speakersView.adapter = speakersViewAdapter
+
+        speakersRefresh = view.findViewById(R.id.speakers_refresh)
+        speakersRefresh.setOnRefreshListener {
+            speakersRefresh.isRefreshing = true
+            presenter.refreshConferenceData()
+        }
 
         return view
     }
@@ -53,5 +62,6 @@ class SpeakersFragmentImpl @Inject constructor(val presenter: SpeakersFragmentPr
 
     override fun onSpeakerDataRetrieved(speakers: Array<FullSpeaker>) {
         speakersViewAdapter.setSpeakers(speakers)
+        speakersRefresh.isRefreshing = false
     }
 }
