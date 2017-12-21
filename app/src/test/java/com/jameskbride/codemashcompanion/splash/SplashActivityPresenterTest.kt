@@ -1,6 +1,7 @@
 package com.jameskbride.codemashcompanion.splash
 
 import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
+import com.jameskbride.codemashcompanion.bus.ConferenceDataRequestError
 import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
@@ -76,6 +77,13 @@ class SplashActivityPresenterTest {
         subject.onConferenceDataPersistedEvent(ConferenceDataPersistedEvent())
 
         verify(view).navigateToMain()
+    }
+
+    @Test
+    fun onConferenceDataRequestErrorDisplaysAnErrorDialog() {
+        subject.onConferenceDataRequestError(ConferenceDataRequestError())
+
+        verify(view).showErrorDialog()
     }
 
     @Subscribe
