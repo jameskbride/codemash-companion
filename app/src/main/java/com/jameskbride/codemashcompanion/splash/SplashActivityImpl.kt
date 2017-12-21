@@ -7,7 +7,6 @@ import com.jameskbride.codemashcompanion.utils.IntentFactory
 import javax.inject.Inject
 
 class SplashActivityImpl @Inject constructor(val presenter: SplashActivityPresenter, val intentFactory: IntentFactory): SplashActivityView {
-
     lateinit var activity: SplashActivity
 
     fun onCreate(savedInstanceState: Bundle?, activity: SplashActivity) {
@@ -21,6 +20,10 @@ class SplashActivityImpl @Inject constructor(val presenter: SplashActivityPresen
         val intent = intentFactory.make(activity, MainActivity::class.java)
 
         activity.startActivity(intent)
+    }
+
+    override fun showErrorDialog() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     fun onResume(splashActivity: SplashActivity) {

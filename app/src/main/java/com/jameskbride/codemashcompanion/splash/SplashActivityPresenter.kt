@@ -12,7 +12,7 @@ import javax.inject.Inject
 class SplashActivityPresenter @Inject constructor(override val eventBus: EventBus,
                                                   val conferenceRepository: ConferenceRepository,
                                                   val processScheduler: Scheduler,
-                                                  val androidScheduler: Scheduler) :BusAware {
+                                                  val androidScheduler: Scheduler) : BusAware {
 
     lateinit var view: SplashActivityView
 
@@ -20,13 +20,15 @@ class SplashActivityPresenter @Inject constructor(override val eventBus: EventBu
         conferenceRepository.getSpeakers()
                 .subscribeOn(processScheduler)
                 .observeOn(androidScheduler)
-                .subscribe { result ->
-                    if (result.isEmpty()) {
-                        eventBus.post(RequestConferenceDataEvent())
-                    } else {
-                        onConferenceDataPersistedEvent(ConferenceDataPersistedEvent())
-                    }
-                }
+                .subscribe(
+                        { result ->
+                            if (result.isEmpty()) {
+                                eventBus.post(RequestConferenceDataEvent())
+                            } else {
+                                onConferenceDataPersistedEvent(ConferenceDataPersistedEvent())
+                            }
+                        },
+                        { error -> view.showErrorDialog()})
     }
 
     @Subscribe
@@ -37,4 +39,5 @@ class SplashActivityPresenter @Inject constructor(override val eventBus: EventBu
 
 interface SplashActivityView {
     fun navigateToMain()
+    fun showErrorDialog()
 }

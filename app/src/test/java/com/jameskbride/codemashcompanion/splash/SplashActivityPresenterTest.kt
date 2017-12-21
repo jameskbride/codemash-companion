@@ -50,7 +50,7 @@ class SplashActivityPresenterTest {
     }
 
     @Test
-    fun requestConferenceDataSendsConferenceDataPersistedEventWhenDataIsAlreadyPresent() {
+    fun requestConferenceDataNavigatesToMainWhenDataIsAlreadyPresent() {
         val speakers = buildDefaultSpeakers()
         val emptySpeakersMaybe: Maybe<Array<FullSpeaker>> = Maybe.just(speakers)
         whenever(conferenceRepository.getSpeakers()).thenReturn(emptySpeakersMaybe)
@@ -59,6 +59,16 @@ class SplashActivityPresenterTest {
         testScheduler.triggerActions()
 
         verify(view).navigateToMain()
+    }
+
+    @Test
+    fun requestConferenceDataDisplaysAnErrorDialogWhenAnErrorOccursPullingData() {
+        whenever(conferenceRepository.getSpeakers()).thenReturn(Maybe.error(Exception("Woops!")))
+
+        subject.requestConferenceData()
+        testScheduler.triggerActions()
+
+        verify(view).showErrorDialog()
     }
 
     @Test
