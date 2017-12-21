@@ -24,7 +24,7 @@ class SplashActivityPresenter @Inject constructor(override val eventBus: EventBu
                     if (result.isEmpty()) {
                         eventBus.post(RequestConferenceDataEvent())
                     } else {
-                        eventBus.post(ConferenceDataPersistedEvent())
+                        onConferenceDataPersistedEvent(ConferenceDataPersistedEvent())
                     }
                 }
     }

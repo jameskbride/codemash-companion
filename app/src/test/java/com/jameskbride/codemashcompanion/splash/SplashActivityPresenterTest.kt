@@ -58,7 +58,7 @@ class SplashActivityPresenterTest {
         subject.requestConferenceData()
         testScheduler.triggerActions()
 
-        assertTrue(conferenceDataPersistedEventCalled)
+        verify(view).navigateToMain()
     }
 
     @Test
@@ -71,10 +71,5 @@ class SplashActivityPresenterTest {
     @Subscribe
     fun onRequestConferenceDataEvent(event: RequestConferenceDataEvent) {
         requestConferenceDataEventCalled = true
-    }
-
-    @Subscribe
-    fun onConferenceDataPersistedEvent(event: ConferenceDataPersistedEvent) {
-        conferenceDataPersistedEventCalled = true;
     }
 }
