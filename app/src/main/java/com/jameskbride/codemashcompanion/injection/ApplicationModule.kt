@@ -6,6 +6,7 @@ import com.jameskbride.codemashcompanion.application.CodemashCompanionApplicatio
 import com.jameskbride.codemashcompanion.data.ConferenceDao
 import com.jameskbride.codemashcompanion.data.ConferenceDatabase
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
+import com.jameskbride.codemashcompanion.error.ErrorDialogImpl
 import com.jameskbride.codemashcompanion.main.MainActivityImpl
 import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.service.CodemashService
@@ -131,8 +132,8 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     }
 
     @Provides
-    fun makeSplashActivityImpl(presenter: SplashActivityPresenter, intentFactory: IntentFactory): SplashActivityImpl {
-        return SplashActivityImpl(presenter, intentFactory)
+    fun makeSplashActivityImpl(presenter: SplashActivityPresenter): SplashActivityImpl {
+        return SplashActivityImpl(presenter)
     }
 
     @Provides
@@ -199,4 +200,10 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     fun makeSessionDetailActivityImpl(sessionDetailActivityPresenter: SessionDetailActivityPresenter):SessionDetailActivityImpl {
         return SessionDetailActivityImpl(sessionDetailActivityPresenter)
     }
+
+    @Provides
+    fun makeErrorDialogImpl():ErrorDialogImpl {
+        return ErrorDialogImpl()
+    }
+
 }

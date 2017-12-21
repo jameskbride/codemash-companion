@@ -15,4 +15,6 @@
     <string name="session_detail">Session Detail</string>
     <string name="rooms">Rooms</string>
     <string name="presented_by">Presented by:</string>
+    <string name="oops">Oops!</string>
+    <string name="no_data_message">Looks like we couldn\'t retrieve any data.</string>
 </resources>

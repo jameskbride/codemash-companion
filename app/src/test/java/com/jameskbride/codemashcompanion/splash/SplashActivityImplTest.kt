@@ -1,26 +1,44 @@
 package com.jameskbride.codemashcompanion.splash
 
 import android.content.Intent
+import android.os.Bundle
+import android.support.v4.app.FragmentManager
 import com.jameskbride.codemashcompanion.R
+import com.jameskbride.codemashcompanion.error.ErrorDialog
+import com.jameskbride.codemashcompanion.error.ErrorDialogFactory
+import com.jameskbride.codemashcompanion.error.ErrorDialogParams
+import com.jameskbride.codemashcompanion.error.PARAMETER_BLOCK
 import com.jameskbride.codemashcompanion.main.MainActivity
+import com.jameskbride.codemashcompanion.utils.BundleFactory
 import com.jameskbride.codemashcompanion.utils.IntentFactory
+import com.nhaarman.mockito_kotlin.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.*
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations.initMocks
 
 class SplashActivityImplTest {
 
-    private lateinit var splashActivity: SplashActivity
-    private lateinit var presenter: SplashActivityPresenter
+    @Mock private lateinit var splashActivity: SplashActivity
+    @Mock private lateinit var presenter: SplashActivityPresenter
+    @Mock private lateinit var intentFactory: IntentFactory
+    @Mock private lateinit var bundle:Bundle
+    @Mock private lateinit var bundleFactory: BundleFactory
+    @Mock private lateinit var errorDialogFactory: ErrorDialogFactory
+    @Mock private lateinit var errorDialog:ErrorDialog
+    @Mock private lateinit var fragmentManager:FragmentManager
+
+    
     private lateinit var subject: SplashActivityImpl
-    private lateinit var intentFactory: IntentFactory
 
     @Before
     fun setUp() {
-        splashActivity = mock(SplashActivity::class.java)
-        presenter = mock(SplashActivityPresenter::class.java)
-        intentFactory = mock(IntentFactory::class.java)
-        subject = SplashActivityImpl(presenter, intentFactory)
+        initMocks(this)
+
+        whenever(splashActivity.supportFragmentManager).thenReturn(fragmentManager)
+
+        subject = SplashActivityImpl(presenter, intentFactory, errorDialogFactory, bundleFactory)
 
         subject.onCreate(null, splashActivity)
     }
@@ -51,13 +69,30 @@ class SplashActivityImplTest {
 
     @Test
     fun itCanNavigateToTheMainActivity() {
-        val intent = mock(Intent::class.java)
+        val intent = mock<Intent>()
 
-        `when`(intentFactory.make(splashActivity, MainActivity::class.java)).thenReturn(intent)
+        whenever(intentFactory.make(splashActivity, MainActivity::class.java)).thenReturn(intent)
 
         subject.navigateToMain()
 
         verify(intentFactory).make(splashActivity, MainActivity::class.java)
         verify(splashActivity).startActivity(intent)
+    }
+    
+    @Test
+    fun itCanShowTheErrorDialog() {
+        whenever(errorDialogFactory.make()).thenReturn(errorDialog)
+        whenever(bundleFactory.make()).thenReturn(bundle)
+
+        subject.showErrorDialog()
+
+        val errorDialogParamsCaptor = argumentCaptor<ErrorDialogParams>()
+        verify(bundle).putSerializable(eq(PARAMETER_BLOCK), errorDialogParamsCaptor.capture())
+        verify(errorDialog).setArguments(bundle)
+        verify(errorDialog).show(eq(fragmentManager), any())
+        verify(errorDialog).setCancelable(false)
+
+        assertEquals(R.string.oops, errorDialogParamsCaptor.firstValue.title)
+        assertEquals(R.string.no_data_message, errorDialogParamsCaptor.firstValue.message)
     }
 }
