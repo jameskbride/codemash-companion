@@ -95,12 +95,26 @@ class SessionsFragmentImplTest {
     }
 
     @Test
+    fun onResumeOpensThePresenter() {
+        subject.onResume()
+
+        verify(presenter).open()
+    }
+
+    @Test
     fun onResumeRequestsTheSessions() {
         subject.onCreateView(layoutInflater, container, null, qtn)
 
         subject.onResume()
 
         verify(presenter).requestSessions()
+    }
+
+    @Test
+    fun onPauseClosesThePresenter() {
+        subject.onPause()
+
+        verify(presenter).close()
     }
 
     @Test

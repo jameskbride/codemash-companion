@@ -1,5 +1,6 @@
 package com.jameskbride.codemashcompanion.sessions
 
+import com.jameskbride.codemashcompanion.bus.BusAware
 import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSession
@@ -9,7 +10,8 @@ import javax.inject.Inject
 
 class SessionsFragmentPresenter @Inject constructor(val conferenceRepository: ConferenceRepository,
                                                     val processScheduler: Scheduler,
-                                                    val androidScheduler: Scheduler, val eventBus: EventBus) {
+                                                    val androidScheduler: Scheduler,
+                                                    override val eventBus: EventBus): BusAware {
     lateinit var view: SessionsFragmentView
 
     fun requestSessions() {

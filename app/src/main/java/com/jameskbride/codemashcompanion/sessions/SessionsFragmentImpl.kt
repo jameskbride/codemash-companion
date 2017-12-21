@@ -37,10 +37,12 @@ class SessionsFragmentImpl(val presenter: SessionsFragmentPresenter,
     }
 
     fun onResume() {
+        presenter.open()
         presenter.requestSessions()
     }
 
     fun onPause() {
+        presenter.close()
     }
 
     override fun onSessionDataRetrieved(sessionsData: SessionData) {
