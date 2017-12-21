@@ -2,6 +2,7 @@ package com.jameskbride.codemashcompanion.sessions
 
 import android.content.Context
 import android.content.Intent
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -27,12 +28,13 @@ import org.mockito.MockitoAnnotations.initMocks
 
 class SessionsFragmentImplTest {
 
-    @Mock private lateinit var sessionsFragment: SessionsFragment
-    @Mock private lateinit var sessionsFragmentPresenter: SessionsFragmentPresenter
+    @Mock private lateinit var qtn: SessionsFragment
+    @Mock private lateinit var presenter: SessionsFragmentPresenter
     @Mock private lateinit var view:View
     @Mock private lateinit var layoutInflater:LayoutInflater
     @Mock private lateinit var container:ViewGroup
     @Mock private lateinit var sessionsView:RecyclerView
+    @Mock private lateinit var sessionsRefresh:SwipeRefreshLayout
     @Mock private lateinit var sessionsViewAdapter:SessionsRecyclerViewAdapter
     @Mock private lateinit var sessionsViewAdapterFactory:SessionsViewAdapterFactory
     @Mock private lateinit var linearLayoutManager:LinearLayoutManager
@@ -47,32 +49,46 @@ class SessionsFragmentImplTest {
     fun setUp() {
         initMocks(this)
         whenever(layoutInflater.inflate(R.layout.fragment_sessions, container, false)).thenReturn(view)
-        whenever(sessionsViewAdapterFactory.make(sessionsFragmentPresenter)).thenReturn(sessionsViewAdapter)
+        whenever(sessionsViewAdapterFactory.make(presenter)).thenReturn(sessionsViewAdapter)
         whenever(view.findViewById<RecyclerView>(R.id.sessions)).thenReturn(sessionsView)
-        whenever(sessionsFragment.activity).thenReturn(activity)
+        whenever(view.findViewById<SwipeRefreshLayout>(R.id.sessions_refresh)).thenReturn(sessionsRefresh)
+        whenever(qtn.activity).thenReturn(activity)
 
-        subject = SessionsFragmentImpl(sessionsFragmentPresenter, sessionsViewAdapterFactory, intentFactory)
+        subject = SessionsFragmentImpl(presenter, sessionsViewAdapterFactory, intentFactory)
     }
 
     @Test
     fun onCreateViewInflatesTheView() {
-        val result = subject.onCreateView(layoutInflater, container, null, sessionsFragment)
+        val result = subject.onCreateView(layoutInflater, container, null, qtn)
 
         assertSame(view, result)
     }
 
     @Test
+    fun onCreateViewSetsTheSwipeToRefreshListener() {
+        subject.onCreateView(layoutInflater, container, null, qtn)
+
+        val swipeListenerCaptor = argumentCaptor<SwipeRefreshLayout.OnRefreshListener>()
+
+        verify(sessionsRefresh).setOnRefreshListener(swipeListenerCaptor.capture())
+
+        swipeListenerCaptor.firstValue.onRefresh()
+
+        verify(presenter).refreshConferenceData()
+    }
+
+    @Test
     fun itSetsTheSessionsViewAdapterOnCreate() {
-        subject.onCreateView(layoutInflater, container, null, sessionsFragment)
+        subject.onCreateView(layoutInflater, container, null, qtn)
 
         verify(sessionsView).setAdapter(sessionsViewAdapter)
     }
 
     @Test
     fun itConfiguresTheViewForASmoothScrollingGridview() {
-        whenever(sessionsFragment.makeLinearLayoutManager()).thenReturn(linearLayoutManager)
+        whenever(qtn.makeLinearLayoutManager()).thenReturn(linearLayoutManager)
 
-        subject.onCreateView(layoutInflater, container, null, sessionsFragment)
+        subject.onCreateView(layoutInflater, container, null, qtn)
 
         verify(sessionsView).setLayoutManager(linearLayoutManager)
         verify(sessionsView).setItemViewCacheSize(20)
@@ -80,18 +96,18 @@ class SessionsFragmentImplTest {
 
     @Test
     fun onResumeRequestsTheSessions() {
-        subject.onCreateView(layoutInflater, container, null, sessionsFragment)
+        subject.onCreateView(layoutInflater, container, null, qtn)
 
         subject.onResume()
 
-        verify(sessionsFragmentPresenter).requestSessions()
+        verify(presenter).requestSessions()
     }
 
     @Test
     fun onSessionDataReceivedSetsTheSessionsOnTheAdapter() {
         var sessionData = SessionData()
 
-        subject.onCreateView(layoutInflater, container, null, sessionsFragment)
+        subject.onCreateView(layoutInflater, container, null, qtn)
 
         subject.onSessionDataRetrieved(sessionData)
 
@@ -101,9 +117,9 @@ class SessionsFragmentImplTest {
     @Test
     fun itCanNavigateToTheSessionDetail() {
         val session = FullSession()
-        whenever(sessionsFragment.getContext()).thenReturn(context)
+        whenever(qtn.getContext()).thenReturn(context)
         whenever(intentFactory.make(eq(context), eq(SessionDetailActivity::class.java))).thenReturn(intent)
-        subject.onCreateView(layoutInflater, container, null, sessionsFragment)
+        subject.onCreateView(layoutInflater, container, null, qtn)
 
         subject.navigateToSessionDetail(session)
 

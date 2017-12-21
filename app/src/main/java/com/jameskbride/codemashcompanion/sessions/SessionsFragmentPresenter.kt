@@ -24,6 +24,10 @@ class SessionsFragmentPresenter @Inject constructor(val conferenceRepository: Co
     fun navigateToSessionDetail(session: FullSession) {
         view.navigateToSessionDetail(session)
     }
+
+    fun refreshConferenceData() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
 
 interface SessionsFragmentView {

@@ -1,6 +1,7 @@
 package com.jameskbride.codemashcompanion.sessions
 
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -8,12 +9,13 @@ import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivity
-import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityImpl
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailParam
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 
-class SessionsFragmentImpl(val sessionsFragmentPresenter: SessionsFragmentPresenter, val sessionsViewAdapterFactory: SessionsViewAdapterFactory = SessionsViewAdapterFactory(), val intentFactory: IntentFactory = IntentFactory()): SessionsFragmentView {
+class SessionsFragmentImpl(val presenter: SessionsFragmentPresenter,
+                           val sessionsViewAdapterFactory: SessionsViewAdapterFactory = SessionsViewAdapterFactory(),
+                           val intentFactory: IntentFactory = IntentFactory()): SessionsFragmentView {
     private lateinit var sessionsView: RecyclerView
     private lateinit var sessionsViewAdapter: SessionsRecyclerViewAdapter
     private lateinit var qtn: SessionsFragment
@@ -22,18 +24,20 @@ class SessionsFragmentImpl(val sessionsFragmentPresenter: SessionsFragmentPresen
         this.qtn = qtn
         val view = inflater.inflate(R.layout.fragment_sessions, container, false)
 
-        sessionsFragmentPresenter.view = this
-        sessionsView = view!!.findViewById<RecyclerView>(R.id.sessions)
+        presenter.view = this
+        sessionsView = view!!.findViewById(R.id.sessions)
         sessionsView.layoutManager = qtn.makeLinearLayoutManager()
         sessionsView.setItemViewCacheSize(20)
-        sessionsViewAdapter = sessionsViewAdapterFactory.make(sessionsFragmentPresenter)
+        sessionsViewAdapter = sessionsViewAdapterFactory.make(presenter)
         sessionsView.adapter = sessionsViewAdapter
+
+        view.findViewById<SwipeRefreshLayout>(R.id.sessions_refresh).setOnRefreshListener { presenter.refreshConferenceData() }
 
         return view
     }
 
     fun onResume() {
-        sessionsFragmentPresenter.requestSessions()
+        presenter.requestSessions()
     }
 
     fun onPause() {
