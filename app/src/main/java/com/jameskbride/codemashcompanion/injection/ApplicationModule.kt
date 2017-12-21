@@ -179,8 +179,8 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     @Provides
     fun makeSessionsFragmentPresenter(conferenceRepository: ConferenceRepository,
                                       @Named("process") processScheduler: Scheduler,
-                                      @Named("main") androidScheduler: Scheduler): SessionsFragmentPresenter {
-        return SessionsFragmentPresenter(conferenceRepository, processScheduler, androidScheduler)
+                                      @Named("main") androidScheduler: Scheduler, eventBus: EventBus): SessionsFragmentPresenter {
+        return SessionsFragmentPresenter(conferenceRepository, processScheduler, androidScheduler, eventBus)
     }
 
     @Provides

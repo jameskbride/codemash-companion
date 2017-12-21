@@ -1,5 +1,6 @@
 package com.jameskbride.codemashcompanion.sessions
 
+import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.nhaarman.mockito_kotlin.argumentCaptor
@@ -7,7 +8,11 @@ import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Maybe
 import io.reactivex.schedulers.TestScheduler
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.junit.After
 import org.junit.Assert.assertArrayEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -21,14 +26,24 @@ class SessionsFragmentPresenterTest {
     private lateinit var subject:SessionsFragmentPresenter
 
     private lateinit var testScheduler:TestScheduler
+    private lateinit var eventBus:EventBus
+
+    private var requestConferenceDataEventFired: Boolean = false
 
     @Before
     fun setUp() {
         initMocks(this)
         testScheduler = TestScheduler()
+        eventBus = EventBus.getDefault()
+        eventBus.register(this)
 
-        subject = SessionsFragmentPresenter(conferenceRepository, testScheduler, testScheduler)
+        subject = SessionsFragmentPresenter(conferenceRepository, testScheduler, testScheduler, eventBus)
         subject.view = view
+    }
+
+    @After
+    fun tearDown() {
+        eventBus.unregister(this)
     }
 
     @Test
@@ -56,6 +71,17 @@ class SessionsFragmentPresenterTest {
         subject.navigateToSessionDetail(session)
 
         verify(view).navigateToSessionDetail(session)
+    }
 
+    @Test
+    fun itCanRefreshConferenceData() {
+        subject.refreshConferenceData()
+
+        assertTrue(requestConferenceDataEventFired)
+    }
+
+    @Subscribe
+    fun onRequestConferenceDataEvent(requestConferenceDataEvent: RequestConferenceDataEvent) {
+        this.requestConferenceDataEventFired = true
     }
 }

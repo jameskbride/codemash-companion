@@ -20,6 +20,23 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         eventBus.post(SpeakersPersistedEvent())
     }
 
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onSessionsReceivedEvent(sessionsReceivedEvent: SessionsReceivedEvent) {
+        val apiSessions = sessionsReceivedEvent.sessions
+        val sessions = mapApiSessionsToDomain(apiSessions)
+        conferenceDao.insertAll(sessions)
+        val sessionSpeakers = buildSessionSpeakers(apiSessions)
+        conferenceDao.insertAll(sessionSpeakers)
+
+        var conferenceRooms = buildRooms(apiSessions)
+        conferenceDao.insertAll(conferenceRooms.toTypedArray())
+
+        val tags = buildTags(apiSessions)
+        conferenceDao.insertAll(tags.toTypedArray())
+
+        eventBus.post(ConferenceDataPersistedEvent())
+    }
+
     private fun mapApiSpeakersToDomain(apiSpeakers: List<ApiSpeaker>): Array<Speaker> {
         return apiSpeakers.map {
             Speaker(
@@ -38,23 +55,6 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
 
     fun getSpeakers(): Maybe<Array<FullSpeaker>> {
         return conferenceDao.getSpeakers()
-    }
-
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    fun onSessionsReceivedEvent(sessionsReceivedEvent: SessionsReceivedEvent) {
-        val apiSessions = sessionsReceivedEvent.sessions
-        val sessions = mapApiSessionsToDomain(apiSessions)
-        conferenceDao.insertAll(sessions)
-        val sessionSpeakers = buildSessionSpeakers(apiSessions)
-        conferenceDao.insertAll(sessionSpeakers)
-
-        var conferenceRooms = buildRooms(apiSessions)
-        conferenceDao.insertAll(conferenceRooms.toTypedArray())
-
-        val tags = buildTags(apiSessions)
-        conferenceDao.insertAll(tags.toTypedArray())
-
-        eventBus.post(ConferenceDataPersistedEvent())
     }
 
     private fun buildSessionSpeakers(sessions:List<ApiSession>):Array<SessionSpeaker> {

@@ -1,13 +1,15 @@
 package com.jameskbride.codemashcompanion.sessions
 
+import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import io.reactivex.Scheduler
+import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
 class SessionsFragmentPresenter @Inject constructor(val conferenceRepository: ConferenceRepository,
                                                     val processScheduler: Scheduler,
-                                                    val androidScheduler: Scheduler) {
+                                                    val androidScheduler: Scheduler, val eventBus: EventBus) {
     lateinit var view: SessionsFragmentView
 
     fun requestSessions() {
@@ -26,7 +28,7 @@ class SessionsFragmentPresenter @Inject constructor(val conferenceRepository: Co
     }
 
     fun refreshConferenceData() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        eventBus.post(RequestConferenceDataEvent())
     }
 }
 
