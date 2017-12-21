@@ -75,6 +75,7 @@ class SessionsFragmentImplTest {
         swipeListenerCaptor.firstValue.onRefresh()
 
         verify(presenter).refreshConferenceData()
+        verify(sessionsRefresh).setRefreshing(true)
     }
 
     @Test
@@ -96,6 +97,7 @@ class SessionsFragmentImplTest {
 
     @Test
     fun onResumeOpensThePresenter() {
+        subject.onCreateView(layoutInflater, container, null, qtn)
         subject.onResume()
 
         verify(presenter).open()
@@ -112,6 +114,7 @@ class SessionsFragmentImplTest {
 
     @Test
     fun onPauseClosesThePresenter() {
+        subject.onCreateView(layoutInflater, container, null, qtn)
         subject.onPause()
 
         verify(presenter).close()
@@ -126,6 +129,7 @@ class SessionsFragmentImplTest {
         subject.onSessionDataRetrieved(sessionData)
 
         verify(sessionsViewAdapter).setSessions(sessionData)
+        verify(sessionsRefresh).setRefreshing(false)
     }
 
     @Test

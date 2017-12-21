@@ -20,6 +20,8 @@ class SessionsFragmentImpl(val presenter: SessionsFragmentPresenter,
     private lateinit var sessionsViewAdapter: SessionsRecyclerViewAdapter
     private lateinit var qtn: SessionsFragment
 
+    private lateinit var sessionsRefresh: SwipeRefreshLayout
+
     fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?, qtn: SessionsFragment): View? {
         this.qtn = qtn
         val view = inflater.inflate(R.layout.fragment_sessions, container, false)
@@ -31,7 +33,11 @@ class SessionsFragmentImpl(val presenter: SessionsFragmentPresenter,
         sessionsViewAdapter = sessionsViewAdapterFactory.make(presenter)
         sessionsView.adapter = sessionsViewAdapter
 
-        view.findViewById<SwipeRefreshLayout>(R.id.sessions_refresh).setOnRefreshListener { presenter.refreshConferenceData() }
+        sessionsRefresh = view.findViewById<SwipeRefreshLayout>(R.id.sessions_refresh)
+        sessionsRefresh.setOnRefreshListener {
+            sessionsRefresh.isRefreshing = true
+            presenter.refreshConferenceData()
+        }
 
         return view
     }
@@ -47,6 +53,7 @@ class SessionsFragmentImpl(val presenter: SessionsFragmentPresenter,
 
     override fun onSessionDataRetrieved(sessionsData: SessionData) {
         sessionsViewAdapter.setSessions(sessionsData)
+        sessionsRefresh.isRefreshing = false
     }
 
     override fun navigateToSessionDetail(session: FullSession) {
