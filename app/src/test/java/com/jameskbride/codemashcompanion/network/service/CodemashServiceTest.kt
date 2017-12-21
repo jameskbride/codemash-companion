@@ -1,26 +1,25 @@
 package com.jameskbride.codemashcompanion.network.service
 
-import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
-import com.jameskbride.codemashcompanion.bus.SessionsReceivedEvent
-import com.jameskbride.codemashcompanion.bus.SpeakersPersistedEvent
-import com.jameskbride.codemashcompanion.bus.SpeakersReceivedEvent
+import com.jameskbride.codemashcompanion.bus.*
 import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.model.ApiSession
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultApiSpeakers
+import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Observable
 import io.reactivex.schedulers.TestScheduler
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations.initMocks
 
 class CodemashServiceTest {
 
-    private lateinit var codemashApi: CodemashApi
+    @Mock private lateinit var codemashApi: CodemashApi
     private lateinit var eventBus: EventBus
     private lateinit var testScheduler: TestScheduler
 
@@ -28,10 +27,12 @@ class CodemashServiceTest {
 
     private var speakersReceivedEvent: SpeakersReceivedEvent = SpeakersReceivedEvent()
     private var sessionsReceivedEvent: SessionsReceivedEvent = SessionsReceivedEvent()
+    private var conferenceDataRequestErrorFired: Boolean = false
 
     @Before
     fun setUp() {
-        codemashApi = mock(CodemashApi::class.java)
+        initMocks(this)
+
         testScheduler = TestScheduler()
         eventBus = EventBus.getDefault()
         eventBus.register(this)
@@ -51,7 +52,7 @@ class CodemashServiceTest {
     fun onRequestConferenceDataEventSendsTheSpeakersReceivedEvent() {
         val speaker = buildDefaultApiSpeakers()[0]
 
-        `when`(codemashApi.getSpeakers()).thenReturn(Observable.fromArray(listOf(speaker)))
+        whenever(codemashApi.getSpeakers()).thenReturn(Observable.fromArray(listOf(speaker)))
 
         eventBus.post(RequestConferenceDataEvent())
 
@@ -59,6 +60,16 @@ class CodemashServiceTest {
 
         val actualSpeakers = speakersReceivedEvent.speakers
         assertEquals(speaker, actualSpeakers[0])
+    }
+
+    @Test
+    fun onRequestConferenceDataEventSendsConferenceDataRequestErrorWhenAnErrorOccurs() {
+        whenever(codemashApi.getSpeakers()).thenReturn(Observable.error(Exception("Woops!")))
+
+        eventBus.post(RequestConferenceDataEvent())
+        testScheduler.triggerActions()
+
+        assertTrue(conferenceDataRequestErrorFired)
     }
 
     @Test
@@ -74,7 +85,7 @@ class CodemashServiceTest {
                 abstract = "abstract"
         )
 
-        `when`(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(session)))
+        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(session)))
 
         eventBus.post(SpeakersPersistedEvent())
 
@@ -82,6 +93,16 @@ class CodemashServiceTest {
 
         val actualSessions = sessionsReceivedEvent.sessions
         assertEquals(session, actualSessions[0])
+    }
+
+    @Test
+    fun onSpeakersPersistedEventSendsConferenceDataRequestErrorEventWhenAnErrorOccurs() {
+        whenever(codemashApi.getSessions()).thenReturn(Observable.error(Exception("Woops!")))
+
+        eventBus.post(SpeakersPersistedEvent())
+        testScheduler.triggerActions()
+
+        assertTrue(conferenceDataRequestErrorFired)
     }
 
     @Subscribe
@@ -92,5 +113,10 @@ class CodemashServiceTest {
     @Subscribe
     fun onSessionsReceivedEvent(sessionsReceivedEvent: SessionsReceivedEvent) {
         this.sessionsReceivedEvent = sessionsReceivedEvent
+    }
+
+    @Subscribe
+    fun onRequestConferenceDataErrorEvent(conferenceDataRequestError: ConferenceDataRequestError) {
+        this.conferenceDataRequestErrorFired = true
     }
 }

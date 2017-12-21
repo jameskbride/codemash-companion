@@ -18,7 +18,10 @@ class CodemashService @Inject constructor(private val codemashApi: CodemashApi,
        codemashApi.getSpeakers()
                .subscribeOn(processScheduler)
                .observeOn(androidScheduler)
-               .subscribe {result -> eventBus.post(SpeakersReceivedEvent(speakers = result))}
+               .subscribe (
+                       {result -> eventBus.post(SpeakersReceivedEvent(speakers = result))},
+                       {error -> eventBus.post(ConferenceDataRequestError())}
+               )
     }
 
     @Subscribe
@@ -26,6 +29,9 @@ class CodemashService @Inject constructor(private val codemashApi: CodemashApi,
         codemashApi.getSessions()
                 .subscribeOn(processScheduler)
                 .observeOn(androidScheduler)
-                .subscribe {result -> eventBus.post(SessionsReceivedEvent(sessions = result))}
+                .subscribe (
+                        {result -> eventBus.post(SessionsReceivedEvent(sessions = result))},
+                        {error -> eventBus.post(ConferenceDataRequestError())}
+                )
     }
 }
