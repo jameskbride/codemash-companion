@@ -1,5 +1,6 @@
 package com.jameskbride.codemashcompanion.sessions
 
+import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
 import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSession
@@ -38,11 +39,13 @@ class SessionsFragmentPresenterTest {
         eventBus.register(this)
 
         subject = SessionsFragmentPresenter(conferenceRepository, testScheduler, testScheduler, eventBus)
+        subject.open()
         subject.view = view
     }
 
     @After
     fun tearDown() {
+        subject.close()
         eventBus.unregister(this)
     }
 
@@ -78,6 +81,24 @@ class SessionsFragmentPresenterTest {
         subject.refreshConferenceData()
 
         assertTrue(requestConferenceDataEventFired)
+    }
+
+    @Test
+    fun onConferenceDataPersistedItRequestsSessions() {
+        val firstStartTime = "2018-01-11T10:15:00"
+        val sessions:Array<FullSession> = arrayOf(
+                FullSession(SessionStartTime = firstStartTime)
+        )
+
+        whenever(conferenceRepository.getSessions()).thenReturn(Maybe.just(sessions))
+
+        eventBus.post(ConferenceDataPersistedEvent())
+
+        testScheduler.triggerActions()
+
+        val sessionDataCaptor = argumentCaptor<SessionData>()
+        verify(view).onSessionDataRetrieved(sessionDataCaptor.capture())
+        assertArrayEquals(sessions, sessionDataCaptor.firstValue.sessions)
     }
 
     @Subscribe

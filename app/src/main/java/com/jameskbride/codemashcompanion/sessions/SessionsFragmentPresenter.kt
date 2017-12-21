@@ -1,11 +1,13 @@
 package com.jameskbride.codemashcompanion.sessions
 
 import com.jameskbride.codemashcompanion.bus.BusAware
+import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
 import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import io.reactivex.Scheduler
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import javax.inject.Inject
 
 class SessionsFragmentPresenter @Inject constructor(val conferenceRepository: ConferenceRepository,
@@ -31,6 +33,11 @@ class SessionsFragmentPresenter @Inject constructor(val conferenceRepository: Co
 
     fun refreshConferenceData() {
         eventBus.post(RequestConferenceDataEvent())
+    }
+
+    @Subscribe
+    fun onConferenceDataPersistedEvent(conferenceDataPersistedEvent: ConferenceDataPersistedEvent) {
+        requestSessions()
     }
 }
 
