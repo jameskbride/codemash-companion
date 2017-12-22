@@ -16,5 +16,9 @@ class FullSession constructor(
         @ColumnInfo(name = "abstract") var Abstract: String? = null,
         @Relation(parentColumn = "id", entityColumn = "session_id") var conferenceRooms:List<ConferenceRoom> = listOf(),
         @Relation(parentColumn = "id", entityColumn = "session_id") var tags:List<Tag> = listOf(),
-        @Relation(parentColumn = "id", entityColumn = "session_id") var sessionSpeakers:List<SessionSpeaker> = listOf()
-): Serializable
+        @Relation(parentColumn = "id", entityColumn = "session_id") var sessionSpeakers:List<SessionSpeaker> = listOf(),
+        @Relation(parentColumn = "id", entityColumn = "session_id") var bookmarks:List<Bookmark> = listOf()
+): Serializable {
+    val isBookmarked: Boolean
+    get() {return bookmarks.isNotEmpty()}
+}
