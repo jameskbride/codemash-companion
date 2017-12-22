@@ -6,16 +6,18 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivity
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailParam
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
 import com.jameskbride.codemashcompanion.utils.IntentFactory
+import com.jameskbride.codemashcompanion.utils.Toaster
 
 class SessionsFragmentImpl(val presenter: SessionsFragmentPresenter,
                            val sessionsViewAdapterFactory: SessionsViewAdapterFactory = SessionsViewAdapterFactory(),
-                           val intentFactory: IntentFactory = IntentFactory()): SessionsFragmentView {
+                           val intentFactory: IntentFactory = IntentFactory(), val toaster: Toaster = Toaster()): SessionsFragmentView {
     private lateinit var sessionsView: RecyclerView
 
     private lateinit var sessionsViewAdapter: SessionsRecyclerViewAdapter
@@ -43,7 +45,7 @@ class SessionsFragmentImpl(val presenter: SessionsFragmentPresenter,
     }
 
     override fun displayErrorMessage(message: Int) {
-
+        toaster.makeText(qtn.activity!!, R.string.could_not_refresh, Toast.LENGTH_SHORT).show()
     }
 
     override fun onSessionDataRetrieved(sessionsData: SessionData) {

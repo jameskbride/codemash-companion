@@ -9,12 +9,14 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivity
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityImpl
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailParam
 import com.jameskbride.codemashcompanion.utils.IntentFactory
+import com.jameskbride.codemashcompanion.utils.Toaster
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.verify
@@ -42,6 +44,7 @@ class SessionsFragmentImplTest {
     @Mock private lateinit var context:Context
     @Mock private lateinit var intent:Intent
     @Mock private lateinit var activity:AppCompatActivity
+    @Mock private lateinit var toaster: Toaster
 
     private lateinit var subject:SessionsFragmentImpl
 
@@ -54,7 +57,7 @@ class SessionsFragmentImplTest {
         whenever(view.findViewById<SwipeRefreshLayout>(R.id.sessions_refresh)).thenReturn(sessionsRefresh)
         whenever(qtn.activity).thenReturn(activity)
 
-        subject = SessionsFragmentImpl(presenter, sessionsViewAdapterFactory, intentFactory)
+        subject = SessionsFragmentImpl(presenter, sessionsViewAdapterFactory, intentFactory, toaster)
     }
 
     @Test
@@ -130,6 +133,16 @@ class SessionsFragmentImplTest {
 
         verify(sessionsViewAdapter).setSessions(sessionData)
         verify(sessionsRefresh).setRefreshing(false)
+    }
+
+    @Test
+    fun itCanDisplayAnErrorMessage() {
+        whenever(toaster.makeText(activity, R.string.could_not_refresh, Toast.LENGTH_SHORT)).thenReturn(toaster)
+        subject.onCreateView(layoutInflater, container, null, qtn)
+
+        subject.displayErrorMessage(R.string.could_not_refresh)
+
+        verify(toaster).show()
     }
 
     @Test
