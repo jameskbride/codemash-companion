@@ -36,4 +36,7 @@ interface ConferenceDao {
 
     @Query("SELECT * FROM Session WHERE id IN (:ids) ORDER BY title")
     fun getSessions(ids:Array<Int>): Maybe<Array<FullSession>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(bookmark: Bookmark): Long
 }

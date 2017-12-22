@@ -2,16 +2,22 @@ package com.jameskbride.codemashcompanion.sessions.detail
 
 import android.support.annotation.StringRes
 import com.jameskbride.codemashcompanion.R
+import com.jameskbride.codemashcompanion.bus.BusAware
+import com.jameskbride.codemashcompanion.bus.SessionUpdatedEvent
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
-import com.jameskbride.codemashcompanion.utils.IntentFactory
 import io.reactivex.Scheduler
+import io.reactivex.Single
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import javax.inject.Inject
 
-class SessionDetailActivityPresenter @Inject constructor(val conferenceRepository: ConferenceRepository,
-                                                 val processScheduler: Scheduler,
-                                                 val androidScheduler: Scheduler) {
+class SessionDetailActivityPresenter @Inject constructor(
+        val conferenceRepository: ConferenceRepository,
+        val processScheduler: Scheduler,
+        val androidScheduler: Scheduler,
+        override val eventBus: EventBus):BusAware {
 
     lateinit var view:SessionDetailActivityView
 
@@ -27,17 +33,16 @@ class SessionDetailActivityPresenter @Inject constructor(val conferenceRepositor
     }
 
     fun addBookmark(fullSession: FullSession) {
-        conferenceRepository.addBookmark(fullSession)
-                .subscribeOn(processScheduler)
+        Single.fromCallable {
+            conferenceRepository.addBookmark(fullSession)
+        }.subscribeOn(processScheduler)
                 .observeOn(androidScheduler)
-                .subscribe(
-                        {result -> updateSession(fullSession.Id) },
-                        {error -> view.displayErrorMessage(R.string.unexpected_error)}
-                )
+                .subscribe {result -> }
     }
 
-    private fun updateSession(id: String) {
-        conferenceRepository.getSessions(arrayOf(id.toInt()))
+    @Subscribe
+    fun updateSession(sessionUpdatedEvent: SessionUpdatedEvent) {
+        conferenceRepository.getSessions(arrayOf(sessionUpdatedEvent.sessionId.toInt()))
                 .subscribeOn(processScheduler)
                 .observeOn(androidScheduler)
                 .subscribe(

@@ -1,37 +1,51 @@
 package com.jameskbride.codemashcompanion.data
 
-import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
-import com.jameskbride.codemashcompanion.bus.SessionsReceivedEvent
-import com.jameskbride.codemashcompanion.bus.SpeakersPersistedEvent
-import com.jameskbride.codemashcompanion.bus.SpeakersReceivedEvent
+import com.jameskbride.codemashcompanion.bus.*
 import com.jameskbride.codemashcompanion.data.model.*
 import com.jameskbride.codemashcompanion.network.model.ApiSession
 import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
 import com.jameskbride.codemashcompanion.network.model.ShortSpeaker
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultApiSpeakers
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
+import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Maybe
 import org.greenrobot.eventbus.EventBus
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import org.greenrobot.eventbus.Subscribe
+import org.junit.After
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations.initMocks
 
 class ConferenceRepositoryTest {
 
-    private lateinit var conferenceDao: ConferenceDao
-    private lateinit var eventBus: EventBus
+    @Mock private lateinit var conferenceDao: ConferenceDao
+
     private lateinit var subject: ConferenceRepository
+
+    private lateinit var eventBus: EventBus
+
+    private var sessionUpdatedEventFired: Boolean = false
+    private var speakersPersistedEventFired: Boolean = false
+    private var conferenceDataPersistedEventFired: Boolean = false
 
     @Before
     fun setUp() {
-        conferenceDao = mock()
-        eventBus = mock()
+        initMocks(this)
+        eventBus = EventBus.getDefault()
+        eventBus.register(this)
         subject = ConferenceRepository(conferenceDao, eventBus)
+        subject.open()
+    }
+
+    @After
+    fun tearDown() {
+        subject.close()
+        eventBus.unregister(this)
     }
 
     @Test
@@ -91,9 +105,7 @@ class ConferenceRepositoryTest {
 
         subject.onSpeakersReceivedEvent(SpeakersReceivedEvent(speakers.asList()))
 
-        val speakersPersistedEventCaptor = argumentCaptor<SpeakersPersistedEvent>()
-
-        verify(eventBus).post(speakersPersistedEventCaptor.capture())
+        assertTrue(speakersPersistedEventFired)
     }
 
     @Test
@@ -204,9 +216,7 @@ class ConferenceRepositoryTest {
 
         subject.onSessionsReceivedEvent(SessionsReceivedEvent(sessions))
 
-        val conferenceDataPersistedEventCaptor = argumentCaptor<ConferenceDataPersistedEvent>()
-
-        verify(eventBus).post(conferenceDataPersistedEventCaptor.capture())
+        assertTrue(conferenceDataPersistedEventFired)
     }
 
     @Test
@@ -274,6 +284,20 @@ class ConferenceRepositoryTest {
         assertEquals(maybe, result)
     }
 
+    @Test
+    fun itCanAddABookmark() {
+        val session = FullSession(Id = "1")
+
+        subject.addBookmark(session)
+
+        val bookmarkCaptor = argumentCaptor<Bookmark>()
+        verify(conferenceDao).insert(bookmarkCaptor.capture())
+
+        assertEquals(session.Id, bookmarkCaptor.firstValue.sessionId)
+
+        assertTrue(sessionUpdatedEventFired)
+    }
+
     private fun buildApiSessions(): List<ApiSession> {
         return listOf(ApiSession(
                 id = "123",
@@ -286,5 +310,20 @@ class ConferenceRepositoryTest {
                 abstract = "abstract",
                 rooms = listOf("banyan", "salon e")
         ))
+    }
+
+    @Subscribe
+    fun onSessionUpdatedEvent(sessionUpdatedEvent: SessionUpdatedEvent) {
+        sessionUpdatedEventFired = true
+    }
+
+    @Subscribe
+    fun onSpeakersPersistedEvent(speakersPersistedEvent: SpeakersPersistedEvent) {
+        speakersPersistedEventFired = true
+    }
+
+    @Subscribe
+    fun onConferenceDataPersistedEvent(conferenceDataPersistedEvent: ConferenceDataPersistedEvent) {
+        conferenceDataPersistedEventFired = true
     }
 }

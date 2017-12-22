@@ -149,6 +149,14 @@ class SessionDetailActivityImpl @Inject constructor(
 
         val PARAMETER_BLOCK:String = "PARAMETER_BLOCK"
     }
+
+    fun onResume(sessionDetailActivity: SessionDetailActivity) {
+        presenter.open()
+    }
+
+    fun onPause(sessionDetailActivity: SessionDetailActivity) {
+        presenter.close()
+    }
 }
 
 class SessionDetailParam(val session: FullSession, val showSpeakers:Boolean = true): Serializable

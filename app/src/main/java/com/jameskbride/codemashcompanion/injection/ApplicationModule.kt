@@ -193,8 +193,8 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     @Provides
     fun makeSessionDetailActivityPresenter(conferenceRepository: ConferenceRepository,
                                            @Named("process") processScheduler: Scheduler,
-                                           @Named("main") androidScheduler: Scheduler): SessionDetailActivityPresenter {
-        return SessionDetailActivityPresenter(conferenceRepository, processScheduler, androidScheduler)
+                                           @Named("main") androidScheduler: Scheduler, eventBus: EventBus): SessionDetailActivityPresenter {
+        return SessionDetailActivityPresenter(conferenceRepository, processScheduler, androidScheduler, eventBus)
     }
 
     @Provides

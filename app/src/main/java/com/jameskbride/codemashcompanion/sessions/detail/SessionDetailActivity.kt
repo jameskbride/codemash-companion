@@ -17,6 +17,16 @@ class SessionDetailActivity: AppCompatActivity() {
         impl.onCreate(savedInstanceState, this)
     }
 
+    override fun onResume() {
+        super.onResume()
+        impl.onResume(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        impl.onPause(this)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return return impl.onOptionsItemSelected(item, this)
     }

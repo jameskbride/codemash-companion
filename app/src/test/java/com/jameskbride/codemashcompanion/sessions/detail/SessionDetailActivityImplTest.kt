@@ -264,6 +264,20 @@ class SessionDetailActivityImplTest {
         verify(qtn).callSuperOnOptionsItemSelected(menuItem)
     }
 
+    @Test
+    fun onResumeItOpensThePresenter() {
+        subject.onResume(qtn)
+
+        verify(presenter).open()
+    }
+
+    @Test
+    fun onPauseItClosesThePresenter() {
+        subject.onPause(qtn)
+
+        verify(presenter).close()
+    }
+
     private fun buildDefaultFullSession(): FullSession {
         return FullSession(
                 Id = "123",

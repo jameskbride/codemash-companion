@@ -110,7 +110,9 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         return conferenceDao.getSessions(ids)
     }
 
-    fun addBookmark(fullSession: FullSession): Maybe<Long> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    fun addBookmark(fullSession: FullSession) {
+        conferenceDao.insert(Bookmark(sessionId = fullSession.Id))
+
+        eventBus.post(SessionUpdatedEvent(fullSession.Id))
     }
 }
