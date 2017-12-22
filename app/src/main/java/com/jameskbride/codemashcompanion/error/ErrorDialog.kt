@@ -11,13 +11,11 @@ import javax.inject.Inject
 class ErrorDialog:DialogFragment() {
 
     @Inject
-    lateinit var errorDialogImpl:ErrorDialogImpl
+    lateinit var impl:ErrorDialogImpl
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view =  super.onCreateView(inflater, container, savedInstanceState)
         CodemashCompanionApplication.applicationComponent.inject(this)
-
-        return view
+        return impl.onCreateView(inflater, container, savedInstanceState, this)
     }
 }
 
