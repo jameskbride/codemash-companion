@@ -1,9 +1,11 @@
 package com.jameskbride.codemashcompanion.sessions.detail
 
+import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.data.model.SessionSpeaker
+import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -53,5 +55,21 @@ class SessionDetailActivityPresenterTest {
 
         assertTrue(speakerIdsCaptor.firstValue.containsAll(listOf("1", "2")))
         verify(view).displaySpeakers(speakers)
+    }
+
+    @Test
+    fun itDisplaysAnErrorMessageMessageWhenAnErrorOccursRetrievingSpeakers() {
+        val fullSession = FullSession(
+                sessionSpeakers = listOf(
+                        SessionSpeaker(sessionId = 1, speakerId = "1"),
+                        SessionSpeaker(sessionId = 1, speakerId = "2")
+                )
+        )
+        whenever(conferenceRepository.getSpeakers(any())).thenReturn(Maybe.error(Exception("Woops!")))
+
+        subject.retrieveSpeakers(fullSession)
+        testScheduler.triggerActions()
+
+        verify(view).displayErrorMessage(R.string.unexpected_error)
     }
 }

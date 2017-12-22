@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
 import com.jameskbride.codemashcompanion.data.model.FullSession
@@ -14,6 +15,7 @@ import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailParams
 import com.jameskbride.codemashcompanion.utils.IntentFactory
+import com.jameskbride.codemashcompanion.utils.Toaster
 import com.nhaarman.mockito_kotlin.*
 import org.junit.Assert
 import org.junit.Assert.assertEquals
@@ -39,6 +41,7 @@ class SessionDetailActivityImplTest {
     @Mock private lateinit var presenter:SessionDetailActivityPresenter
     @Mock private lateinit var speakerHeadshotFactory:SpeakerHeadshotFactory
     @Mock private lateinit var intentFactory:IntentFactory
+    @Mock private lateinit var toaster:Toaster
 
     private lateinit var subject: SessionDetailActivityImpl
 
@@ -49,7 +52,7 @@ class SessionDetailActivityImplTest {
     fun setUp() {
         initMocks(this)
 
-        subject = SessionDetailActivityImpl(presenter, speakerHeadshotFactory, intentFactory)
+        subject = SessionDetailActivityImpl(presenter, speakerHeadshotFactory, intentFactory, toaster)
 
         fullSession = FullSession(
                 Id = "123",
@@ -114,7 +117,7 @@ class SessionDetailActivityImplTest {
 
         verify(presenter).retrieveSpeakers(fullSession)
     }
-    
+
     @Test
     fun onCreateDoesNotRequestSpeakersWhenShowSpeakersIsFalse() {
         buildSessionDetailParam(false)
@@ -164,5 +167,15 @@ class SessionDetailActivityImplTest {
         val speakerDetailParams = extraCaptor.firstValue
         Assert.assertArrayEquals(speakers, speakerDetailParams.speakers)
         assertEquals(0, speakerDetailParams.index)
+    }
+
+    @Test
+    fun itCanDisplayAnErrorMessage() {
+        whenever(toaster.makeText(qtn, R.string.unexpected_error, Toast.LENGTH_SHORT)).thenReturn(toaster)
+        subject.onCreate(null, qtn)
+
+        subject.displayErrorMessage(R.string.unexpected_error)
+
+        verify(toaster).show()
     }
 }

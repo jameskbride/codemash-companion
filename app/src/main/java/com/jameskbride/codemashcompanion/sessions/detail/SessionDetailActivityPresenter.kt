@@ -1,5 +1,7 @@
 package com.jameskbride.codemashcompanion.sessions.detail
 
+import android.support.annotation.StringRes
+import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
@@ -9,7 +11,7 @@ import javax.inject.Inject
 
 class SessionDetailActivityPresenter @Inject constructor(val conferenceRepository: ConferenceRepository,
                                                  val processScheduler: Scheduler,
-                                                 val androidScheduler: Scheduler, intentFactory: IntentFactory = IntentFactory()) {
+                                                 val androidScheduler: Scheduler) {
 
     lateinit var view:SessionDetailActivityView
 
@@ -18,11 +20,15 @@ class SessionDetailActivityPresenter @Inject constructor(val conferenceRepositor
         conferenceRepository.getSpeakers(speakerIds)
                 .subscribeOn(processScheduler)
                 .observeOn(androidScheduler)
-                .subscribe { results -> view.displaySpeakers(results) }
+                .subscribe (
+                        { results -> view.displaySpeakers(results) },
+                        { error -> view.displayErrorMessage(R.string.unexpected_error) }
+                )
     }
 }
 
 interface SessionDetailActivityView {
     fun displaySpeakers(speakers: Array<FullSpeaker>)
+    fun displayErrorMessage(@StringRes message: Int)
 
 }

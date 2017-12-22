@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
@@ -12,6 +13,7 @@ import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailParams
 import com.jameskbride.codemashcompanion.utils.IntentFactory
+import com.jameskbride.codemashcompanion.utils.Toaster
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import javax.inject.Inject
@@ -19,7 +21,8 @@ import javax.inject.Inject
 class SessionDetailActivityImpl @Inject constructor(
         val presenter:SessionDetailActivityPresenter,
         val speakerHeadshotFactory: SpeakerHeadshotFactory = SpeakerHeadshotFactory(),
-        val intentFactory: IntentFactory = IntentFactory()) : SessionDetailActivityView {
+        val intentFactory: IntentFactory = IntentFactory(),
+        val toaster: Toaster = Toaster()) : SessionDetailActivityView {
     private lateinit var qtn: SessionDetailActivity
 
     fun onCreate(savedInstanceState: Bundle?, qtn: SessionDetailActivity) {
@@ -69,6 +72,10 @@ class SessionDetailActivityImpl @Inject constructor(
             speakerHeadshot.setOnClickListener { view: View? -> navigateToSpeakerDetail(speakers, index) }
             speakersHolder.addView(speakerHeadshot)
         }
+    }
+
+    override fun displayErrorMessage(message: Int) {
+        toaster.makeText(qtn, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun navigateToSpeakerDetail(speakers: Array<FullSpeaker>, index:Int) {
