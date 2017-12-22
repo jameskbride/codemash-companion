@@ -45,7 +45,7 @@ class SessionsFragmentImpl(val presenter: SessionsFragmentPresenter,
     }
 
     override fun stopRefreshing() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        sessionsRefresh.isRefreshing = false
     }
 
     override fun displayErrorMessage(message: Int) {

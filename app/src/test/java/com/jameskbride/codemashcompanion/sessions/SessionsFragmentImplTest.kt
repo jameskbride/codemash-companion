@@ -146,6 +146,15 @@ class SessionsFragmentImplTest {
     }
 
     @Test
+    fun itCanStopRefreshing() {
+        subject.onCreateView(layoutInflater, container, null, qtn)
+
+        subject.stopRefreshing()
+
+        verify(sessionsRefresh).setRefreshing(false)
+    }
+
+    @Test
     fun itCanNavigateToTheSessionDetail() {
         val session = FullSession()
         whenever(qtn.getContext()).thenReturn(context)
