@@ -52,7 +52,11 @@ class SessionDetailActivityPresenter @Inject constructor(
     }
 
     fun removeBookmark(fullSession: FullSession) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Single.fromCallable {
+            conferenceRepository.removeBookmark(fullSession)
+        }.subscribeOn(processScheduler)
+                .observeOn(androidScheduler)
+                .subscribe { result ->  }
     }
 }
 

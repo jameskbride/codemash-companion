@@ -96,6 +96,16 @@ class SessionDetailActivityPresenterTest {
     }
 
     @Test
+    fun itCanRemoveABookmark() {
+        val fullSession = FullSession(Id = "1")
+
+        subject.removeBookmark(fullSession)
+        testScheduler.triggerActions()
+
+        verify(conferenceRepository).removeBookmark(any())
+    }
+
+    @Test
     fun onSessionUpdatedEventItUpdatesTheView() {
         val fullSession = FullSession()
         val fullSessionObservable = Maybe.just(arrayOf(fullSession))
