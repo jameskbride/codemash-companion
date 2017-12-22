@@ -24,7 +24,10 @@ class SpeakersFragmentPresenter @Inject constructor(override val eventBus: Event
         conferenceRepository.getSpeakers()
                 .subscribeOn(processScheduler)
                 .observeOn(androidScheduler)
-                .subscribe {speakers -> view.onSpeakerDataRetrieved(speakers)}
+                .subscribe (
+                        {speakers -> view.onSpeakerDataRetrieved(speakers)},
+                        {error -> view.displayErrorMessage(R.string.unexpected_error)}
+                )
     }
 
     fun navigateToDetails(speakers: Array<FullSpeaker>, index: Int) {

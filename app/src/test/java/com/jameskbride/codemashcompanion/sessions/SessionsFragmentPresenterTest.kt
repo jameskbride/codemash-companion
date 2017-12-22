@@ -69,6 +69,16 @@ class SessionsFragmentPresenterTest {
     }
 
     @Test
+    fun whenAnErrorOccursOnSessionDataReceivedThenAMessageIsDisplayedOnTheView() {
+        whenever(conferenceRepository.getSessions()).thenReturn(Maybe.error(Exception("Oops!")))
+
+        subject.requestSessions()
+        testScheduler.triggerActions()
+
+        verify(view).displayErrorMessage(R.string.unexpected_error)
+    }
+
+    @Test
     fun itDelegatesToTheViewWhenNavigatingToASession() {
         val firstStartTime = "2018-01-11T10:15:00"
         val session = FullSession(SessionStartTime = firstStartTime)

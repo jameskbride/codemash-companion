@@ -23,7 +23,10 @@ class SessionsFragmentPresenter @Inject constructor(val conferenceRepository: Co
         conferenceRepository.getSessions()
                 .subscribeOn(processScheduler)
                 .observeOn(androidScheduler)
-                .subscribe { results -> notifyView(results) }
+                .subscribe(
+                        { results -> notifyView(results) },
+                        {error -> view.displayErrorMessage(R.string.unexpected_error)}
+                )
     }
 
     private fun notifyView(results: Array<FullSession>) {

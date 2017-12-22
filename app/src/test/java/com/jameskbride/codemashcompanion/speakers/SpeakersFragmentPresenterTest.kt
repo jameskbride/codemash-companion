@@ -65,6 +65,16 @@ class SpeakersFragmentPresenterTest {
     }
 
     @Test
+    fun whenAnErrorOccursOnSpeakerDataReceivedThenAMessageIsDisplayedOnTheView() {
+        whenever(conferenceRepository.getSpeakers()).thenReturn(Maybe.error(Exception("Oops!")))
+
+        subject.requestSpeakerData()
+        testScheduler.triggerActions()
+
+        verify(view).displayErrorMessage(R.string.unexpected_error)
+    }
+
+    @Test
     fun itDelegatesToTheViewToNavigateToDetails() {
         val speakers = buildDefaultSpeakers()
 
