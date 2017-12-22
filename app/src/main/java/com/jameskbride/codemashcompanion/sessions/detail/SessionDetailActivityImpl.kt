@@ -34,25 +34,32 @@ class SessionDetailActivityImpl @Inject constructor(
         this.qtn = qtn
         presenter.view = this
         qtn.setContentView(R.layout.activity_session_detail)
+        removeBookmarkFAB = qtn.findViewById(R.id.remove_bookmark_fab)
+        addBookmarkFAB = qtn.findViewById(R.id.add_bookmark_fab)
 
         val sessionDetail: SessionDetailParam = getSessionDetailParam(qtn)
 
-        configureSessionDetails(qtn, sessionDetail)
-        configureTimes(sessionDetail, qtn)
         configureActionBar(qtn)
-        configureSpeakersBlock(sessionDetail, qtn)
-        configureBookmarkFAB(sessionDetail)
+        val session = sessionDetail.session
+        configureViewForSession(session)
+        configureSpeakersBlock(sessionDetail)
     }
 
-    private fun configureSessionDetails(qtn: SessionDetailActivity, sessionDetail: SessionDetailParam) {
-        qtn.findViewById<TextView>(R.id.session_title).text = sessionDetail.session.Title
-        qtn.findViewById<TextView>(R.id.session_abstract).text = sessionDetail.session.Abstract
-        qtn.findViewById<TextView>(R.id.session_category).text = sessionDetail.session.Category
-        qtn.findViewById<TextView>(R.id.session_type).text = sessionDetail.session.SessionType
+    private fun configureViewForSession(session: FullSession) {
+        configureSessionDetails(session)
+        configureTimes(session)
+        configureBookmarkFAB(session)
+    }
+
+    private fun configureSessionDetails(session: FullSession) {
+        qtn.findViewById<TextView>(R.id.session_title).text = session.Title
+        qtn.findViewById<TextView>(R.id.session_abstract).text = session.Abstract
+        qtn.findViewById<TextView>(R.id.session_category).text = session.Category
+        qtn.findViewById<TextView>(R.id.session_type).text = session.SessionType
         qtn.findViewById<TextView>(R.id.session_rooms).text =
-                sessionDetail.session.conferenceRooms.map { it.name }.joinToString(", ")
+                session.conferenceRooms.map { it.name }.joinToString(", ")
         qtn.findViewById<TextView>(R.id.session_tags).text =
-                sessionDetail.session.tags.map { it.name }.joinToString(", ")
+                session.tags.map { it.name }.joinToString(", ")
     }
 
     private fun getSessionDetailParam(qtn: SessionDetailActivity): SessionDetailParam {
@@ -61,8 +68,8 @@ class SessionDetailActivityImpl @Inject constructor(
         return sessionDetail
     }
 
-    private fun configureTimes(sessionDetail: SessionDetailParam, qtn: SessionDetailActivity) {
-        val sessionStartTime = SimpleDateFormat(Session.TIMESTAMP_FORMAT).parse(sessionDetail.session.SessionStartTime)
+    private fun configureTimes(session: FullSession) {
+        val sessionStartTime = SimpleDateFormat(Session.TIMESTAMP_FORMAT).parse(session.SessionStartTime)
         val dateFormat = SimpleDateFormat("M/d/yyyy")
         val formattedDate = dateFormat.format(sessionStartTime)
         qtn.findViewById<TextView>(R.id.session_date).text = formattedDate
@@ -70,7 +77,7 @@ class SessionDetailActivityImpl @Inject constructor(
         val timeFormat = SimpleDateFormat("h:mm a")
         val formattedStartTime = timeFormat.format(sessionStartTime)
 
-        val sessionEndTime = SimpleDateFormat(Session.TIMESTAMP_FORMAT).parse(sessionDetail.session.SessionEndTime)
+        val sessionEndTime = SimpleDateFormat(Session.TIMESTAMP_FORMAT).parse(session.SessionEndTime)
         val formattedEndTime = timeFormat.format(sessionEndTime)
         qtn.findViewById<TextView>(R.id.session_time).text = "${formattedStartTime} - ${formattedEndTime}"
     }
@@ -80,21 +87,18 @@ class SessionDetailActivityImpl @Inject constructor(
         qtn.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun configureSpeakersBlock(sessionDetail: SessionDetailParam, qtn: SessionDetailActivity) {
+    private fun configureSpeakersBlock(sessionDetail: SessionDetailParam) {
         when (sessionDetail.showSpeakers) {
             true -> presenter.retrieveSpeakers(sessionDetail.session)
             else -> qtn.findViewById<LinearLayout>(R.id.speakers_block).visibility = View.GONE
         }
     }
 
-    private fun configureBookmarkFAB(sessionDetail: SessionDetailParam) {
-        removeBookmarkFAB = qtn.findViewById(R.id.remove_bookmark_fab)
-        removeBookmarkFAB.setOnClickListener { view: View? -> presenter.removeBookmark(sessionDetail.session) }
+    private fun configureBookmarkFAB(session: FullSession) {
+        removeBookmarkFAB.setOnClickListener { view: View? -> presenter.removeBookmark(session) }
+        addBookmarkFAB.setOnClickListener {view: View? -> presenter.addBookmark(session) }
 
-        addBookmarkFAB = qtn.findViewById(R.id.add_bookmark_fab)
-        addBookmarkFAB.setOnClickListener {view: View? -> presenter.addBookmark(sessionDetail.session) }
-
-        when (sessionDetail.session.isBookmarked) {
+        when (session.isBookmarked) {
             true -> {
                 removeBookmarkFAB.visibility = View.VISIBLE
                 addBookmarkFAB.visibility = View.GONE
