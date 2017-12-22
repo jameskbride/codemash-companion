@@ -45,6 +45,7 @@ class SessionsFragmentPresenter @Inject constructor(val conferenceRepository: Co
 
     @Subscribe
     fun onConferenceDataRequestError(conferenceDataRequestError: ConferenceDataRequestError) {
+        view.stopRefreshing()
         view.displayErrorMessage(R.string.could_not_refresh)
     }
 }
@@ -53,4 +54,5 @@ interface SessionsFragmentView {
     fun onSessionDataRetrieved(sessionsData: SessionData)
     fun navigateToSessionDetail(session: FullSession)
     fun displayErrorMessage(@StringRes message: Int)
+    fun stopRefreshing()
 }

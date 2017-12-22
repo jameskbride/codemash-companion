@@ -104,10 +104,17 @@ class SessionsFragmentPresenterTest {
     }
 
     @Test
-    fun onConferenceRequestDataErrorItNotifiesTheView() {
+    fun onConferenceDataRequestErrorItNotifiesTheViewToDisplayAMessage() {
         eventBus.post(ConferenceDataRequestError())
 
         verify(view).displayErrorMessage(R.string.could_not_refresh)
+    }
+
+    @Test
+    fun onConferenceDataRequestErrorItNotifiesTheViewToStopRefreshing() {
+        eventBus.post(ConferenceDataRequestError())
+
+        verify(view).stopRefreshing()
     }
 
     @Subscribe

@@ -21,9 +21,9 @@ class SessionsFragmentImpl(val presenter: SessionsFragmentPresenter,
     private lateinit var sessionsView: RecyclerView
 
     private lateinit var sessionsViewAdapter: SessionsRecyclerViewAdapter
+
     private lateinit var qtn: SessionsFragment
     private lateinit var sessionsRefresh: SwipeRefreshLayout
-
     fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?, qtn: SessionsFragment): View? {
         this.qtn = qtn
         val view = inflater.inflate(R.layout.fragment_sessions, container, false)
@@ -42,6 +42,10 @@ class SessionsFragmentImpl(val presenter: SessionsFragmentPresenter,
         }
 
         return view
+    }
+
+    override fun stopRefreshing() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun displayErrorMessage(message: Int) {
