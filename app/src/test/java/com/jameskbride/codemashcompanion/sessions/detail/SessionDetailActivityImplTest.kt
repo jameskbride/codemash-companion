@@ -1,7 +1,10 @@
 package com.jameskbride.codemashcompanion.sessions.detail
 
-import android.content.Context
 import android.content.Intent
+import android.support.annotation.IdRes
+import android.support.v7.app.ActionBar
+import android.support.v7.widget.Toolbar
+import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -19,6 +22,7 @@ import com.jameskbride.codemashcompanion.utils.Toaster
 import com.nhaarman.mockito_kotlin.*
 import org.junit.Assert
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -36,8 +40,10 @@ class SessionDetailActivityImplTest {
     @Mock private lateinit var rooms:TextView
     @Mock private lateinit var tags:TextView
     @Mock private lateinit var sessionDate:TextView
+    @Mock private lateinit var toolbar:Toolbar
     @Mock private lateinit var speakersHolder:LinearLayout
     @Mock private lateinit var speakersBlock:LinearLayout
+    @Mock private lateinit var actionBar:ActionBar
     @Mock private lateinit var presenter:SessionDetailActivityPresenter
     @Mock private lateinit var speakerHeadshotFactory:SpeakerHeadshotFactory
     @Mock private lateinit var intentFactory:IntentFactory
@@ -79,6 +85,7 @@ class SessionDetailActivityImplTest {
         whenever(qtn.findViewById<TextView>(R.id.session_date)).thenReturn(sessionDate)
         whenever(qtn.findViewById<LinearLayout>(R.id.speakers_holder)).thenReturn(speakersHolder)
         whenever(qtn.findViewById<LinearLayout>(R.id.speakers_block)).thenReturn(speakersBlock)
+        whenever(qtn.findViewById<Toolbar>(R.id.toolbar)).thenReturn(toolbar)
         whenever(qtn.intent).thenReturn(intent)
         whenever(intent.getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
     }
@@ -109,6 +116,15 @@ class SessionDetailActivityImplTest {
         verify(sessionDate).setText("1/10/2018")
         verify(rooms).setText("banyan, salon e")
         verify(tags).setText("tag 1, tag 2")
+    }
+
+    @Test
+    fun onCreateConfiguresTheUpNavigation() {
+        whenever(qtn.supportActionBar).thenReturn(actionBar)
+        subject.onCreate(null, qtn)
+
+        verify(qtn).setSupportActionBar(toolbar)
+        verify(actionBar).setDisplayHomeAsUpEnabled(true)
     }
 
     @Test
@@ -177,5 +193,27 @@ class SessionDetailActivityImplTest {
         subject.displayErrorMessage(R.string.unexpected_error)
 
         verify(toaster).show()
+    }
+
+    @Test
+    fun itCanNavigateUpWhenHomeIsSelected() {
+        val menuItem = mock<MenuItem>()
+        whenever(menuItem.itemId).thenReturn(android.R.id.home)
+
+        val result = subject.onOptionsItemSelected(menuItem, qtn)
+
+        assertTrue(result)
+        verify(qtn).onBackPressed()
+    }
+
+    @Test
+    fun itNavigatesAccordingToSuperWhenHomeIsNotSelected() {
+        val menuItem = mock<MenuItem>()
+        @IdRes val someInt = 42
+        whenever(menuItem.itemId).thenReturn(someInt)
+
+        subject.onOptionsItemSelected(menuItem, qtn)
+
+        verify(qtn).callSuperOnOptionsItemSelected(menuItem)
     }
 }

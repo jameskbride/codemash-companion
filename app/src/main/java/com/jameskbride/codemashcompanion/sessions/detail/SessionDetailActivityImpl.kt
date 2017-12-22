@@ -1,6 +1,7 @@
 package com.jameskbride.codemashcompanion.sessions.detail
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -53,6 +54,8 @@ class SessionDetailActivityImpl @Inject constructor(
         val sessionEndTime = SimpleDateFormat(Session.TIMESTAMP_FORMAT).parse(sessionDetail.session.SessionEndTime)
         val formattedEndTime = timeFormat.format(sessionEndTime)
         qtn.findViewById<TextView>(R.id.session_time).text = "${formattedStartTime} - ${formattedEndTime}"
+        qtn.setSupportActionBar(qtn.findViewById(R.id.toolbar))
+        qtn.supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         when (sessionDetail.showSpeakers) {
             true -> presenter.retrieveSpeakers(sessionDetail.session)
@@ -76,6 +79,16 @@ class SessionDetailActivityImpl @Inject constructor(
 
     override fun displayErrorMessage(message: Int) {
         toaster.makeText(qtn, message, Toast.LENGTH_SHORT).show()
+    }
+
+    fun onOptionsItemSelected(item: MenuItem?, qtn: SessionDetailActivity): Boolean {
+        when(item?.itemId) {
+            android.R.id.home ->  {
+                qtn.onBackPressed()
+                return true
+            }
+            else -> return qtn.callSuperOnOptionsItemSelected(item)
+        }
     }
 
     private fun navigateToSpeakerDetail(speakers: Array<FullSpeaker>, index:Int) {
