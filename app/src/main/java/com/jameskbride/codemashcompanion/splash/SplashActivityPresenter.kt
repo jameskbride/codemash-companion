@@ -1,9 +1,6 @@
 package com.jameskbride.codemashcompanion.splash
 
-import com.jameskbride.codemashcompanion.bus.BusAware
-import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
-import com.jameskbride.codemashcompanion.bus.ConferenceDataRequestError
-import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
+import com.jameskbride.codemashcompanion.bus.*
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import io.reactivex.Scheduler
 import org.greenrobot.eventbus.EventBus
@@ -43,6 +40,11 @@ class SplashActivityPresenter @Inject constructor(override val eventBus: EventBu
     @Subscribe
     fun onConferenceDataRequestError(conferenceDataRequestError: ConferenceDataRequestError) {
         view.showErrorDialog()
+    }
+
+    @Subscribe
+    fun onNoDataEvent(noDataEvent: NoDataEvent) {
+        view.navigateToMain()
     }
 }
 
