@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
@@ -15,6 +16,7 @@ import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivity
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailParam
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
+import com.jameskbride.codemashcompanion.utils.Toaster
 import com.jameskbride.codemashcompanion.utils.UriWrapper
 import javax.inject.Inject
 
@@ -23,8 +25,8 @@ class SpeakerDetailFragmentImpl @Inject constructor(
         val picassoLoader: PicassoLoader = PicassoLoader(),
         val intentFactory: IntentFactory = IntentFactory(),
         val uriWrapper: UriWrapper = UriWrapper(),
-        val sessionHolderFactory: SessionHolderFactory = SessionHolderFactory()) : SpeakerDetailFragmentView {
-
+        val sessionHolderFactory: SessionHolderFactory = SessionHolderFactory(),
+        val toaster: Toaster = Toaster()) : SpeakerDetailFragmentView {
     private lateinit var qtn: SpeakerDetailFragment
 
     fun onCreate(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?, speakerDetailFragment: SpeakerDetailFragment):View {
@@ -50,6 +52,10 @@ class SpeakerDetailFragmentImpl @Inject constructor(
 
         configureLinks(speaker, view, speakerDetailFragment)
         presenter.retrieveSessions(speaker)
+    }
+
+    override fun displayErrorMessage(message: Int) {
+        toaster.makeText(qtn.activity!!, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun configureLinks(speaker: FullSpeaker, view: View, speakerDetailFragment: SpeakerDetailFragment) {

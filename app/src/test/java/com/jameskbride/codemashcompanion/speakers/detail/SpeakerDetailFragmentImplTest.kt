@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
@@ -19,6 +20,7 @@ import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityIm
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailParam
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
+import com.jameskbride.codemashcompanion.utils.Toaster
 import com.jameskbride.codemashcompanion.utils.UriWrapper
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import com.nhaarman.mockito_kotlin.*
@@ -60,6 +62,7 @@ class SpeakerDetailFragmentImplTest {
     @Mock private lateinit var sessionsHolder:LinearLayout
     @Mock private lateinit var sessionHolderFactory:SessionHolderFactory
     @Mock private lateinit var activity:AppCompatActivity
+    @Mock private lateinit var toaster:Toaster
 
     private lateinit var speaker: FullSpeaker
 
@@ -95,7 +98,13 @@ class SpeakerDetailFragmentImplTest {
         whenever(uriWrapper.parse(any())).thenReturn(uri)
         whenever(bundle.getSerializable(SpeakerDetailFragment.SPEAKER_KEY)).thenReturn(speaker)
 
-        subject = SpeakerDetailFragmentImpl(presenter, picassoLoader, intentFactory = intentFactory, uriWrapper = uriWrapper, sessionHolderFactory = sessionHolderFactory)
+        subject = SpeakerDetailFragmentImpl(
+                presenter = presenter,
+                picassoLoader = picassoLoader,
+                intentFactory = intentFactory,
+                uriWrapper = uriWrapper,
+                sessionHolderFactory = sessionHolderFactory,
+                toaster = toaster)
     }
 
     @Test
@@ -168,6 +177,16 @@ class SpeakerDetailFragmentImplTest {
         verify(githubText).setText(speaker.GitHubLink)
         verify(blogBlock).setVisibility(View.VISIBLE)
         verify(blogText).setText(speaker.BlogUrl)
+    }
+
+    @Test
+    fun itCanDisplayAnErrorMessage() {
+        whenever(toaster.makeText(activity, R.string.unexpected_error, Toast.LENGTH_SHORT)).thenReturn(toaster)
+        subject.onViewCreated(view, null, speakerDetailFragment = qtn)
+
+        subject.displayErrorMessage(R.string.unexpected_error)
+
+        verify(toaster).show()
     }
 
     @Test
