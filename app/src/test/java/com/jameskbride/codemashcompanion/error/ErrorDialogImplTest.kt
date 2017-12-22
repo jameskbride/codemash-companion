@@ -25,7 +25,7 @@ class ErrorDialogImplTest {
     @Mock private lateinit var view: View
     @Mock private lateinit var title:TextView
     @Mock private lateinit var message:TextView
-    @Mock private lateinit var okButton:Button
+    @Mock private lateinit var okButton:TextView
     @Mock private lateinit var presenter:ErrorDialogPresenter
 
     private lateinit var subject:ErrorDialogImpl
@@ -38,10 +38,10 @@ class ErrorDialogImplTest {
 
         subject = ErrorDialogImpl(presenter)
 
-        whenever(layoutInflater.inflate(R.layout.error_dialog, viewGroup, false)).thenReturn(view)
+        whenever(layoutInflater.inflate(R.layout.error_dialog, viewGroup, true)).thenReturn(view)
         whenever(view.findViewById<TextView>(R.id.error_dialog_title)).thenReturn(title)
         whenever(view.findViewById<TextView>(R.id.error_dialog_message)).thenReturn(message)
-        whenever(view.findViewById<Button>(R.id.error_dialog_ok)).thenReturn(okButton)
+        whenever(view.findViewById<TextView>(R.id.error_dialog_ok)).thenReturn(okButton)
 
         setupErrorDialogParams(errorDialogParams)
     }
@@ -51,7 +51,7 @@ class ErrorDialogImplTest {
         val result = subject.onCreateView(layoutInflater, viewGroup, null, qtn)
 
         assertSame(view, result)
-        verify(layoutInflater).inflate(R.layout.error_dialog, viewGroup, false)
+        verify(layoutInflater).inflate(R.layout.error_dialog, viewGroup, true)
     }
 
     @Test

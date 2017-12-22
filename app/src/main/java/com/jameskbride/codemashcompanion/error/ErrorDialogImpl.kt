@@ -5,7 +5,6 @@ import android.support.annotation.StringRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
 import java.io.Serializable
@@ -19,7 +18,7 @@ class ErrorDialogImpl @Inject constructor(val presenter: ErrorDialogPresenter) {
 
         view.findViewById<TextView>(R.id.error_dialog_title).setText(errorDialogParams.title)
         view.findViewById<TextView>(R.id.error_dialog_message).setText(errorDialogParams.message)
-        view.findViewById<Button>(R.id.error_dialog_ok).setOnClickListener {view: View? ->
+        view.findViewById<TextView>(R.id.error_dialog_ok).setOnClickListener {view: View? ->
             qtn.dismiss()
             presenter.navigateToMain()
         }

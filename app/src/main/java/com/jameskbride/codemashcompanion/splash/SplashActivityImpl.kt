@@ -22,7 +22,6 @@ class SplashActivityImpl @Inject constructor(
         this.activity = activity
         activity.setContentView(R.layout.activity_splash)
         presenter.view = this
-        presenter.open()
         presenter.requestConferenceData()
     }
 
