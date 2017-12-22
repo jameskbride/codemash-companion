@@ -1,6 +1,8 @@
 package com.jameskbride.codemashcompanion.sessions
 
+import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
+import com.jameskbride.codemashcompanion.bus.ConferenceDataRequestError
 import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSession
@@ -99,6 +101,13 @@ class SessionsFragmentPresenterTest {
         val sessionDataCaptor = argumentCaptor<SessionData>()
         verify(view).onSessionDataRetrieved(sessionDataCaptor.capture())
         assertArrayEquals(sessions, sessionDataCaptor.firstValue.sessions)
+    }
+
+    @Test
+    fun onConferenceRequestDataErrorItNotifiesTheView() {
+        eventBus.post(ConferenceDataRequestError())
+
+        verify(view).displayErrorMessage(R.string.could_not_refresh)
     }
 
     @Subscribe

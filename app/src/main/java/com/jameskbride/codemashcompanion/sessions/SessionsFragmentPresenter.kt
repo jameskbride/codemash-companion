@@ -1,7 +1,10 @@
 package com.jameskbride.codemashcompanion.sessions
 
+import android.support.annotation.StringRes
+import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.bus.BusAware
 import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
+import com.jameskbride.codemashcompanion.bus.ConferenceDataRequestError
 import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSession
@@ -39,9 +42,15 @@ class SessionsFragmentPresenter @Inject constructor(val conferenceRepository: Co
     fun onConferenceDataPersistedEvent(conferenceDataPersistedEvent: ConferenceDataPersistedEvent) {
         requestSessions()
     }
+
+    @Subscribe
+    fun onConferenceDataRequestError(conferenceDataRequestError: ConferenceDataRequestError) {
+        view.displayErrorMessage(R.string.could_not_refresh)
+    }
 }
 
 interface SessionsFragmentView {
     fun onSessionDataRetrieved(sessionsData: SessionData)
     fun navigateToSessionDetail(session: FullSession)
+    fun displayErrorMessage(@StringRes message: Int)
 }

@@ -17,9 +17,9 @@ class SessionsFragmentImpl(val presenter: SessionsFragmentPresenter,
                            val sessionsViewAdapterFactory: SessionsViewAdapterFactory = SessionsViewAdapterFactory(),
                            val intentFactory: IntentFactory = IntentFactory()): SessionsFragmentView {
     private lateinit var sessionsView: RecyclerView
+
     private lateinit var sessionsViewAdapter: SessionsRecyclerViewAdapter
     private lateinit var qtn: SessionsFragment
-
     private lateinit var sessionsRefresh: SwipeRefreshLayout
 
     fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?, qtn: SessionsFragment): View? {
@@ -42,13 +42,8 @@ class SessionsFragmentImpl(val presenter: SessionsFragmentPresenter,
         return view
     }
 
-    fun onResume() {
-        presenter.open()
-        presenter.requestSessions()
-    }
+    override fun displayErrorMessage(message: Int) {
 
-    fun onPause() {
-        presenter.close()
     }
 
     override fun onSessionDataRetrieved(sessionsData: SessionData) {
@@ -61,5 +56,14 @@ class SessionsFragmentImpl(val presenter: SessionsFragmentPresenter,
         intent.putExtra(SpeakerDetailActivityImpl.PARAMETER_BLOCK, SessionDetailParam(session))
 
         qtn.activity!!.startActivity(intent)
+    }
+
+    fun onResume() {
+        presenter.open()
+        presenter.requestSessions()
+    }
+
+    fun onPause() {
+        presenter.close()
     }
 }
