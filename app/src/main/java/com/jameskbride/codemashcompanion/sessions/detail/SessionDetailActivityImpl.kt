@@ -41,11 +41,11 @@ class SessionDetailActivityImpl @Inject constructor(
 
         configureActionBar(qtn)
         val session = sessionDetail.session
-        configureViewForSession(session)
+        configureForSession(session)
         configureSpeakersBlock(sessionDetail)
     }
 
-    private fun configureViewForSession(session: FullSession) {
+    override fun configureForSession(session: FullSession) {
         configureSessionDetails(session)
         configureTimes(session)
         configureBookmarkFAB(session)

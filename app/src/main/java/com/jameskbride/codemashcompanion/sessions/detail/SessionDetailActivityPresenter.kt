@@ -27,7 +27,23 @@ class SessionDetailActivityPresenter @Inject constructor(val conferenceRepositor
     }
 
     fun addBookmark(fullSession: FullSession) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        conferenceRepository.addBookmark(fullSession)
+                .subscribeOn(processScheduler)
+                .observeOn(androidScheduler)
+                .subscribe(
+                        {result -> updateSession(fullSession.Id) },
+                        {error -> view.displayErrorMessage(R.string.unexpected_error)}
+                )
+    }
+
+    private fun updateSession(id: String) {
+        conferenceRepository.getSessions(arrayOf(id.toInt()))
+                .subscribeOn(processScheduler)
+                .observeOn(androidScheduler)
+                .subscribe(
+                        {result -> view.configureForSession(result[0])},
+                        {error -> view.displayErrorMessage(R.string.unexpected_error)}
+                )
     }
 
     fun removeBookmark(fullSession: FullSession) {
@@ -38,5 +54,6 @@ class SessionDetailActivityPresenter @Inject constructor(val conferenceRepositor
 interface SessionDetailActivityView {
     fun displaySpeakers(speakers: Array<FullSpeaker>)
     fun displayErrorMessage(@StringRes message: Int)
+    fun configureForSession(session: FullSession)
 
 }

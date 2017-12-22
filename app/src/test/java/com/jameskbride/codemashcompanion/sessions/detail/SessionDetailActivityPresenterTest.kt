@@ -2,6 +2,7 @@ package com.jameskbride.codemashcompanion.sessions.detail
 
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
+import com.jameskbride.codemashcompanion.data.model.Bookmark
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.data.model.SessionSpeaker
@@ -21,7 +22,7 @@ import org.mockito.MockitoAnnotations.initMocks
 class SessionDetailActivityPresenterTest {
 
     @Mock private lateinit var conferenceRepository:ConferenceRepository
-    @Mock private lateinit var view:SessionDetailActivityImpl
+    @Mock private lateinit var view:SessionDetailActivityView
     private lateinit var subject: SessionDetailActivityPresenter
 
     private lateinit var testScheduler:TestScheduler
@@ -68,6 +69,55 @@ class SessionDetailActivityPresenterTest {
         whenever(conferenceRepository.getSpeakers(any())).thenReturn(Maybe.error(Exception("Woops!")))
 
         subject.retrieveSpeakers(fullSession)
+        testScheduler.triggerActions()
+
+        verify(view).displayErrorMessage(R.string.unexpected_error)
+    }
+
+    @Test
+    fun itUpdatesTheViewWhenABookmarkIsAdded() {
+        val fullSession = FullSession(Id = "1")
+
+        val addedBookmarkObservable = Maybe.just(1L)
+
+        val updatedSession = FullSession(
+                bookmarks = listOf(Bookmark(sessionId = "1"))
+        )
+
+        val updatedSessionObservable = Maybe.just(arrayOf(updatedSession))
+        whenever(conferenceRepository.addBookmark(fullSession)).thenReturn(addedBookmarkObservable)
+        whenever(conferenceRepository.getSessions(arrayOf(1))).thenReturn(updatedSessionObservable)
+
+        subject.addBookmark(fullSession)
+        testScheduler.triggerActions()
+
+        val sessionCaptor = argumentCaptor<FullSession>()
+        verify(view).configureForSession(sessionCaptor.capture())
+        assertTrue(sessionCaptor.firstValue.isBookmarked)
+    }
+
+    @Test
+    fun itDisplaysAnErrorMessageWhenAnErrorOccursAddingABookmark() {
+        val fullSession = FullSession(Id = "1")
+
+        whenever(conferenceRepository.addBookmark(fullSession)).thenReturn(Maybe.error(Exception("Woops!")))
+
+        subject.addBookmark(fullSession)
+        testScheduler.triggerActions()
+
+        verify(view).displayErrorMessage(R.string.unexpected_error)
+    }
+
+    @Test
+    fun itDisplaysAnErrorMessageWhenAnErrorOccursUpdatingTheSession() {
+        val fullSession = FullSession(Id = "1")
+
+        val addedBookmarkObservable = Maybe.just(1L)
+
+        whenever(conferenceRepository.addBookmark(fullSession)).thenReturn(addedBookmarkObservable)
+        whenever(conferenceRepository.getSessions(arrayOf(1))).thenReturn(Maybe.error(Exception("woops!")))
+
+        subject.addBookmark(fullSession)
         testScheduler.triggerActions()
 
         verify(view).displayErrorMessage(R.string.unexpected_error)

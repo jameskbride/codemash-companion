@@ -109,4 +109,8 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     fun getSessions(ids: Array<Int>): Maybe<Array<FullSession>> {
         return conferenceDao.getSessions(ids)
     }
+
+    fun addBookmark(fullSession: FullSession): Maybe<Long> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
