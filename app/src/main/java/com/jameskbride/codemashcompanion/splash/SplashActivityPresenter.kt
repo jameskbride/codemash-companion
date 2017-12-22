@@ -29,7 +29,10 @@ class SplashActivityPresenter @Inject constructor(override val eventBus: EventBu
                                 onConferenceDataPersistedEvent(ConferenceDataPersistedEvent())
                             }
                         },
-                        { error -> view.showErrorDialog()})
+                        { error ->
+                            view.showErrorDialog()
+                        }
+                )
     }
 
     @Subscribe
@@ -37,6 +40,7 @@ class SplashActivityPresenter @Inject constructor(override val eventBus: EventBu
         view.navigateToMain()
     }
 
+    @Subscribe
     fun onConferenceDataRequestError(conferenceDataRequestError: ConferenceDataRequestError) {
         view.showErrorDialog()
     }

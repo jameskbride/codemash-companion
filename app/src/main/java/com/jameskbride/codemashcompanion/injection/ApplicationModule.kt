@@ -7,6 +7,7 @@ import com.jameskbride.codemashcompanion.data.ConferenceDao
 import com.jameskbride.codemashcompanion.data.ConferenceDatabase
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.error.ErrorDialogImpl
+import com.jameskbride.codemashcompanion.error.ErrorDialogPresenter
 import com.jameskbride.codemashcompanion.main.MainActivityImpl
 import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.service.CodemashService
@@ -202,8 +203,13 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     }
 
     @Provides
-    fun makeErrorDialogImpl():ErrorDialogImpl {
-        return ErrorDialogImpl()
+    fun makeErrorDialogPresenter(eventBus: EventBus): ErrorDialogPresenter {
+        return ErrorDialogPresenter(eventBus)
+    }
+
+    @Provides
+    fun makeErrorDialogImpl(errorDialogPresenter: ErrorDialogPresenter):ErrorDialogImpl {
+        return ErrorDialogImpl(errorDialogPresenter)
     }
 
 }

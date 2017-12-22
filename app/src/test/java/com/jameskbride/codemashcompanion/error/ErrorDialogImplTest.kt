@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
+import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -23,23 +25,29 @@ class ErrorDialogImplTest {
     @Mock private lateinit var view: View
     @Mock private lateinit var title:TextView
     @Mock private lateinit var message:TextView
+    @Mock private lateinit var okButton:Button
+    @Mock private lateinit var presenter:ErrorDialogPresenter
 
     private lateinit var subject:ErrorDialogImpl
+
+    private val errorDialogParams = ErrorDialogParams(title = R.string.oops, message = R.string.no_data_message)
 
     @Before
     fun setUp() {
         initMocks(this)
 
-        subject = ErrorDialogImpl()
+        subject = ErrorDialogImpl(presenter)
 
         whenever(layoutInflater.inflate(R.layout.error_dialog, viewGroup, false)).thenReturn(view)
         whenever(view.findViewById<TextView>(R.id.error_dialog_title)).thenReturn(title)
         whenever(view.findViewById<TextView>(R.id.error_dialog_message)).thenReturn(message)
+        whenever(view.findViewById<Button>(R.id.error_dialog_ok)).thenReturn(okButton)
+
+        setupErrorDialogParams(errorDialogParams)
     }
 
     @Test
     fun onCreateViewItInflatesTheView() {
-        setupErrorDialogParams()
         val result = subject.onCreateView(layoutInflater, viewGroup, null, qtn)
 
         assertSame(view, result)
@@ -48,16 +56,25 @@ class ErrorDialogImplTest {
 
     @Test
     fun onCreateViewSetsTheTitleAndMessage() {
-        val errorDialogParams = setupErrorDialogParams()
-
         subject.onCreateView(layoutInflater, viewGroup, null, qtn)
 
         verify(title).setText(errorDialogParams.title)
         verify(message).setText(errorDialogParams.message)
     }
 
-    private fun setupErrorDialogParams(): ErrorDialogParams {
-        val errorDialogParams = ErrorDialogParams(title = R.string.oops, message = R.string.no_data_message)
+    @Test
+    fun onCreateViewConfiguresOKButtonToDismissTheDialog() {
+        subject.onCreateView(layoutInflater, viewGroup, null, qtn)
+
+        val onClickListenerCaptor = argumentCaptor<View.OnClickListener>()
+        verify(okButton).setOnClickListener(onClickListenerCaptor.capture())
+        onClickListenerCaptor.firstValue.onClick(null)
+
+        verify(qtn).dismiss()
+        verify(presenter).navigateToMain()
+    }
+
+    private fun setupErrorDialogParams(errorDialogParams: ErrorDialogParams): ErrorDialogParams {
         val bundle = mock<Bundle>()
         whenever(qtn.arguments).thenReturn(bundle)
         whenever(bundle.getSerializable(PARAMETER_BLOCK)).thenReturn(errorDialogParams)
