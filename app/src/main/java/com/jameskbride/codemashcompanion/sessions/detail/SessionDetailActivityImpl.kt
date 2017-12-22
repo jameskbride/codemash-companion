@@ -89,7 +89,10 @@ class SessionDetailActivityImpl @Inject constructor(
 
     private fun configureBookmarkFAB(sessionDetail: SessionDetailParam) {
         removeBookmarkFAB = qtn.findViewById(R.id.remove_bookmark_fab)
+        removeBookmarkFAB.setOnClickListener { view: View? -> presenter.removeBookmark(sessionDetail.session) }
+
         addBookmarkFAB = qtn.findViewById(R.id.add_bookmark_fab)
+        addBookmarkFAB.setOnClickListener {view: View? -> presenter.addBookmark(sessionDetail.session) }
 
         when (sessionDetail.session.isBookmarked) {
             true -> {

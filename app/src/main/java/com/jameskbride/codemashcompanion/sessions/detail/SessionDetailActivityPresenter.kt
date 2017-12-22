@@ -25,6 +25,14 @@ class SessionDetailActivityPresenter @Inject constructor(val conferenceRepositor
                         { error -> view.displayErrorMessage(R.string.unexpected_error) }
                 )
     }
+
+    fun addBookmark(fullSession: FullSession) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    fun removeBookmark(fullSession: FullSession) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
 
 interface SessionDetailActivityView {

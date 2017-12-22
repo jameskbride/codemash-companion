@@ -148,7 +148,7 @@ class SessionDetailActivityImplTest {
     }
 
     @Test
-    fun whenTheSessionHasBeenNotBookmarkedTheAddeBookmarkFABIsVisible() {
+    fun whenTheSessionHasBeenNotBookmarkedTheAddFABIsVisible() {
         fullSession = buildDefaultFullSession()
 
         buildSessionDetailParam(fullSession)
@@ -158,6 +158,38 @@ class SessionDetailActivityImplTest {
 
         verify(removeBookmarkFAB).setVisibility(View.GONE)
         verify(addBookmarkFAB).setVisibility(View.VISIBLE)
+    }
+
+    @Test
+    fun addBookmarkCanAddABookmark() {
+        fullSession = buildDefaultFullSession()
+
+        buildSessionDetailParam(fullSession)
+        whenever(intent.getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
+
+        subject.onCreate(null, qtn)
+
+        val onClickListenerCaptor = argumentCaptor<View.OnClickListener>()
+        verify(addBookmarkFAB).setOnClickListener(onClickListenerCaptor.capture())
+        onClickListenerCaptor.firstValue.onClick(null)
+
+        verify(presenter).addBookmark(fullSession)
+    }
+
+    @Test
+    fun removeBookmarkCanRemoveABookmark() {
+        fullSession = buildDefaultFullSession()
+
+        buildSessionDetailParam(fullSession)
+        whenever(intent.getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
+
+        subject.onCreate(null, qtn)
+
+        val onClickListenerCaptor = argumentCaptor<View.OnClickListener>()
+        verify(removeBookmarkFAB).setOnClickListener(onClickListenerCaptor.capture())
+        onClickListenerCaptor.firstValue.onClick(null)
+
+        verify(presenter).removeBookmark(fullSession)
     }
 
     @Test
