@@ -1,7 +1,10 @@
 package com.jameskbride.codemashcompanion.speakers
 
+import android.support.annotation.StringRes
+import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.bus.BusAware
 import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
+import com.jameskbride.codemashcompanion.bus.ConferenceDataRequestError
 import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
@@ -36,9 +39,17 @@ class SpeakersFragmentPresenter @Inject constructor(override val eventBus: Event
     fun onConferenceDataPersistedEvent(conferenceDataPersistedEvent: ConferenceDataPersistedEvent) {
         requestSpeakerData()
     }
+
+    @Subscribe
+    fun onConferenceDataRequestError(conferenceDataRequestError: ConferenceDataRequestError) {
+        view.stopRefreshing()
+        view.displayErrorMessage(R.string.could_not_refresh)
+    }
 }
 
 interface SpeakersFragmentView {
     fun onSpeakerDataRetrieved(speakers: Array<FullSpeaker>)
     fun navigateToDetails(speakers: Array<FullSpeaker>, index: Int)
+    fun displayErrorMessage(@StringRes message: Int)
+    fun stopRefreshing()
 }

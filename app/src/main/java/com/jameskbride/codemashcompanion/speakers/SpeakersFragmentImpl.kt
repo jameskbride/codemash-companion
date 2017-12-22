@@ -6,23 +6,26 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl.Companion.PARAMETER_BLOCK
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailParams
 import com.jameskbride.codemashcompanion.utils.IntentFactory
+import com.jameskbride.codemashcompanion.utils.Toaster
 import javax.inject.Inject
 
 class SpeakersFragmentImpl @Inject constructor(val presenter: SpeakersFragmentPresenter,
                                                val speakersViewAdapterFactory: SpeakersViewAdapterFactory = SpeakersViewAdapterFactory(),
-                                               val intentFactory:IntentFactory = IntentFactory()): SpeakersFragmentView {
+                                               val intentFactory:IntentFactory = IntentFactory(),
+                                               val toaster:Toaster = Toaster()): SpeakersFragmentView {
     private lateinit var speakersView: RecyclerView
+
     private lateinit var qtn:SpeakersFragment
-
     private lateinit var speakersViewAdapter: SpeakersRecyclerViewAdapter
-    private lateinit var speakersRefresh: SwipeRefreshLayout
 
+    private lateinit var speakersRefresh: SwipeRefreshLayout
     fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?, qtn: SpeakersFragment): View? {
         this.qtn = qtn
         val view = inflater?.inflate(R.layout.fragment_speakers, container, false)
@@ -42,6 +45,14 @@ class SpeakersFragmentImpl @Inject constructor(val presenter: SpeakersFragmentPr
         }
 
         return view
+    }
+
+    override fun stopRefreshing() {
+        speakersRefresh.isRefreshing = false
+    }
+
+    override fun displayErrorMessage(message: Int) {
+        toaster.makeText(qtn.activity!!, R.string.could_not_refresh, Toast.LENGTH_SHORT).show()
     }
 
     fun onResume() {

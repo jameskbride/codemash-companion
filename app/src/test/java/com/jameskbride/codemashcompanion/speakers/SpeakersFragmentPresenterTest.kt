@@ -1,6 +1,8 @@
 package com.jameskbride.codemashcompanion.speakers
 
+import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
+import com.jameskbride.codemashcompanion.bus.ConferenceDataRequestError
 import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSession
@@ -91,6 +93,20 @@ class SpeakersFragmentPresenterTest {
         val sessionDataCaptor = argumentCaptor<Array<FullSpeaker>>()
         verify(view).onSpeakerDataRetrieved(sessionDataCaptor.capture())
         Assert.assertArrayEquals(speakers, sessionDataCaptor.firstValue)
+    }
+
+    @Test
+    fun onConferenceDataRequestErrorItNotifiesTheViewToDisplayAMessage() {
+        eventBus.post(ConferenceDataRequestError())
+
+        verify(view).displayErrorMessage(R.string.could_not_refresh)
+    }
+
+    @Test
+    fun onConferenceDataRequestErrorItNotifiesTheViewToStopRefreshing() {
+        eventBus.post(ConferenceDataRequestError())
+
+        verify(view).stopRefreshing()
     }
 
     @Subscribe

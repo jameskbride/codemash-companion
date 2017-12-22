@@ -9,11 +9,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl.Companion.PARAMETER_BLOCK
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailParams
 import com.jameskbride.codemashcompanion.utils.IntentFactory
+import com.jameskbride.codemashcompanion.utils.Toaster
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import com.nhaarman.mockito_kotlin.*
 import org.junit.Assert.*
@@ -37,13 +39,14 @@ class SpeakersFragmentImplTest {
     @Mock private lateinit var gridLayoutManager:GridLayoutManager
     @Mock private lateinit var intentFactory:IntentFactory
     @Mock private lateinit var activity:AppCompatActivity
+    @Mock private lateinit var toaster:Toaster
 
     private lateinit var subject: SpeakersFragmentImpl
 
     @Before
     fun setUp() {
         initMocks(this)
-        subject = SpeakersFragmentImpl(presenter, speakersViewAdapterFactory, intentFactory)
+        subject = SpeakersFragmentImpl(presenter, speakersViewAdapterFactory, intentFactory, toaster)
 
         whenever(qtn.getView()).thenReturn(view)
         whenever(qtn.getContext()).thenReturn(context)
@@ -127,6 +130,25 @@ class SpeakersFragmentImplTest {
         subject.onSpeakerDataRetrieved(speakers)
 
         verify(speakersViewAdapter).setSpeakers(speakers)
+        verify(speakersRefresh).setRefreshing(false)
+    }
+
+    @Test
+    fun itCanDisplayAnErrorMessage() {
+        whenever(toaster.makeText(activity, R.string.could_not_refresh, Toast.LENGTH_SHORT)).thenReturn(toaster)
+        subject.onCreateView(layoutInflater, viewGroup, null, qtn)
+
+        subject.displayErrorMessage(R.string.could_not_refresh)
+
+        verify(toaster).show()
+    }
+
+    @Test
+    fun itCanStopRefreshing() {
+        subject.onCreateView(layoutInflater, viewGroup, null, qtn)
+
+        subject.stopRefreshing()
+
         verify(speakersRefresh).setRefreshing(false)
     }
     
