@@ -2,6 +2,7 @@ package com.jameskbride.codemashcompanion.sessions.detail
 
 import android.content.Intent
 import android.support.annotation.IdRes
+import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.ActionBar
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
@@ -10,10 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.jameskbride.codemashcompanion.R
-import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
-import com.jameskbride.codemashcompanion.data.model.FullSession
-import com.jameskbride.codemashcompanion.data.model.FullSpeaker
-import com.jameskbride.codemashcompanion.data.model.Tag
+import com.jameskbride.codemashcompanion.data.model.*
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailParams
@@ -44,6 +42,8 @@ class SessionDetailActivityImplTest {
     @Mock private lateinit var speakersHolder:LinearLayout
     @Mock private lateinit var speakersBlock:LinearLayout
     @Mock private lateinit var actionBar:ActionBar
+    @Mock private lateinit var addBookmarkFAB:FloatingActionButton
+    @Mock private lateinit var removeBookmarkFAB:FloatingActionButton
     @Mock private lateinit var presenter:SessionDetailActivityPresenter
     @Mock private lateinit var speakerHeadshotFactory:SpeakerHeadshotFactory
     @Mock private lateinit var intentFactory:IntentFactory
@@ -60,20 +60,8 @@ class SessionDetailActivityImplTest {
 
         subject = SessionDetailActivityImpl(presenter, speakerHeadshotFactory, intentFactory, toaster)
 
-        fullSession = FullSession(
-                Id = "123",
-                Category = "DevOps",
-                SessionStartTime = "2018-01-10T09:15:00",
-                SessionEndTime = "2018-01-10T10:15:00",
-                SessionType = "session type",
-                Title = "title",
-                Abstract = "abstract",
-                conferenceRooms = listOf(ConferenceRoom(sessionId = "123", name = "banyan"),
-                        ConferenceRoom(sessionId = "123", name = "salon e")),
-                tags = listOf(Tag(sessionId = "123", name = "tag 1"),
-                        Tag(sessionId = "123", name = "tag 2"))
-        )
-        buildSessionDetailParam()
+        fullSession = buildDefaultFullSession()
+        buildSessionDetailParam(fullSession)
 
         whenever(qtn.findViewById<TextView>(R.id.session_title)).thenReturn(title)
         whenever(qtn.findViewById<TextView>(R.id.session_abstract)).thenReturn(abstract)
@@ -86,12 +74,10 @@ class SessionDetailActivityImplTest {
         whenever(qtn.findViewById<LinearLayout>(R.id.speakers_holder)).thenReturn(speakersHolder)
         whenever(qtn.findViewById<LinearLayout>(R.id.speakers_block)).thenReturn(speakersBlock)
         whenever(qtn.findViewById<Toolbar>(R.id.toolbar)).thenReturn(toolbar)
+        whenever(qtn.findViewById<FloatingActionButton>(R.id.add_bookmark_fab)).thenReturn(addBookmarkFAB)
+        whenever(qtn.findViewById<FloatingActionButton>(R.id.remove_bookmark_fab)).thenReturn(removeBookmarkFAB)
         whenever(qtn.intent).thenReturn(intent)
         whenever(intent.getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
-    }
-
-    private fun buildSessionDetailParam(showSpeakers: Boolean = true) {
-        sessionDetailParam = SessionDetailParam(fullSession, showSpeakers = showSpeakers)
     }
 
     @Test
@@ -136,13 +122,42 @@ class SessionDetailActivityImplTest {
 
     @Test
     fun onCreateDoesNotRequestSpeakersWhenShowSpeakersIsFalse() {
-        buildSessionDetailParam(false)
+        buildSessionDetailParam(buildDefaultFullSession(), false)
         whenever(intent.getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
 
         subject.onCreate(null, qtn)
 
         verify(speakersBlock).setVisibility(View.GONE)
         verify(presenter, never()).retrieveSpeakers(any())
+    }
+
+    @Test
+    fun whenTheSessionHasBeenBookmarkedTheRemoveBookmarkFABIsVisible() {
+        fullSession = buildDefaultFullSession()
+        fullSession.bookmarks = listOf(
+                Bookmark(sessionId = fullSession.Id)
+        )
+
+        buildSessionDetailParam(fullSession)
+        whenever(intent.getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
+
+        subject.onCreate(null, qtn)
+
+        verify(removeBookmarkFAB).setVisibility(View.VISIBLE)
+        verify(addBookmarkFAB).setVisibility(View.GONE)
+    }
+
+    @Test
+    fun whenTheSessionHasBeenNotBookmarkedTheAddeBookmarkFABIsVisible() {
+        fullSession = buildDefaultFullSession()
+
+        buildSessionDetailParam(fullSession)
+        whenever(intent.getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
+
+        subject.onCreate(null, qtn)
+
+        verify(removeBookmarkFAB).setVisibility(View.GONE)
+        verify(addBookmarkFAB).setVisibility(View.VISIBLE)
     }
 
     @Test
@@ -215,5 +230,25 @@ class SessionDetailActivityImplTest {
         subject.onOptionsItemSelected(menuItem, qtn)
 
         verify(qtn).callSuperOnOptionsItemSelected(menuItem)
+    }
+
+    private fun buildDefaultFullSession(): FullSession {
+        return FullSession(
+                Id = "123",
+                Category = "DevOps",
+                SessionStartTime = "2018-01-10T09:15:00",
+                SessionEndTime = "2018-01-10T10:15:00",
+                SessionType = "session type",
+                Title = "title",
+                Abstract = "abstract",
+                conferenceRooms = listOf(ConferenceRoom(sessionId = "123", name = "banyan"),
+                        ConferenceRoom(sessionId = "123", name = "salon e")),
+                tags = listOf(Tag(sessionId = "123", name = "tag 1"),
+                        Tag(sessionId = "123", name = "tag 2"))
+        )
+    }
+
+    private fun buildSessionDetailParam(fullSession: FullSession, showSpeakers: Boolean = true) {
+        sessionDetailParam = SessionDetailParam(fullSession, showSpeakers = showSpeakers)
     }
 }

@@ -1,6 +1,7 @@
 package com.jameskbride.codemashcompanion.sessions.detail
 
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
@@ -26,14 +27,24 @@ class SessionDetailActivityImpl @Inject constructor(
         val toaster: Toaster = Toaster()) : SessionDetailActivityView {
     private lateinit var qtn: SessionDetailActivity
 
+    private lateinit var removeBookmarkFAB: FloatingActionButton
+    private lateinit var addBookmarkFAB: FloatingActionButton
+
     fun onCreate(savedInstanceState: Bundle?, qtn: SessionDetailActivity) {
         this.qtn = qtn
         presenter.view = this
         qtn.setContentView(R.layout.activity_session_detail)
 
-        val sessionDetail:SessionDetailParam =
-                qtn.intent.getSerializableExtra(PARAMETER_BLOCK) as SessionDetailParam
+        val sessionDetail: SessionDetailParam = getSessionDetailParam(qtn)
 
+        configureSessionDetails(qtn, sessionDetail)
+        configureTimes(sessionDetail, qtn)
+        configureActionBar(qtn)
+        configureSpeakersBlock(sessionDetail, qtn)
+        configureBookmarkFAB(sessionDetail)
+    }
+
+    private fun configureSessionDetails(qtn: SessionDetailActivity, sessionDetail: SessionDetailParam) {
         qtn.findViewById<TextView>(R.id.session_title).text = sessionDetail.session.Title
         qtn.findViewById<TextView>(R.id.session_abstract).text = sessionDetail.session.Abstract
         qtn.findViewById<TextView>(R.id.session_category).text = sessionDetail.session.Category
@@ -42,7 +53,15 @@ class SessionDetailActivityImpl @Inject constructor(
                 sessionDetail.session.conferenceRooms.map { it.name }.joinToString(", ")
         qtn.findViewById<TextView>(R.id.session_tags).text =
                 sessionDetail.session.tags.map { it.name }.joinToString(", ")
+    }
 
+    private fun getSessionDetailParam(qtn: SessionDetailActivity): SessionDetailParam {
+        val sessionDetail: SessionDetailParam =
+                qtn.intent.getSerializableExtra(PARAMETER_BLOCK) as SessionDetailParam
+        return sessionDetail
+    }
+
+    private fun configureTimes(sessionDetail: SessionDetailParam, qtn: SessionDetailActivity) {
         val sessionStartTime = SimpleDateFormat(Session.TIMESTAMP_FORMAT).parse(sessionDetail.session.SessionStartTime)
         val dateFormat = SimpleDateFormat("M/d/yyyy")
         val formattedDate = dateFormat.format(sessionStartTime)
@@ -54,12 +73,33 @@ class SessionDetailActivityImpl @Inject constructor(
         val sessionEndTime = SimpleDateFormat(Session.TIMESTAMP_FORMAT).parse(sessionDetail.session.SessionEndTime)
         val formattedEndTime = timeFormat.format(sessionEndTime)
         qtn.findViewById<TextView>(R.id.session_time).text = "${formattedStartTime} - ${formattedEndTime}"
+    }
+
+    private fun configureActionBar(qtn: SessionDetailActivity) {
         qtn.setSupportActionBar(qtn.findViewById(R.id.toolbar))
         qtn.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
 
+    private fun configureSpeakersBlock(sessionDetail: SessionDetailParam, qtn: SessionDetailActivity) {
         when (sessionDetail.showSpeakers) {
             true -> presenter.retrieveSpeakers(sessionDetail.session)
             else -> qtn.findViewById<LinearLayout>(R.id.speakers_block).visibility = View.GONE
+        }
+    }
+
+    private fun configureBookmarkFAB(sessionDetail: SessionDetailParam) {
+        removeBookmarkFAB = qtn.findViewById(R.id.remove_bookmark_fab)
+        addBookmarkFAB = qtn.findViewById(R.id.add_bookmark_fab)
+
+        when (sessionDetail.session.isBookmarked) {
+            true -> {
+                removeBookmarkFAB.visibility = View.VISIBLE
+                addBookmarkFAB.visibility = View.GONE
+            }
+            else -> {
+                removeBookmarkFAB.visibility = View.GONE
+                addBookmarkFAB.visibility = View.VISIBLE
+            }
         }
     }
 
