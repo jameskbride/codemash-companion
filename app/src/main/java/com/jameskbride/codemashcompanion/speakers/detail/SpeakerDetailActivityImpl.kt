@@ -12,8 +12,8 @@ class SpeakerDetailActivityImpl(val speakerPagerAdapterFactory: SpeakerPagerAdap
     fun onCreate(savedInstanceState: Bundle?, qtn: SpeakerDetailActivity) {
         qtn.setContentView(R.layout.activity_speaker_detail)
 
-        val speakerDetailParams:SpeakerDetailParams =
-                qtn.intent.getSerializableExtra(PARAMETER_BLOCK) as SpeakerDetailParams
+        val speakerDetailParams: SpeakersParams =
+                qtn.intent.getSerializableExtra(PARAMETER_BLOCK) as SpeakersParams
         speakerDetailPagerAdapter =
                 speakerPagerAdapterFactory.make(qtn.supportFragmentManager)
         speakerDetailPagerAdapter.updateSpeakers(speakerDetailParams.speakers)

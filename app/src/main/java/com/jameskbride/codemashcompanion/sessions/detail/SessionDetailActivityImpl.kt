@@ -13,7 +13,7 @@ import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.data.model.Session
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
-import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailParams
+import com.jameskbride.codemashcompanion.speakers.detail.SpeakersParams
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.Toaster
 import java.io.Serializable
@@ -139,7 +139,7 @@ class SessionDetailActivityImpl @Inject constructor(
 
     private fun navigateToSpeakerDetail(speakers: Array<FullSpeaker>, index:Int) {
         val intent = intentFactory.make(qtn, SpeakerDetailActivity::class.java)
-        intent.putExtra(SpeakerDetailActivityImpl.PARAMETER_BLOCK, SpeakerDetailParams(speakers, index))
+        intent.putExtra(SpeakerDetailActivityImpl.PARAMETER_BLOCK, SpeakersParams(speakers, index))
 
         qtn.startActivity(intent)
     }

@@ -33,13 +33,13 @@ class SpeakerDetailActivityImplTest {
     private lateinit var subject: SpeakerDetailActivityImpl
 
     private lateinit var speakers:Array<FullSpeaker>
-    private lateinit var speakerDetailParams:SpeakerDetailParams
+    private lateinit var speakerDetailParams: SpeakersParams
 
     @Before
     fun setUp() {
         initMocks(this)
         speakers = buildDefaultSpeakers()
-        speakerDetailParams = SpeakerDetailParams(speakers, 0)
+        speakerDetailParams = SpeakersParams(speakers, 0)
         intent = mock()
 
         subject = SpeakerDetailActivityImpl(speakerPagerAdapterFactory)

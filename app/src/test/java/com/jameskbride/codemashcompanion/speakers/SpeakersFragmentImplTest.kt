@@ -13,7 +13,7 @@ import android.widget.Toast
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl.Companion.PARAMETER_BLOCK
-import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailParams
+import com.jameskbride.codemashcompanion.speakers.detail.SpeakersParams
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.Toaster
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
@@ -161,7 +161,7 @@ class SpeakersFragmentImplTest {
 
         subject.navigateToDetails(speakers, 0)
 
-        val extraCaptor = argumentCaptor<SpeakerDetailParams>()
+        val extraCaptor = argumentCaptor<SpeakersParams>()
 
         verify(intent).putExtra(eq(PARAMETER_BLOCK), extraCaptor.capture())
         val speakerDetailParams = extraCaptor.firstValue

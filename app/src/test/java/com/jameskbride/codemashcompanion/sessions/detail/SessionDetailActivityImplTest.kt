@@ -14,7 +14,7 @@ import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.*
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
-import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailParams
+import com.jameskbride.codemashcompanion.speakers.detail.SpeakersParams
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.Toaster
 import com.nhaarman.mockito_kotlin.*
@@ -227,7 +227,7 @@ class SessionDetailActivityImplTest {
         verify(speakerHeadshot).setOnClickListener(onClickCaptor.capture())
         onClickCaptor.firstValue.onClick(null)
 
-        val extraCaptor = argumentCaptor<SpeakerDetailParams>()
+        val extraCaptor = argumentCaptor<SpeakersParams>()
 
         verify(intent).putExtra(eq(SpeakerDetailActivityImpl.PARAMETER_BLOCK), extraCaptor.capture())
         val speakerDetailParams = extraCaptor.firstValue

@@ -11,7 +11,7 @@ import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl.Companion.PARAMETER_BLOCK
-import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailParams
+import com.jameskbride.codemashcompanion.speakers.detail.SpeakersParams
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.Toaster
 import javax.inject.Inject
@@ -66,7 +66,7 @@ class SpeakersFragmentImpl @Inject constructor(val presenter: SpeakersFragmentPr
 
     override fun navigateToDetails(speakers: Array<FullSpeaker>, index: Int) {
         val intent = intentFactory.make(qtn.context, SpeakerDetailActivity::class.java)
-        intent.putExtra(PARAMETER_BLOCK, SpeakerDetailParams(speakers, index))
+        intent.putExtra(PARAMETER_BLOCK, SpeakersParams(speakers, index))
 
         qtn.activity!!.startActivity(intent)
     }
