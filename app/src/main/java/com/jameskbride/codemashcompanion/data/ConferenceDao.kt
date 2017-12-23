@@ -56,4 +56,10 @@ interface ConferenceDao {
             "ON Speaker.id = SessionSpeaker.speaker_id "+
             "WHERE SessionSpeaker.session_id = :sessionId")
     fun getSpeakersBySession(sessionId: String): Maybe<Array<FullSpeaker>>
+
+    @Transaction
+    @Query("SELECT Session.* FROM Session INNER JOIN Bookmark " +
+            "ON Session.id = Bookmark.session_id " +
+            "WHERE Bookmark.session_id = :sessionId")
+    fun getBookmarkedSessions(sessionId: String): Maybe<Array<FullSession>>
 }

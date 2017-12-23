@@ -69,6 +69,35 @@ class ConferenceDaoTest {
         assertEquals(1, speakerResults[0].sessionSpeakers.size)
     }
 
+    @Test
+    fun itCanRetrieveBookmarkedSessions() {
+        val sessionId = "1"
+        insertBookmark(sessionId)
+
+        var sessionResults: Array<FullSession> = getBookmarkedSession(sessionId)
+
+        assertEquals(1, sessionResults.size)
+        assertEquals(sessionId, sessionResults[0].Id)
+    }
+
+    private fun getBookmarkedSession(sessionId: String): Array<FullSession> {
+        var sessionResults: Array<FullSession> = arrayOf()
+        val sessionsResponse = conferenceDao.getBookmarkedSessions(sessionId)
+        sessionsResponse
+                .subscribeOn(testScheduler)
+                .observeOn(testScheduler)
+                .subscribe { result -> sessionResults = result }
+        testScheduler.triggerActions()
+        return sessionResults
+    }
+
+    private fun insertBookmark(sessionId: String) {
+        conferenceDao.insertAll(arrayOf(Session(Id = sessionId)))
+
+        val bookmark = Bookmark(sessionId = sessionId)
+        conferenceDao.insert(bookmark)
+    }
+
     private fun getSpeakersById(speakerId: String): Array<FullSpeaker> {
         val response = conferenceDao.getSpeakers(arrayOf(speakerId))
 
