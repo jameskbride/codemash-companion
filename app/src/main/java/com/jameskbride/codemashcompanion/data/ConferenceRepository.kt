@@ -61,7 +61,7 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         var sessionSpeakers = mutableListOf<SessionSpeaker>()
         sessions.forEach { session ->
             session.shortSpeakers?.forEach { speaker ->
-                sessionSpeakers.add(SessionSpeaker(sessionId = session.id, speakerId = speaker.id!!)) }
+                sessionSpeakers.add(SessionSpeaker(sessionId = session.id.toString(), speakerId = speaker.id!!)) }
         }
         return sessionSpeakers.toTypedArray()
     }
@@ -70,7 +70,7 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         var conferenceRooms = mutableListOf<ConferenceRoom>()
         apiSessions.forEach { session ->
             session.rooms?.forEach { room ->
-                conferenceRooms.add(ConferenceRoom(sessionId = session.id, name = room)) }
+                conferenceRooms.add(ConferenceRoom(sessionId = session.id.toString(), name = room)) }
         }
         return conferenceRooms
     }
@@ -78,7 +78,7 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     private fun buildTags(apiSessions: List<ApiSession>): MutableList<Tag> {
         var tags = mutableListOf<Tag>()
         apiSessions.forEach { session ->
-            session.tags?.forEach { tag -> tags.add(Tag(sessionId = session.id, name = tag)) }
+            session.tags?.forEach { tag -> tags.add(Tag(sessionId = session.id.toString(), name = tag)) }
         }
         return tags
     }
@@ -86,7 +86,7 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     private fun mapApiSessionsToDomain(apiSessions: List<ApiSession>): Array<Session> {
         return apiSessions.map {
             Session(
-                    Id = it.id,
+                    Id = it.id.toString(),
                     Category = it.category,
                     SessionStartTime = it.sessionStartTime,
                     SessionEndTime = it.sessionEndTime,

@@ -121,7 +121,7 @@ class ConferenceRepositoryTest {
         assertEquals(apiSessions.size, sessions.size)
         val apiSession:ApiSession = apiSessions[0]
         val session: Session = sessions[0]
-        assertEquals(apiSession.id, session.Id)
+        assertEquals(apiSession.id.toString(), session.Id)
         assertEquals(apiSession.category, session.Category)
         assertEquals(apiSession.sessionStartTime, session.SessionStartTime)
         assertEquals(apiSession.sessionEndTime, session.SessionEndTime)
@@ -134,10 +134,10 @@ class ConferenceRepositoryTest {
     fun onSessionsReceivedEventItInsertsAllRooms() {
         val apiSessions = listOf(
                 ApiSession(
-                    id = "1",
+                    id = 1,
                     rooms = listOf("banyan", "salon e")),
                 ApiSession(
-                    id = "2",
+                    id = 2,
                     rooms = listOf("banyan", "salon b")
                 )
         )
@@ -159,8 +159,8 @@ class ConferenceRepositoryTest {
     @Test
     fun onSessionsReceivedEventItInsertsAllTags() {
         val apiSessions = listOf(
-                ApiSession(id = "1", tags = listOf("tag 1", "tag 2")),
-                ApiSession(id = "2", tags = listOf("tag 1", "tag 3"))
+                ApiSession(id = 1, tags = listOf("tag 1", "tag 2")),
+                ApiSession(id = 2, tags = listOf("tag 1", "tag 3"))
         )
 
         subject.onSessionsReceivedEvent(SessionsReceivedEvent(apiSessions))
@@ -185,14 +185,14 @@ class ConferenceRepositoryTest {
                             ShortSpeaker(id = "1"),
                             ShortSpeaker(id = "2")
                         ),
-                        id = "1"
+                        id = 1
                 ),
                 ApiSession(
                         shortSpeakers = listOf(
                                 ShortSpeaker(id = "3"),
                                 ShortSpeaker(id = "4")
                         ),
-                        id = "2"
+                        id = 2
                 )
         )
 
@@ -316,7 +316,7 @@ class ConferenceRepositoryTest {
 
     private fun buildApiSessions(): List<ApiSession> {
         return listOf(ApiSession(
-                id = "123",
+                id = 123,
                 category = "DevOps",
                 sessionStartTime = "start time",
                 sessionEndTime = "end time",

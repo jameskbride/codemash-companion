@@ -75,7 +75,7 @@ class CodemashServiceTest {
     @Test
     fun onSpeakersPersistedEventRequestsTheSessionsData() {
         val session = ApiSession(
-                id  = "123",
+                id  = 123,
                 category = "DevOps",
                 sessionStartTime = "start time",
                 sessionEndTime = "end time",
