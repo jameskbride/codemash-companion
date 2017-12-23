@@ -68,7 +68,7 @@ class SessionDetailActivityImpl @Inject constructor(
 
     private fun configureTimes(session: FullSession) {
         val sessionStartTime = SimpleDateFormat(Session.TIMESTAMP_FORMAT).parse(session.SessionStartTime)
-        val dateFormat = SimpleDateFormat("M/d/yyyy")
+        val dateFormat = SimpleDateFormat(Session.SHORT_DATE_FORMAT)
         val formattedDate = dateFormat.format(sessionStartTime)
         qtn.findViewById<TextView>(R.id.session_date).text = formattedDate
 

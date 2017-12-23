@@ -18,15 +18,15 @@ class SessionsRecyclerViewAdapterImpl(val sessionsFragmentPresenter: SessionsFra
     }
 
     fun setSessions(sessionData: SessionData, qtn: SessionsRecyclerViewAdapter) {
-        var sessionsGroupedByDate: Map<Int, List<FullSession>> = groupByDate(sessionData)
+        var sessionsGroupedByDate: Map<String, List<FullSession>> = groupByDate(sessionData)
         var dateTimeSessions = groupByStartTime(sessionsGroupedByDate)
         sessionsList = populateSessionList(dateTimeSessions)
 
         qtn.notifyDataSetChanged()
     }
 
-    private fun groupByStartTime(sessionsGroupedByDate: Map<Int, List<FullSession>>): LinkedHashMap<Int, Map<Date, List<FullSession?>>> {
-        var dateTimesSessions: LinkedHashMap<Int, Map<Date, List<FullSession?>>> = linkedMapOf()
+    private fun groupByStartTime(sessionsGroupedByDate: Map<String, List<FullSession>>): LinkedHashMap<String, Map<Date, List<FullSession?>>> {
+        var dateTimesSessions: LinkedHashMap<String, Map<Date, List<FullSession?>>> = linkedMapOf()
         sessionsGroupedByDate.forEach { keyValue ->
             dateTimesSessions[keyValue.key] = keyValue.value.groupBy { session ->
                 val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
@@ -36,10 +36,13 @@ class SessionsRecyclerViewAdapterImpl(val sessionsFragmentPresenter: SessionsFra
         return dateTimesSessions
     }
 
-    private fun populateSessionList(dateTimesSessions: LinkedHashMap<Int, Map<Date, List<FullSession?>>>): MutableList<ListItem> {
+    private fun populateSessionList(dateTimesSessions: LinkedHashMap<String, Map<Date, List<FullSession?>>>): MutableList<ListItem> {
         var sessionsList:MutableList<ListItem> = mutableListOf()
-        dateTimesSessions.keys.sorted().forEachIndexed { index, date ->
-            sessionsList.add(DateHeaderListItem("Day ${index + 1}"))
+        val dateFormatter = SimpleDateFormat(Session.SHORT_DATE_FORMAT)
+        dateTimesSessions.keys.sortedWith(compareBy{ dateString ->
+            dateFormatter.parse(dateString)
+        }).forEach{ date ->
+            sessionsList.add(DateHeaderListItem(date))
             dateTimesSessions[date]!!.keys.sorted().forEach { time ->
                 sessionsList.add(TimeHeaderListItem(time))
                 dateTimesSessions[date]!![time]!!.forEach { session ->
@@ -51,18 +54,19 @@ class SessionsRecyclerViewAdapterImpl(val sessionsFragmentPresenter: SessionsFra
         return sessionsList
     }
 
-    private fun groupByDate(sessionData: SessionData): Map<Int, List<FullSession>> {
+    private fun groupByDate(sessionData: SessionData): Map<String, List<FullSession>> {
         val sessionsGroupedByDate = groupSessionsByDate(sessionData)
 
         return sessionsGroupedByDate
     }
 
-    private fun groupSessionsByDate(sessionData: SessionData): Map<Int, List<FullSession>> {
+    private fun groupSessionsByDate(sessionData: SessionData): Map<String, List<FullSession>> {
         return sessionData.sessions.groupBy { session ->
             val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
             val calendar = Calendar.getInstance()
             calendar.time = dateFormatter.parse(session?.SessionStartTime)
-            calendar.get(Calendar.DATE)
+            val shortDateFormatter = SimpleDateFormat(Session.SHORT_DATE_FORMAT)
+            shortDateFormatter.format(calendar.time)
         }
     }
 

@@ -17,5 +17,6 @@ data class Session constructor(
         @ColumnInfo(name = "abstract") var Abstract: String? = null) {
     companion object {
         val TIMESTAMP_FORMAT = "yyyy-MM-dd'T'hh:mm"
+        val SHORT_DATE_FORMAT =  "M/d/yyyy"
     }
 }

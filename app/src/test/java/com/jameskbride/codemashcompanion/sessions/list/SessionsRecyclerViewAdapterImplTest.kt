@@ -78,7 +78,7 @@ class SessionsRecyclerViewAdapterImplTest {
         assertEquals(7, result.size)
 
         val firstDateHeader: DateHeaderListItem = result[0] as DateHeaderListItem
-        assertEquals("Day 1", firstDateHeader.text)
+        assertEquals("1/10/2018", firstDateHeader.text)
 
         val firstTimeHeader: TimeHeaderListItem = result[1] as TimeHeaderListItem
         assertEquals(firstDate, firstTimeHeader.sessionTime)
@@ -87,7 +87,7 @@ class SessionsRecyclerViewAdapterImplTest {
         assertEquals(firstSession, firstItem.session)
 
         val secondDateHeader: DateHeaderListItem = result[3] as DateHeaderListItem
-        assertEquals("Day 2", secondDateHeader.text)
+        assertEquals("1/11/2018", secondDateHeader.text)
 
         val secondTimeHeader: TimeHeaderListItem = result[4] as TimeHeaderListItem
         assertEquals(secondDate, secondTimeHeader.sessionTime)
@@ -160,7 +160,7 @@ class SessionsRecyclerViewAdapterImplTest {
 
         subject.onBindViewHolder(dateHeaderViewHolder, 0)
 
-        verify(dateHeaderViewHolder).bind("Day 1")
+        verify(dateHeaderViewHolder).bind("1/10/2018")
     }
 
     @Test
