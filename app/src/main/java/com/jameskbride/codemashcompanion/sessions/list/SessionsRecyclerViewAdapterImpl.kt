@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class SessionsRecyclerViewAdapterImpl(val sessionsFragmentPresenter: SessionsFragmentPresenter, val layoutInflaterFactory: LayoutInflaterFactory = LayoutInflaterFactory()) {
-    var sessionsList: MutableList<ListItem> = mutableListOf()
+    var sessionsList: List<ListItem> = mutableListOf()
 
     fun getItemCount(): Int {
         return sessionsList.size
@@ -20,8 +20,7 @@ class SessionsRecyclerViewAdapterImpl(val sessionsFragmentPresenter: SessionsFra
     fun setSessions(sessionData: SessionData, qtn: SessionsRecyclerViewAdapter) {
         var sessionsGroupedByDate: Map<Int, List<FullSession>> = groupByDate(sessionData)
         var dateTimeSessions = groupByStartTime(sessionsGroupedByDate)
-
-        populateSessionList(dateTimeSessions)
+        sessionsList = populateSessionList(dateTimeSessions)
 
         qtn.notifyDataSetChanged()
     }
@@ -37,7 +36,8 @@ class SessionsRecyclerViewAdapterImpl(val sessionsFragmentPresenter: SessionsFra
         return dateTimesSessions
     }
 
-    private fun populateSessionList(dateTimesSessions: LinkedHashMap<Int, Map<Date, List<FullSession?>>>) {
+    private fun populateSessionList(dateTimesSessions: LinkedHashMap<Int, Map<Date, List<FullSession?>>>): MutableList<ListItem> {
+        var sessionsList:MutableList<ListItem> = mutableListOf()
         dateTimesSessions.keys.sorted().forEachIndexed { index, date ->
             sessionsList.add(DateHeaderListItem("Day ${index + 1}"))
             dateTimesSessions[date]!!.keys.sorted().forEach { time ->
@@ -47,6 +47,8 @@ class SessionsRecyclerViewAdapterImpl(val sessionsFragmentPresenter: SessionsFra
                 }
             }
         }
+
+        return sessionsList
     }
 
     private fun groupByDate(sessionData: SessionData): Map<Int, List<FullSession>> {
