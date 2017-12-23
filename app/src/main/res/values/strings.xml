@@ -21,4 +21,5 @@
     <string name="could_not_refresh">Couldn\'t refresh the data\nTry again later.</string>
     <string name="unexpected_error">An unexpected error occurred.</string>
     <string name="no_sessions">It looks like there isn\'t any data right now.\nPull down down to refresh.</string>
+    <string name="empty_schedule">Such empty!\nCheck out this year\'s sessions and add a few to your schedule.</string>
 </resources>

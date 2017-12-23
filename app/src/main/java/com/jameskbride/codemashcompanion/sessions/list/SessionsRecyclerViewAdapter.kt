@@ -4,8 +4,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.sessions.SessionsFragmentPresenter
 
-class SessionsRecyclerViewAdapter constructor(val sessionsFragmentPresenter: SessionsFragmentPresenter,
-                                              val impl: SessionsRecyclerViewAdapterImpl = SessionsRecyclerViewAdapterImpl(sessionsFragmentPresenter))
+open class SessionsRecyclerViewAdapter constructor(val sessionsFragmentPresenter: SessionsFragmentPresenter,
+                                                   open val impl: SessionsRecyclerViewAdapterImpl = SessionsRecyclerViewAdapterImpl(sessionsFragmentPresenter))
     : RecyclerView.Adapter<SessionViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
@@ -26,11 +26,5 @@ class SessionsRecyclerViewAdapter constructor(val sessionsFragmentPresenter: Ses
 
     fun setSessions(sessionData: SessionData) {
         impl.setSessions(sessionData, this)
-    }
-}
-
-class SessionsViewAdapterFactory {
-    fun make(sessionsFragmentPresenter: SessionsFragmentPresenter): SessionsRecyclerViewAdapter {
-        return SessionsRecyclerViewAdapter(sessionsFragmentPresenter)
     }
 }

@@ -12,9 +12,11 @@ import com.jameskbride.codemashcompanion.main.MainActivityImpl
 import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.service.CodemashService
 import com.jameskbride.codemashcompanion.schedule.BookmarkedSessionsRetriever
+import com.jameskbride.codemashcompanion.schedule.list.BookmarksViewAdapterFactory
 import com.jameskbride.codemashcompanion.sessions.*
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityImpl
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityPresenter
+import com.jameskbride.codemashcompanion.sessions.list.SessionsViewAdapterFactory
 import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentImpl
 import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentPresenter
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
@@ -198,6 +200,18 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
         return SessionsFragmentPresenter(sessionsRetriever, processScheduler, androidScheduler, eventBus)
     }
 
+    @Provides
+    @Named("AllSessions")
+    fun makeAllSessionsViewAdapterFactory():SessionsViewAdapterFactory {
+        return SessionsViewAdapterFactory()
+    }
+
+    @Provides
+    @Named("Bookmarked")
+    fun makeBookmarksSessionsViewAdapterFactory():SessionsViewAdapterFactory {
+        return BookmarksViewAdapterFactory()
+    }
+
     @Named("Bookmarked")
     @Provides
     fun makeBookmarkedSessionsFragmentPresenter(@Named("Bookmarked") sessionsRetriever: SessionsRetriever,
@@ -208,14 +222,16 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
 
     @Named("AllSessions")
     @Provides
-    fun makeAllSessionsFragmentImpl(@Named("AllSessions") sessionsFragmentPresenter: SessionsFragmentPresenter): SessionsFragmentImpl {
-        return SessionsFragmentImpl(sessionsFragmentPresenter)
+    fun makeAllSessionsFragmentImpl(@Named("AllSessions") sessionsFragmentPresenter: SessionsFragmentPresenter,
+                                    @Named("AllSessions") allSessionsViewAdapterFactory: SessionsViewAdapterFactory): SessionsFragmentImpl {
+        return SessionsFragmentImpl(sessionsFragmentPresenter, allSessionsViewAdapterFactory)
     }
 
     @Named("Bookmarked")
     @Provides
-    fun makeBookmarkedSessionsFragmentImpl(@Named("Bookmarked") sessionsFragmentPresenter: SessionsFragmentPresenter): SessionsFragmentImpl {
-        return SessionsFragmentImpl(sessionsFragmentPresenter)
+    fun makeBookmarkedSessionsFragmentImpl(@Named("Bookmarked") sessionsFragmentPresenter: SessionsFragmentPresenter,
+                                           @Named("Bookmarked") bookmarksViewAdapterFactory:SessionsViewAdapterFactory): SessionsFragmentImpl {
+        return SessionsFragmentImpl(sessionsFragmentPresenter, bookmarksViewAdapterFactory)
     }
 
     @Provides

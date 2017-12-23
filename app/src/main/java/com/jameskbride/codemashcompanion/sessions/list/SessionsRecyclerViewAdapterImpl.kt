@@ -10,7 +10,7 @@ import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SessionsRecyclerViewAdapterImpl(val sessionsFragmentPresenter: SessionsFragmentPresenter, val layoutInflaterFactory: LayoutInflaterFactory = LayoutInflaterFactory()) {
+open class SessionsRecyclerViewAdapterImpl(open val sessionsFragmentPresenter: SessionsFragmentPresenter, open val layoutInflaterFactory: LayoutInflaterFactory = LayoutInflaterFactory()) {
     var sessionsList: List<ListItem> = mutableListOf()
 
     fun getItemCount(): Int {
@@ -117,6 +117,10 @@ class SessionsRecyclerViewAdapterImpl(val sessionsFragmentPresenter: SessionsFra
             return ItemViewHolder(view!!)
         }
 
+        return buildEmptyViewHolder(parent)
+    }
+
+    open fun buildEmptyViewHolder(parent: ViewGroup?): EmptyViewHolder {
         val view = layoutInflaterFactory.inflate(parent!!.context, R.layout.empty_sessions, parent!!)
         return EmptyViewHolder(view!!)
     }
