@@ -1,4 +1,4 @@
-package com.jameskbride.codemashcompanion.sessions
+package com.jameskbride.codemashcompanion.schedule
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -8,12 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.application.CodemashCompanionApplication
+import com.jameskbride.codemashcompanion.sessions.SessionsFragment
+import com.jameskbride.codemashcompanion.sessions.SessionsFragmentImpl
 import javax.inject.Inject
 import javax.inject.Named
 
-open class SessionsFragment: Fragment() {
-    @Inject @field:Named("AllSessions")
-    open lateinit var impl: SessionsFragmentImpl
+class ScheduleFragment:SessionsFragment() {
+
+    @Inject @field:Named("Bookmarked")
+    override lateinit var impl: SessionsFragmentImpl
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         CodemashCompanionApplication.applicationComponent.inject(this)
@@ -30,7 +33,7 @@ open class SessionsFragment: Fragment() {
         impl.onPause()
     }
 
-    open fun makeLinearLayoutManager(): RecyclerView.LayoutManager? {
+    override fun makeLinearLayoutManager(): RecyclerView.LayoutManager? {
         return LinearLayoutManager(view?.context)
     }
 }

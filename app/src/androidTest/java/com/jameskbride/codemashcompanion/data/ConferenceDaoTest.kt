@@ -74,15 +74,15 @@ class ConferenceDaoTest {
         val sessionId = "1"
         insertBookmark(sessionId)
 
-        var sessionResults: Array<FullSession> = getBookmarkedSession(sessionId)
+        var sessionResults: Array<FullSession> = getBookmarkedSession()
 
         assertEquals(1, sessionResults.size)
         assertEquals(sessionId, sessionResults[0].Id)
     }
 
-    private fun getBookmarkedSession(sessionId: String): Array<FullSession> {
+    private fun getBookmarkedSession(): Array<FullSession> {
         var sessionResults: Array<FullSession> = arrayOf()
-        val sessionsResponse = conferenceDao.getBookmarkedSessions(sessionId)
+        val sessionsResponse = conferenceDao.getBookmarkedSessions()
         sessionsResponse
                 .subscribeOn(testScheduler)
                 .observeOn(testScheduler)

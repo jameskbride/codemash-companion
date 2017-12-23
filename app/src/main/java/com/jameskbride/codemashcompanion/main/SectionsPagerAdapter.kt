@@ -3,6 +3,7 @@ package com.jameskbride.codemashcompanion.main
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import com.jameskbride.codemashcompanion.schedule.ScheduleFragment
 import com.jameskbride.codemashcompanion.sessions.SessionsFragment
 import com.jameskbride.codemashcompanion.speakers.SpeakersFragment
 
@@ -12,7 +13,7 @@ class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
         return when(position) {
             0 -> SessionsFragment()
             1 -> SpeakersFragment()
-            else -> PlaceholderFragment.newInstance(2)
+            else -> ScheduleFragment()
         }
     }
 

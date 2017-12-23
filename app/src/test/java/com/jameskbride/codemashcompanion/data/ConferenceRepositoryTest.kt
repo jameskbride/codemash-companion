@@ -325,6 +325,18 @@ class ConferenceRepositoryTest {
         assertTrue(sessionUpdatedEventFired)
     }
 
+    @Test
+    fun itCanRetrieveBookmarkedSessions() {
+        val expectedResponse = Maybe.just(arrayOf(FullSession()))
+
+        whenever(conferenceDao.getBookmarkedSessions()).thenReturn(expectedResponse)
+
+        val actualResponse = subject.getBookmarkedSessions()
+
+        assertSame(expectedResponse, actualResponse)
+        verify(conferenceDao).getBookmarkedSessions()
+    }
+
     private fun buildApiSessions(): List<ApiSession> {
         return listOf(ApiSession(
                 id = 123,

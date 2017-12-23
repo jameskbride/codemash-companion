@@ -17,8 +17,9 @@ import com.jameskbride.codemashcompanion.sessions.list.SessionsViewAdapterFactor
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.Toaster
+import javax.inject.Inject
 
-class SessionsFragmentImpl(val presenter: SessionsFragmentPresenter,
+class SessionsFragmentImpl @Inject constructor(val presenter: SessionsFragmentPresenter,
                            val sessionsViewAdapterFactory: SessionsViewAdapterFactory = SessionsViewAdapterFactory(),
                            val intentFactory: IntentFactory = IntentFactory(), val toaster: Toaster = Toaster()): SessionsFragmentView {
     private lateinit var sessionsView: RecyclerView

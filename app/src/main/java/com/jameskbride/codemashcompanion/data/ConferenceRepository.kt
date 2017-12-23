@@ -124,4 +124,8 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     fun getSpeakersBySession(sessionId: String): Maybe<Array<FullSpeaker>> {
         return conferenceDao.getSpeakersBySession(sessionId)
     }
+
+    fun getBookmarkedSessions(): Maybe<Array<FullSession>> {
+        return conferenceDao.getBookmarkedSessions()
+    }
 }

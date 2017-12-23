@@ -11,9 +11,8 @@ import com.jameskbride.codemashcompanion.error.ErrorDialogPresenter
 import com.jameskbride.codemashcompanion.main.MainActivityImpl
 import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.service.CodemashService
-import com.jameskbride.codemashcompanion.sessions.AllSessionRetriever
-import com.jameskbride.codemashcompanion.sessions.SessionsFragmentImpl
-import com.jameskbride.codemashcompanion.sessions.SessionsFragmentPresenter
+import com.jameskbride.codemashcompanion.schedule.BookmarkedSessionsRetriever
+import com.jameskbride.codemashcompanion.sessions.*
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityImpl
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityPresenter
 import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentImpl
@@ -179,15 +178,43 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
         return SpeakerDetailFragmentImpl(presenter)
     }
 
+    @Named("AllSessions")
     @Provides
-    fun makeSessionsFragmentPresenter(conferenceRepository: ConferenceRepository,
-                                      @Named("process") processScheduler: Scheduler,
-                                      @Named("main") androidScheduler: Scheduler, eventBus: EventBus): SessionsFragmentPresenter {
-        return SessionsFragmentPresenter(AllSessionRetriever(conferenceRepository), processScheduler, androidScheduler, eventBus)
+    fun makeAllSessionsRetriever(conferenceRepository: ConferenceRepository):SessionsRetriever {
+        return AllSessionRetriever(conferenceRepository)
+    }
+
+    @Named("Bookmarked")
+    @Provides
+    fun makeBookmarkedSessionsRetriever(conferenceRepository: ConferenceRepository):SessionsRetriever {
+        return BookmarkedSessionsRetriever(conferenceRepository)
     }
 
     @Provides
-    fun makeSessionsFragmentImpl(sessionsFragmentPresenter: SessionsFragmentPresenter): SessionsFragmentImpl {
+    @Named("AllSessions")
+    fun makeAllSessionsFragmentPresenter(@Named("AllSessions") sessionsRetriever: SessionsRetriever,
+                                      @Named("process") processScheduler: Scheduler,
+                                      @Named("main") androidScheduler: Scheduler, eventBus: EventBus): SessionsFragmentPresenter {
+        return SessionsFragmentPresenter(sessionsRetriever, processScheduler, androidScheduler, eventBus)
+    }
+
+    @Named("Bookmarked")
+    @Provides
+    fun makeBookmarkedSessionsFragmentPresenter(@Named("Bookmarked") sessionsRetriever: SessionsRetriever,
+                                      @Named("process") processScheduler: Scheduler,
+                                      @Named("main") androidScheduler: Scheduler, eventBus: EventBus): SessionsFragmentPresenter {
+        return SessionsFragmentPresenter(sessionsRetriever, processScheduler, androidScheduler, eventBus)
+    }
+
+    @Named("AllSessions")
+    @Provides
+    fun makeAllSessionsFragmentImpl(@Named("AllSessions") sessionsFragmentPresenter: SessionsFragmentPresenter): SessionsFragmentImpl {
+        return SessionsFragmentImpl(sessionsFragmentPresenter)
+    }
+
+    @Named("Bookmarked")
+    @Provides
+    fun makeBookmarkedSessionsFragmentImpl(@Named("Bookmarked") sessionsFragmentPresenter: SessionsFragmentPresenter): SessionsFragmentImpl {
         return SessionsFragmentImpl(sessionsFragmentPresenter)
     }
 
