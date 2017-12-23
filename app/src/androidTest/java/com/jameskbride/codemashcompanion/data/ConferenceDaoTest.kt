@@ -11,7 +11,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 
 
-
 @RunWith(AndroidJUnit4::class)
 class ConferenceDaoTest {
 
@@ -32,23 +31,11 @@ class ConferenceDaoTest {
 
     @Test
     fun itCanRetrieveSessionSpeakersFromAFullSpeaker() {
-        val session = Session(Id = "1")
-        val speaker = Speaker(Id = "1")
+        val sessionId = "1"
+        val speakerId = "1"
+        setupSessionSpeakers(sessionId, speakerId)
 
-        conferenceDao.insertAll(arrayOf(speaker))
-        conferenceDao.insertAll(arrayOf(session))
-
-        val sessionSpeaker = SessionSpeaker(sessionId = session.Id, speakerId = speaker.Id)
-        conferenceDao.insertAll(arrayOf(sessionSpeaker))
-
-        val response = conferenceDao.getSpeakers(arrayOf(speaker.Id))
-
-        var speakerResults:Array<FullSpeaker> = arrayOf()
-        response
-                .subscribeOn(testScheduler)
-                .observeOn(testScheduler)
-                .subscribe { result -> speakerResults = result }
-        testScheduler.triggerActions()
+        var speakerResults: Array<FullSpeaker> = getSpeakersById(speakerId)
 
         assertEquals(1, speakerResults.size)
         assertEquals(1, speakerResults[0].sessionSpeakers.size)
@@ -56,23 +43,11 @@ class ConferenceDaoTest {
 
     @Test
     fun itCanRetrieveSessionSpeakersFromAFullSpeakerBySessionId() {
-        val session = Session(Id = "1")
-        val speaker = Speaker(Id = "1")
+        val sessionId = "1"
+        val speakerId = "1"
+        setupSessionSpeakers(sessionId, speakerId)
 
-        conferenceDao.insertAll(arrayOf(speaker))
-        conferenceDao.insertAll(arrayOf(session))
-
-        val sessionSpeaker = SessionSpeaker(sessionId = session.Id, speakerId = speaker.Id)
-        conferenceDao.insertAll(arrayOf(sessionSpeaker))
-
-        val response = conferenceDao.getSpeakersBySession(sessionId = session.Id)
-
-        var speakerResults:Array<FullSpeaker> = arrayOf()
-        response
-                .subscribeOn(testScheduler)
-                .observeOn(testScheduler)
-                .subscribe { result -> speakerResults = result }
-        testScheduler.triggerActions()
+        var speakerResults: Array<FullSpeaker> = getSpeakersBySessionId(sessionId)
 
         assertEquals(1, speakerResults.size)
         assertEquals(1, speakerResults[0].sessionSpeakers.size)
@@ -80,35 +55,63 @@ class ConferenceDaoTest {
 
     @Test
     fun itCanRetrieveSessionSpeakersIndirectlyOnFullSpeakersFromFullSessions() {
-        val session = Session(Id = "1")
-        val speaker = Speaker(Id = "1")
+        val sessionId = "1"
+        val speakerId = "1"
+        setupSessionSpeakers(sessionId, speakerId)
+
+        var sessionResults: Array<FullSession> = getSessionsById(sessionId)
+
+        assertEquals(1, sessionResults.size)
+
+        var speakerResults: Array<FullSpeaker> = getSpeakersBySessionId(sessionId)
+
+        assertEquals(1, speakerResults.size)
+        assertEquals(1, speakerResults[0].sessionSpeakers.size)
+    }
+
+    private fun getSpeakersById(speakerId: String): Array<FullSpeaker> {
+        val response = conferenceDao.getSpeakers(arrayOf(speakerId))
+
+        var speakerResults: Array<FullSpeaker> = arrayOf()
+        response
+                .subscribeOn(testScheduler)
+                .observeOn(testScheduler)
+                .subscribe { result -> speakerResults = result }
+        testScheduler.triggerActions()
+        return speakerResults
+    }
+
+    private fun setupSessionSpeakers(sessionId: String, speakerId: String) {
+        val session = Session(Id = sessionId)
+        val speaker = Speaker(Id = speakerId)
 
         conferenceDao.insertAll(arrayOf(speaker))
         conferenceDao.insertAll(arrayOf(session))
 
-        val sessionSpeaker = SessionSpeaker(sessionId = session.Id, speakerId = speaker.Id)
+        val sessionSpeaker = SessionSpeaker(sessionId = sessionId, speakerId = speakerId)
         conferenceDao.insertAll(arrayOf(sessionSpeaker))
+    }
 
-        val response = conferenceDao.getSessions(arrayOf(session.Id))
-
-        var sessionResults:Array<FullSession> = arrayOf()
-        response
-                .subscribeOn(testScheduler)
-                .observeOn(testScheduler)
-                .subscribe { result -> sessionResults = result }
-        testScheduler.triggerActions()
-
-        assertEquals(1, sessionResults.size)
-
-        val speakersResponse = conferenceDao.getSpeakersBySession(sessionResults[0].sessionSpeakers[0].sessionId)
-        var speakerResults:Array<FullSpeaker> = arrayOf()
+    private fun getSpeakersBySessionId(sessionId: String): Array<FullSpeaker> {
+        val speakersResponse = conferenceDao.getSpeakersBySession(sessionId)
+        var speakerResults: Array<FullSpeaker> = arrayOf()
         speakersResponse
                 .subscribeOn(testScheduler)
                 .observeOn(testScheduler)
                 .subscribe { result -> speakerResults = result }
         testScheduler.triggerActions()
+        return speakerResults
+    }
 
-        assertEquals(1, speakerResults.size)
-        assertEquals(1, speakerResults[0].sessionSpeakers.size)
+    private fun getSessionsById(sessionId: String): Array<FullSession> {
+        val response = conferenceDao.getSessions(arrayOf(sessionId))
+
+        var sessionResults: Array<FullSession> = arrayOf()
+        response
+                .subscribeOn(testScheduler)
+                .observeOn(testScheduler)
+                .subscribe { result -> sessionResults = result }
+        testScheduler.triggerActions()
+        return sessionResults
     }
 }
