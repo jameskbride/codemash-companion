@@ -42,7 +42,7 @@ class SessionDetailActivityPresenter @Inject constructor(
 
     @Subscribe
     fun updateSession(sessionUpdatedEvent: SessionUpdatedEvent) {
-        conferenceRepository.getSessions(arrayOf(sessionUpdatedEvent.sessionId.toInt()))
+        conferenceRepository.getSessions(arrayOf(sessionUpdatedEvent.sessionId))
                 .subscribeOn(processScheduler)
                 .observeOn(androidScheduler)
                 .subscribe(

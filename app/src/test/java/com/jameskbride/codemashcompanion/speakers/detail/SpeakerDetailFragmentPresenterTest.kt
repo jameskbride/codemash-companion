@@ -37,8 +37,8 @@ class SpeakerDetailFragmentPresenterTest {
     @Test
     fun itCanRetrieveTheSessions() {
         val sessionSpeakers = listOf(
-                SessionSpeaker(sessionId = 1, speakerId = "1"),
-                SessionSpeaker(sessionId = 2, speakerId = "1")
+                SessionSpeaker(sessionId = "1", speakerId = "1"),
+                SessionSpeaker(sessionId = "2", speakerId = "1")
         )
         val fullSpeaker = FullSpeaker(
                 Id = "1",
@@ -52,7 +52,7 @@ class SpeakerDetailFragmentPresenterTest {
 
         val sessionsObservable = Maybe.just(sessions)
 
-        whenever(conferenceRepository.getSessions(arrayOf(1, 2))).thenReturn(sessionsObservable)
+        whenever(conferenceRepository.getSessions(arrayOf("1", "2"))).thenReturn(sessionsObservable)
 
         subject.retrieveSessions(fullSpeaker)
         testScheduler.triggerActions()
@@ -68,8 +68,8 @@ class SpeakerDetailFragmentPresenterTest {
         whenever(conferenceRepository.getSessions(any())).thenReturn(Maybe.error(Exception("Woops!")))
 
         val sessionSpeakers = listOf(
-                SessionSpeaker(sessionId = 1, speakerId = "1"),
-                SessionSpeaker(sessionId = 2, speakerId = "1")
+                SessionSpeaker(sessionId = "1", speakerId = "1"),
+                SessionSpeaker(sessionId = "2", speakerId = "1")
         )
         val fullSpeaker = FullSpeaker(
                 Id = "1",

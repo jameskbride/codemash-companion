@@ -61,7 +61,7 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         var sessionSpeakers = mutableListOf<SessionSpeaker>()
         sessions.forEach { session ->
             session.shortSpeakers?.forEach { speaker ->
-                sessionSpeakers.add(SessionSpeaker(sessionId = session.id.toInt(), speakerId = speaker.id!!)) }
+                sessionSpeakers.add(SessionSpeaker(sessionId = session.id, speakerId = speaker.id!!)) }
         }
         return sessionSpeakers.toTypedArray()
     }
@@ -106,7 +106,7 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         return conferenceDao.getSpeakers(ids.toTypedArray())
     }
 
-    fun getSessions(ids: Array<Int>): Maybe<Array<FullSession>> {
+    fun getSessions(ids: Array<String>): Maybe<Array<FullSession>> {
         return conferenceDao.getSessions(ids)
     }
 

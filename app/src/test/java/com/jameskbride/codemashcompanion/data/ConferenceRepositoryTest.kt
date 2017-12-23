@@ -204,10 +204,10 @@ class ConferenceRepositoryTest {
         val sessionSpeakers = sessionSpeakerCaptor.firstValue
         assertEquals(4, sessionSpeakers.size)
 
-        assertTrue((sessionSpeakers.contains(SessionSpeaker(sessionId = 1, speakerId = "1"))))
-        assertTrue((sessionSpeakers.contains(SessionSpeaker(sessionId = 1, speakerId = "2"))))
-        assertTrue((sessionSpeakers.contains(SessionSpeaker(sessionId = 2, speakerId = "3"))))
-        assertTrue((sessionSpeakers.contains(SessionSpeaker(sessionId = 2, speakerId = "4"))))
+        assertTrue((sessionSpeakers.contains(SessionSpeaker(sessionId = "1", speakerId = "1"))))
+        assertTrue((sessionSpeakers.contains(SessionSpeaker(sessionId = "1", speakerId = "2"))))
+        assertTrue((sessionSpeakers.contains(SessionSpeaker(sessionId = "2", speakerId = "3"))))
+        assertTrue((sessionSpeakers.contains(SessionSpeaker(sessionId = "2", speakerId = "4"))))
     }
 
     @Test
@@ -276,7 +276,7 @@ class ConferenceRepositoryTest {
         )
 
         val maybe = Maybe.just(sessions)
-        val ids = arrayOf(1, 2)
+        val ids = arrayOf("1", "2")
         whenever(conferenceDao.getSessions(ids)).thenReturn(maybe)
 
         var result = subject.getSessions(ids)

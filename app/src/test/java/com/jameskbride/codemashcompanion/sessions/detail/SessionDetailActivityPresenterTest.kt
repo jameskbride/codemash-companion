@@ -51,8 +51,8 @@ class SessionDetailActivityPresenterTest {
     fun itCanRetrieveSpeakers() {
         val fullSession = FullSession(
                 sessionSpeakers = listOf(
-                        SessionSpeaker(sessionId = 1, speakerId = "1"),
-                        SessionSpeaker(sessionId = 1, speakerId = "2")
+                        SessionSpeaker(sessionId = "1", speakerId = "1"),
+                        SessionSpeaker(sessionId = "1", speakerId = "2")
                 )
         )
 
@@ -74,8 +74,8 @@ class SessionDetailActivityPresenterTest {
     fun itDisplaysAnErrorMessageMessageWhenAnErrorOccursRetrievingSpeakers() {
         val fullSession = FullSession(
                 sessionSpeakers = listOf(
-                        SessionSpeaker(sessionId = 1, speakerId = "1"),
-                        SessionSpeaker(sessionId = 1, speakerId = "2")
+                        SessionSpeaker(sessionId = "1", speakerId = "1"),
+                        SessionSpeaker(sessionId = "1", speakerId = "2")
                 )
         )
         whenever(conferenceRepository.getSpeakers(any())).thenReturn(Maybe.error(Exception("Woops!")))
@@ -117,7 +117,7 @@ class SessionDetailActivityPresenterTest {
         val fullSession = FullSession()
         val fullSessionObservable = Maybe.just(arrayOf(fullSession))
 
-        whenever(conferenceRepository.getSessions(arrayOf(1))).thenReturn(fullSessionObservable)
+        whenever(conferenceRepository.getSessions(arrayOf("1"))).thenReturn(fullSessionObservable)
 
         subject.updateSession(SessionUpdatedEvent("1"))
         testScheduler.triggerActions()
