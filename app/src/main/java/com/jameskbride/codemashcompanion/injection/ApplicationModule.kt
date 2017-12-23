@@ -11,6 +11,7 @@ import com.jameskbride.codemashcompanion.error.ErrorDialogPresenter
 import com.jameskbride.codemashcompanion.main.MainActivityImpl
 import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.service.CodemashService
+import com.jameskbride.codemashcompanion.sessions.AllSessionRetriever
 import com.jameskbride.codemashcompanion.sessions.SessionsFragmentImpl
 import com.jameskbride.codemashcompanion.sessions.SessionsFragmentPresenter
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityImpl
@@ -182,7 +183,7 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     fun makeSessionsFragmentPresenter(conferenceRepository: ConferenceRepository,
                                       @Named("process") processScheduler: Scheduler,
                                       @Named("main") androidScheduler: Scheduler, eventBus: EventBus): SessionsFragmentPresenter {
-        return SessionsFragmentPresenter(conferenceRepository, processScheduler, androidScheduler, eventBus)
+        return SessionsFragmentPresenter(AllSessionRetriever(conferenceRepository), processScheduler, androidScheduler, eventBus)
     }
 
     @Provides

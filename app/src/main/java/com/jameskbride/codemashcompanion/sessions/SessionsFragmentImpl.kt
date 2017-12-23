@@ -38,7 +38,7 @@ class SessionsFragmentImpl(val presenter: SessionsFragmentPresenter,
         sessionsViewAdapter = sessionsViewAdapterFactory.make(presenter)
         sessionsView.adapter = sessionsViewAdapter
 
-        sessionsRefresh = view.findViewById<SwipeRefreshLayout>(R.id.sessions_refresh)
+        sessionsRefresh = view.findViewById(R.id.sessions_refresh)
         sessionsRefresh.setOnRefreshListener {
             sessionsRefresh.isRefreshing = true
             presenter.refreshConferenceData()

@@ -6,7 +6,6 @@ import com.jameskbride.codemashcompanion.bus.BusAware
 import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
 import com.jameskbride.codemashcompanion.bus.ConferenceDataRequestError
 import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
-import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.sessions.list.SessionData
 import io.reactivex.Scheduler
@@ -14,14 +13,14 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import javax.inject.Inject
 
-class SessionsFragmentPresenter @Inject constructor(val conferenceRepository: ConferenceRepository,
+class SessionsFragmentPresenter @Inject constructor(val sessionsRetriever: SessionsRetriever,
                                                     val processScheduler: Scheduler,
                                                     val androidScheduler: Scheduler,
                                                     override val eventBus: EventBus): BusAware {
     lateinit var view: SessionsFragmentView
 
     fun requestSessions() {
-        conferenceRepository.getSessions()
+        sessionsRetriever.getSessions()
                 .subscribeOn(processScheduler)
                 .observeOn(androidScheduler)
                 .subscribe(

@@ -31,6 +31,7 @@ class SessionsFragmentPresenterTest {
 
     private lateinit var testScheduler:TestScheduler
     private lateinit var eventBus:EventBus
+    private lateinit var sessionsRetriever:SessionsRetriever
 
     private var requestConferenceDataEventFired: Boolean = false
 
@@ -38,10 +39,11 @@ class SessionsFragmentPresenterTest {
     fun setUp() {
         initMocks(this)
         testScheduler = TestScheduler()
+        sessionsRetriever = AllSessionRetriever(conferenceRepository)
         eventBus = EventBus.getDefault()
         eventBus.register(this)
 
-        subject = SessionsFragmentPresenter(conferenceRepository, testScheduler, testScheduler, eventBus)
+        subject = SessionsFragmentPresenter(sessionsRetriever, testScheduler, testScheduler, eventBus)
         subject.open()
         subject.view = view
     }
