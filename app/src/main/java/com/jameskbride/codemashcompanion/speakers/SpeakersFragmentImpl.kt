@@ -74,7 +74,16 @@ class SpeakersFragmentImpl @Inject constructor(val presenter: SpeakersFragmentPr
     }
 
     override fun onSpeakerDataRetrieved(speakers: Array<FullSpeaker>) {
+        configureColumns(speakers)
         speakersViewAdapter.setSpeakers(speakers)
         speakersRefresh.isRefreshing = false
+    }
+
+    private fun configureColumns(speakers: Array<FullSpeaker>) {
+        if (speakers.isEmpty()) {
+            speakersView.layoutManager = qtn.makeGridLayoutManager(1)
+        } else {
+            speakersView.layoutManager = qtn.makeGridLayoutManager(2)
+        }
     }
 }

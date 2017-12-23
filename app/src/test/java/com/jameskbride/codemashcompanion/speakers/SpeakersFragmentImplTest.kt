@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.jameskbride.codemashcompanion.R
+import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl.Companion.PARAMETER_BLOCK
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakersParams
@@ -129,10 +130,28 @@ class SpeakersFragmentImplTest {
         subject.onCreateView(layoutInflater, viewGroup, null, qtn)
         val speakers = buildDefaultSpeakers()
 
+        reset(qtn)
+        whenever(qtn.makeGridLayoutManager(2)).thenReturn(gridLayoutManager)
         subject.onSpeakerDataRetrieved(speakers)
 
         verify(speakersViewAdapter).setSpeakers(speakers)
         verify(speakersRefresh).setRefreshing(false)
+        verify(qtn).makeGridLayoutManager(2)
+        verify(speakersView).setLayoutManager(gridLayoutManager)
+    }
+
+    @Test
+    fun itSetsASingleColumnForTheLayoutToAllowTheEmptyViewWhenNoSpeakersArePresent() {
+        subject.onCreateView(layoutInflater, viewGroup, null, qtn)
+
+        whenever(qtn.makeGridLayoutManager(1)).thenReturn(gridLayoutManager)
+        val speakers = arrayOf<FullSpeaker>()
+        subject.onSpeakerDataRetrieved(speakers)
+
+        verify(speakersViewAdapter).setSpeakers(speakers)
+        verify(speakersRefresh).setRefreshing(false)
+        verify(qtn).makeGridLayoutManager(1)
+        verify(speakersView).setLayoutManager(gridLayoutManager)
     }
 
     @Test
