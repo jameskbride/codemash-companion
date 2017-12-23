@@ -18,30 +18,45 @@ class SessionsRecyclerViewAdapterImpl(val sessionsFragmentPresenter: SessionsFra
     }
 
     fun setSessions(sessionData: SessionData, qtn: SessionsRecyclerViewAdapter) {
-        var dateTimesSessions:LinkedHashMap<Int, Map<Date, List<FullSession?>>> = linkedMapOf()
-        sessionData.sessions.groupBy { session ->
-            val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
-            val calendar = Calendar.getInstance()
-            calendar.time = dateFormatter.parse(session?.SessionStartTime)
-            calendar.get(Calendar.DATE)
-        }.forEach{keyValue ->
-            dateTimesSessions[keyValue.key] = keyValue.value.groupBy { session ->
-                val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
-                dateFormatter.parse(session?.SessionStartTime)
-            }
-        }
+        var dateTimesSessions: LinkedHashMap<Int, Map<Date, List<FullSession?>>> =
+                groupSessionsByDateAndStartTime(sessionData)
 
-        dateTimesSessions.keys.sorted().forEachIndexed{ index, date ->
+        populateSessionList(dateTimesSessions)
+
+        qtn.notifyDataSetChanged()
+    }
+
+    private fun populateSessionList(dateTimesSessions: LinkedHashMap<Int, Map<Date, List<FullSession?>>>) {
+        dateTimesSessions.keys.sorted().forEachIndexed { index, date ->
             sessionsList.add(DateHeaderListItem("Day ${index + 1}"))
-            dateTimesSessions[date]!!.keys.sorted().forEach {time ->
+            dateTimesSessions[date]!!.keys.sorted().forEach { time ->
                 sessionsList.add(TimeHeaderListItem(time))
                 dateTimesSessions[date]!![time]!!.forEach { session ->
                     sessionsList.add(SessionListItem(session!!))
                 }
             }
         }
+    }
 
-        qtn.notifyDataSetChanged()
+    private fun groupSessionsByDateAndStartTime(sessionData: SessionData): LinkedHashMap<Int, Map<Date, List<FullSession?>>> {
+        var dateTimesSessions: LinkedHashMap<Int, Map<Date, List<FullSession?>>> = linkedMapOf()
+        val sessionsGroupedByDate = groupSessionsByDate(sessionData)
+        sessionsGroupedByDate.forEach { keyValue ->
+            dateTimesSessions[keyValue.key] = keyValue.value.groupBy { session ->
+                val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
+                dateFormatter.parse(session?.SessionStartTime)
+            }
+        }
+        return dateTimesSessions
+    }
+
+    private fun groupSessionsByDate(sessionData: SessionData): Map<Int, List<FullSession>> {
+        return sessionData.sessions.groupBy { session ->
+            val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
+            val calendar = Calendar.getInstance()
+            calendar.time = dateFormatter.parse(session?.SessionStartTime)
+            calendar.get(Calendar.DATE)
+        }
     }
 
     fun onBindViewHolder(holder: SessionViewHolder?, position: Int) {

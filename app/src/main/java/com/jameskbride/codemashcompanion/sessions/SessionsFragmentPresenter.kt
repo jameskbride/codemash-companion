@@ -26,7 +26,7 @@ class SessionsFragmentPresenter @Inject constructor(val conferenceRepository: Co
                 .observeOn(androidScheduler)
                 .subscribe(
                         { results -> notifyView(results) },
-                        {error -> view.displayErrorMessage(R.string.unexpected_error)}
+                        { error -> view.displayErrorMessage(R.string.unexpected_error) }
                 )
     }
 
