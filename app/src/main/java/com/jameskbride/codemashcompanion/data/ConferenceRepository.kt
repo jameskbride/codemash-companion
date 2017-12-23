@@ -116,7 +116,8 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         eventBus.post(SessionUpdatedEvent(fullSession.Id))
     }
 
-    fun removeBookmark(session: FullSession) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    fun removeBookmark(bookmark: Bookmark) {
+        conferenceDao.delete(bookmark)
+        eventBus.post(SessionUpdatedEvent(bookmark.sessionId))
     }
 }

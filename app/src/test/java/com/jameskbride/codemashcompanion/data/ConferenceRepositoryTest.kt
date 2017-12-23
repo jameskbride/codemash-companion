@@ -298,6 +298,22 @@ class ConferenceRepositoryTest {
         assertTrue(sessionUpdatedEventFired)
     }
 
+    @Test
+    fun itCanRemoveABookmark() {
+        val bookmark = Bookmark(sessionId = "1")
+        val session = FullSession(Id = "1",
+                bookmarks = listOf(bookmark))
+
+        subject.removeBookmark(session.bookmarks[0])
+
+        val bookmarkCaptor = argumentCaptor<Bookmark>()
+        verify(conferenceDao).delete(bookmarkCaptor.capture())
+
+        assertEquals(bookmark.sessionId, bookmarkCaptor.firstValue.sessionId)
+
+        assertTrue(sessionUpdatedEventFired)
+    }
+
     private fun buildApiSessions(): List<ApiSession> {
         return listOf(ApiSession(
                 id = "123",

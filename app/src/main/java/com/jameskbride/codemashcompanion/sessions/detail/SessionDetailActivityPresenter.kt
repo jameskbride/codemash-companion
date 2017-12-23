@@ -53,7 +53,7 @@ class SessionDetailActivityPresenter @Inject constructor(
 
     fun removeBookmark(fullSession: FullSession) {
         Single.fromCallable {
-            conferenceRepository.removeBookmark(fullSession)
+            conferenceRepository.removeBookmark(fullSession.bookmarks[0])
         }.subscribeOn(processScheduler)
                 .observeOn(androidScheduler)
                 .subscribe { result ->  }

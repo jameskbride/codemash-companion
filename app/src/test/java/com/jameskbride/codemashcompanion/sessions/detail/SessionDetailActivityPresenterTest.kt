@@ -15,6 +15,7 @@ import io.reactivex.Maybe
 import io.reactivex.schedulers.TestScheduler
 import org.greenrobot.eventbus.EventBus
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -97,12 +98,18 @@ class SessionDetailActivityPresenterTest {
 
     @Test
     fun itCanRemoveABookmark() {
-        val fullSession = FullSession(Id = "1")
+        val bookmark = Bookmark(sessionId = "1")
+        val fullSession = FullSession(
+                Id = "1",
+                bookmarks = listOf(bookmark)
+        )
 
         subject.removeBookmark(fullSession)
         testScheduler.triggerActions()
 
-        verify(conferenceRepository).removeBookmark(any())
+        val bookmarkCaptor = argumentCaptor<Bookmark>()
+        verify(conferenceRepository).removeBookmark(bookmarkCaptor.capture())
+        assertEquals("1", bookmark.sessionId)
     }
 
     @Test

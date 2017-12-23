@@ -1,9 +1,6 @@
 package com.jameskbride.codemashcompanion.data
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 import com.jameskbride.codemashcompanion.data.model.*
 import io.reactivex.Maybe
 
@@ -39,4 +36,7 @@ interface ConferenceDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(bookmark: Bookmark): Long
+
+    @Delete
+    fun delete(bookmark: Bookmark)
 }
