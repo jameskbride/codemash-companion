@@ -121,7 +121,7 @@ open class SessionsRecyclerViewAdapterImpl(open val sessionsFragmentPresenter: S
     }
 
     open fun buildEmptyViewHolder(parent: ViewGroup?): EmptyViewHolder {
-        val view = layoutInflaterFactory.inflate(parent!!.context, R.layout.empty_sessions, parent!!)
+        val view = layoutInflaterFactory.inflate(parent!!.context, R.layout.no_data, parent!!)
         return EmptyViewHolder(view!!)
     }
 

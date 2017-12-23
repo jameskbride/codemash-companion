@@ -175,11 +175,11 @@ class SessionsRecyclerViewAdapterImplTest {
     fun itCreatesAnEmptyViewHolderWhenThereAreNoSessions() {
         subject.setSessions(SessionData(arrayOf()), qtn)
 
-        whenever(layoutInflaterFactory.inflate(context, R.layout.empty_sessions, container)).thenReturn(view)
+        whenever(layoutInflaterFactory.inflate(context, R.layout.no_data, container)).thenReturn(view)
 
         val sessionViewHolder = subject.onCreateViewHolder(container, ListItem.EMPTY_TYPE)
 
-        verify(layoutInflaterFactory).inflate(context, R.layout.empty_sessions, container)
+        verify(layoutInflaterFactory).inflate(context, R.layout.no_data, container)
         assertTrue(sessionViewHolder is EmptyViewHolder)
     }
 

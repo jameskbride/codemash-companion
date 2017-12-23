@@ -13,13 +13,13 @@ import com.jameskbride.codemashcompanion.utils.PicassoLoader
 
 class SpeakersRecyclerViewAdapter constructor(val speakersFragmentPresenter: SpeakersFragmentPresenter,
                                               val impl: SpeakersRecyclerViewAdapterImpl = SpeakersRecyclerViewAdapterImpl(speakersFragmentPresenter))
-    : RecyclerView.Adapter<SpeakerViewHolder>() {
+    : RecyclerView.Adapter<BaseSpeakerViewHolder>() {
 
-    override fun onBindViewHolder(holder: SpeakerViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: BaseSpeakerViewHolder?, position: Int) {
         impl.onBindViewHolder(holder, position)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SpeakerViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseSpeakerViewHolder {
         return impl.onCreateViewHolder(parent, viewType)
     }
 
@@ -27,55 +27,12 @@ class SpeakersRecyclerViewAdapter constructor(val speakersFragmentPresenter: Spe
         return impl.getItemCount()
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return impl.getItemViewType(position)
+    }
+
     fun setSpeakers(speakers:Array<FullSpeaker>) {
         impl.setSpeakers(speakers, this)
-    }
-}
-
-class SpeakersRecyclerViewAdapterImpl constructor(val speakersFragmentPresenter: SpeakersFragmentPresenter, val layoutInflaterFactory: LayoutInflaterFactory = LayoutInflaterFactory()) {
-    private var speakers: Array<FullSpeaker> = arrayOf()
-
-    fun onBindViewHolder(holder: SpeakerViewHolder?, position: Int) {
-        holder!!.bind(speakers[position])
-        holder!!.view!!.setOnClickListener({ view ->
-            speakersFragmentPresenter.navigateToDetails(speakers, position)
-        })
-    }
-
-    fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SpeakerViewHolder {
-        val view = layoutInflaterFactory.inflate(parent!!.context, R.layout.view_speaker, parent)
-
-        return SpeakerViewHolder(view)
-    }
-
-    fun getItemCount(): Int {
-        return speakers.size
-    }
-
-    fun setSpeakers(speakers: Array<FullSpeaker>, speakersRecyclerViewAdapter: SpeakersRecyclerViewAdapter) {
-        this.speakers = speakers
-        speakersRecyclerViewAdapter.notifyDataSetChanged()
-    }
-}
-
-class SpeakerViewHolder(itemView: View?, val picassoLoader: PicassoLoader = PicassoLoader()) : RecyclerView.ViewHolder(itemView) {
-    var speakerImage:ImageView?
-    var speakerFirstName:TextView?
-    var speakerLastName:TextView?
-    var view: View?
-
-    init {
-        view = itemView
-        speakerImage = itemView?.findViewById(R.id.speaker_image)
-        speakerFirstName = itemView?.findViewById(R.id.speaker_first_name)
-        speakerLastName = itemView?.findViewById(R.id.speaker_last_name)
-    }
-
-    fun bind(speaker: FullSpeaker) {
-        speakerFirstName!!.text = speaker.FirstName
-        speakerLastName!!.text = speaker.LastName
-
-        picassoLoader.load(speaker, speakerImage!!)
     }
 }
 

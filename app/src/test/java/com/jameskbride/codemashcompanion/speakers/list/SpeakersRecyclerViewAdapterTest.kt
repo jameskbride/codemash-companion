@@ -14,8 +14,7 @@ import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertSame
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -59,6 +58,20 @@ class SpeakersRecyclerViewAdapterTest {
     }
 
     @Test
+    fun whenThereAreNoSpeakersItCanBindTheViewHolder() {
+        val emptySpeakerViewHolder = mock<EmptySpeakerViewHolder>()
+        val qtn = mock<SpeakersRecyclerViewAdapter>()
+        val subject = SpeakersRecyclerViewAdapterImpl(speakersFragmentPresenter, layoutInflaterFactory)
+        subject.setSpeakers(arrayOf(), qtn)
+        whenever(emptySpeakerViewHolder.view).thenReturn(view)
+
+        subject.onBindViewHolder(emptySpeakerViewHolder, 0)
+
+        verify(emptySpeakerViewHolder).bind()
+        verify(qtn).notifyDataSetChanged()
+    }
+
+    @Test
     fun whenTheViewHolderIsClickedThenItNavigatesToTheDetails() {
         val speakerViewHolder = mock<SpeakerViewHolder>()
         val qtn = mock<SpeakersRecyclerViewAdapter>()
@@ -79,7 +92,10 @@ class SpeakersRecyclerViewAdapterTest {
 
     @Test
     fun itCanCreateTheViewHolder() {
+        val qtn = mock<SpeakersRecyclerViewAdapter>()
+        val speakers = buildDefaultSpeakers()
         val subject = SpeakersRecyclerViewAdapterImpl(speakersFragmentPresenter, layoutInflaterFactory)
+        subject.setSpeakers(speakers, qtn)
         whenever(viewGroup.context).thenReturn(context)
         whenever(layoutInflaterFactory.inflate(context, R.layout.view_speaker, viewGroup)).thenReturn(view)
 
@@ -87,6 +103,22 @@ class SpeakersRecyclerViewAdapterTest {
 
         verify(layoutInflaterFactory).inflate(context, R.layout.view_speaker, viewGroup)
         assertSame(view, viewHolder.view)
+        assertTrue(viewHolder is SpeakerViewHolder)
+    }
+
+    @Test
+    fun whenThereAreNoSpeakersItCreatesAnEmptyViewHolder() {
+        val qtn = mock<SpeakersRecyclerViewAdapter>()
+        val subject = SpeakersRecyclerViewAdapterImpl(speakersFragmentPresenter, layoutInflaterFactory)
+        subject.setSpeakers(arrayOf(), qtn)
+        whenever(viewGroup.context).thenReturn(context)
+        whenever(layoutInflaterFactory.inflate(context, R.layout.no_data, viewGroup)).thenReturn(view)
+
+        val viewHolder = subject.onCreateViewHolder(viewGroup, 0)
+
+        verify(layoutInflaterFactory).inflate(context, R.layout.no_data, viewGroup)
+        assertSame(view, viewHolder.view)
+        assertTrue(viewHolder is EmptySpeakerViewHolder)
     }
 
     @Test
@@ -97,6 +129,37 @@ class SpeakersRecyclerViewAdapterTest {
         subject.setSpeakers(speakers, qtn)
 
         assertEquals(speakers.size, subject.getItemCount())
+    }
+
+    /**
+     * This is an ugly hack to facilitate an empty view holder (no speakers present).  It is
+     * necessary because if the itemCount comes back as zero no view holder related logic is
+     * executed, and we never get a chance to build our empty view holder.  Don't try this at home kids.
+     */
+    @Test
+    fun whenThereAreNoSpeakersTheItemCountIsOne() {
+        val qtn = mock<SpeakersRecyclerViewAdapter>()
+        val subject = SpeakersRecyclerViewAdapterImpl(speakersFragmentPresenter, layoutInflaterFactory)
+        subject.setSpeakers(arrayOf(), qtn)
+
+        assertEquals(1, subject.getItemCount())
+    }
+
+    @Test
+    fun whenThereAreNoSpeakersTheItemViewTypeIsEmpty() {
+        val subject = SpeakersRecyclerViewAdapterImpl(speakersFragmentPresenter, layoutInflaterFactory)
+
+        assertEquals(SpeakerListItem.EMPTY_TYPE, subject.getItemViewType(0))
+    }
+
+    @Test
+    fun whereThereAreSpeakersTheItemViewTypeIsSpeaker() {
+        val speakers = buildDefaultSpeakers()
+        val qtn = mock<SpeakersRecyclerViewAdapter>()
+        val subject = SpeakersRecyclerViewAdapterImpl(speakersFragmentPresenter, layoutInflaterFactory)
+        subject.setSpeakers(speakers, qtn)
+
+        assertEquals(SpeakerListItem.SPEAKER_TYPE, subject.getItemViewType(0))
     }
 
     @Test
