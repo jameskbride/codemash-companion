@@ -14,6 +14,7 @@ interface ListItem {
         val TIME_HEADER_TYPE = 0
         val SESSION_ITEM_TYPE = 1
         val DATE_HEADER_TYPE = 2
+        val EMPTY_TYPE = 3
     }
 }
 

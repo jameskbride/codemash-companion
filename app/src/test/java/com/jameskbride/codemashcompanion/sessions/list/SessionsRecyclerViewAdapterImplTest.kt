@@ -63,6 +63,25 @@ class SessionsRecyclerViewAdapterImplTest {
     }
 
     @Test
+    fun itReturnsTheItemCountWhenAtLeastOneSessionIsPresent() {
+        subject.setSessions(SessionData(arrayOf(firstSession)), qtn)
+
+        assertEquals(3, subject.getItemCount())
+    }
+
+    /**
+     * This is an ugly hack to facilitate an empty view holder (no sessions present).  It is
+     * necessary because if the itemCount comes back as zero no view holder related logic is
+     * executed, and we never get a chance to build our empty view holder.  Don't try this at home kids.
+     */
+    @Test
+    fun itReturnsOneForTheItemCountWhenNoSessionsArePresent() {
+        subject.setSessions(SessionData(arrayOf()), qtn)
+
+        assertEquals(1, subject.getItemCount())
+    }
+
+    @Test
     fun itNotifiesOfChangesWhenTheSessionsAreSet() {
         val sessions = SessionData()
         subject.setSessions(sessions, qtn)
@@ -153,6 +172,29 @@ class SessionsRecyclerViewAdapterImplTest {
     }
 
     @Test
+    fun itCreatesAnEmptyViewHolderWhenThereAreNoSessions() {
+        subject.setSessions(SessionData(arrayOf()), qtn)
+
+        whenever(layoutInflaterFactory.inflate(context, R.layout.empty_sessions, container)).thenReturn(view)
+
+        val sessionViewHolder = subject.onCreateViewHolder(container, ListItem.EMPTY_TYPE)
+
+        verify(layoutInflaterFactory).inflate(context, R.layout.empty_sessions, container)
+        assertTrue(sessionViewHolder is EmptyViewHolder)
+    }
+
+    @Test
+    fun itBindsEmptyViewHolders() {
+        subject.setSessions(SessionData(arrayOf()), qtn)
+
+        val emptyViewHolder = mock<EmptyViewHolder>()
+
+        subject.onBindViewHolder(emptyViewHolder, 0)
+
+        verify(emptyViewHolder).bind()
+    }
+
+    @Test
     fun itBindsDateHeaderViewHolders() {
         subject.setSessions(sessionData, qtn)
 
@@ -176,7 +218,6 @@ class SessionsRecyclerViewAdapterImplTest {
 
     @Test
     fun itBindsSessionItemViewHolders() {
-
         subject.setSessions(sessionData, qtn)
 
         val itemViewHolder = mock<ItemViewHolder>()
@@ -189,6 +230,5 @@ class SessionsRecyclerViewAdapterImplTest {
         verify(view).setOnClickListener(onClickCaptor.capture())
         onClickCaptor.firstValue.onClick(null)
         verify(sessionsFragmentPresenter).navigateToSessionDetail(firstSession)
-
     }
 }

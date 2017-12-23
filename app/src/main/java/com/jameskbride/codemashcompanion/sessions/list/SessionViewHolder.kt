@@ -30,5 +30,10 @@ class DateViewHolder constructor(itemView: View): SessionViewHolder(itemView) {
     fun bind(text: String) {
         itemView.findViewById<TextView>(R.id.session_date).text = text
     }
+}
 
+class EmptyViewHolder constructor(itemView: View): SessionViewHolder(itemView) {
+    fun bind() {
+
+    }
 }

@@ -14,7 +14,7 @@ class SessionsRecyclerViewAdapterImpl(val sessionsFragmentPresenter: SessionsFra
     var sessionsList: List<ListItem> = mutableListOf()
 
     fun getItemCount(): Int {
-        return sessionsList.size
+        return if (sessionsList.isNotEmpty()) { sessionsList.size } else { 1 }
     }
 
     fun setSessions(sessionData: SessionData, qtn: SessionsRecyclerViewAdapter) {
@@ -71,13 +71,17 @@ class SessionsRecyclerViewAdapterImpl(val sessionsFragmentPresenter: SessionsFra
     }
 
     fun onBindViewHolder(holder: SessionViewHolder?, position: Int) {
-        if (ListItem.TIME_HEADER_TYPE == getItemViewType(position)) {
-            bindTimeHeaderListItem(holder, position)
-        } else if (ListItem.DATE_HEADER_TYPE == getItemViewType(position)) {
-            bindDateHeaderListItem(holder, position)
-        } else {
-            bindSessionListItem(holder, position)
+        when(getItemViewType(position)) {
+            ListItem.TIME_HEADER_TYPE -> bindTimeHeaderListItem(holder, position)
+            ListItem.DATE_HEADER_TYPE -> bindDateHeaderListItem(holder, position)
+            ListItem.SESSION_ITEM_TYPE -> bindSessionListItem(holder, position)
+            else -> bindEmptyListItem(holder)
         }
+    }
+
+    fun bindEmptyListItem(holder: SessionViewHolder?) {
+        var emptyViewHolder = holder as EmptyViewHolder
+        emptyViewHolder.bind()
     }
 
     private fun bindSessionListItem(holder: SessionViewHolder?, position: Int) {
@@ -108,13 +112,16 @@ class SessionsRecyclerViewAdapterImpl(val sessionsFragmentPresenter: SessionsFra
         } else if (ListItem.DATE_HEADER_TYPE == viewType) {
             val view = layoutInflaterFactory.inflate(parent!!.context, R.layout.sessions_date_header, parent!!)
             return DateViewHolder(view!!)
+        } else if (ListItem.SESSION_ITEM_TYPE == viewType){
+            val view = layoutInflaterFactory.inflate(parent!!.context, R.layout.sessions_item, parent!!)
+            return ItemViewHolder(view!!)
         }
 
-        val view = layoutInflaterFactory.inflate(parent!!.context, R.layout.sessions_item, parent!!)
-        return ItemViewHolder(view!!)
+        val view = layoutInflaterFactory.inflate(parent!!.context, R.layout.empty_sessions, parent!!)
+        return EmptyViewHolder(view!!)
     }
 
     fun getItemViewType(position: Int): Int {
-        return sessionsList[position].getType()
+        return if (sessionsList.isNotEmpty()) { sessionsList[position].getType() } else { ListItem.EMPTY_TYPE }
     }
 }
