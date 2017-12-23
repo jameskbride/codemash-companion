@@ -18,12 +18,23 @@ class SessionsRecyclerViewAdapterImpl(val sessionsFragmentPresenter: SessionsFra
     }
 
     fun setSessions(sessionData: SessionData, qtn: SessionsRecyclerViewAdapter) {
-        var dateTimesSessions: LinkedHashMap<Int, Map<Date, List<FullSession?>>> =
-                groupSessionsByDateAndStartTime(sessionData)
+        var sessionsGroupedByDate: Map<Int, List<FullSession>> = groupByDate(sessionData)
+        var dateTimeSessions = groupByStartTime(sessionsGroupedByDate)
 
-        populateSessionList(dateTimesSessions)
+        populateSessionList(dateTimeSessions)
 
         qtn.notifyDataSetChanged()
+    }
+
+    private fun groupByStartTime(sessionsGroupedByDate: Map<Int, List<FullSession>>): LinkedHashMap<Int, Map<Date, List<FullSession?>>> {
+        var dateTimesSessions: LinkedHashMap<Int, Map<Date, List<FullSession?>>> = linkedMapOf()
+        sessionsGroupedByDate.forEach { keyValue ->
+            dateTimesSessions[keyValue.key] = keyValue.value.groupBy { session ->
+                val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
+                dateFormatter.parse(session?.SessionStartTime)
+            }
+        }
+        return dateTimesSessions
     }
 
     private fun populateSessionList(dateTimesSessions: LinkedHashMap<Int, Map<Date, List<FullSession?>>>) {
@@ -38,16 +49,10 @@ class SessionsRecyclerViewAdapterImpl(val sessionsFragmentPresenter: SessionsFra
         }
     }
 
-    private fun groupSessionsByDateAndStartTime(sessionData: SessionData): LinkedHashMap<Int, Map<Date, List<FullSession?>>> {
-        var dateTimesSessions: LinkedHashMap<Int, Map<Date, List<FullSession?>>> = linkedMapOf()
+    private fun groupByDate(sessionData: SessionData): Map<Int, List<FullSession>> {
         val sessionsGroupedByDate = groupSessionsByDate(sessionData)
-        sessionsGroupedByDate.forEach { keyValue ->
-            dateTimesSessions[keyValue.key] = keyValue.value.groupBy { session ->
-                val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
-                dateFormatter.parse(session?.SessionStartTime)
-            }
-        }
-        return dateTimesSessions
+
+        return sessionsGroupedByDate
     }
 
     private fun groupSessionsByDate(sessionData: SessionData): Map<Int, List<FullSession>> {
