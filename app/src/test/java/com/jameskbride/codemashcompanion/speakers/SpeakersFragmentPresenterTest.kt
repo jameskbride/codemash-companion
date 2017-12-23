@@ -5,9 +5,7 @@ import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
 import com.jameskbride.codemashcompanion.bus.ConferenceDataRequestError
 import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
-import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
-import com.jameskbride.codemashcompanion.sessions.SessionData
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.verify

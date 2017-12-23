@@ -11,6 +11,9 @@ import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivity
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailParam
+import com.jameskbride.codemashcompanion.sessions.list.SessionData
+import com.jameskbride.codemashcompanion.sessions.list.SessionsRecyclerViewAdapter
+import com.jameskbride.codemashcompanion.sessions.list.SessionsViewAdapterFactory
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.Toaster

@@ -1,4 +1,4 @@
-package com.jameskbride.codemashcompanion.speakers
+package com.jameskbride.codemashcompanion.speakers.list
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
+import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentPresenter
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
 

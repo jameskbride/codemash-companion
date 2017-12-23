@@ -14,6 +14,8 @@ import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl.Companion.PARAMETER_BLOCK
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakersParams
+import com.jameskbride.codemashcompanion.speakers.list.SpeakersRecyclerViewAdapter
+import com.jameskbride.codemashcompanion.speakers.list.SpeakersViewAdapterFactory
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.Toaster
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
@@ -29,8 +31,8 @@ class SpeakersFragmentImplTest {
     @Mock private lateinit var layoutInflater: LayoutInflater
     @Mock private lateinit var viewGroup: ViewGroup
     @Mock private lateinit var presenter:SpeakersFragmentPresenter
-    @Mock private lateinit var speakersViewAdapter:SpeakersRecyclerViewAdapter
-    @Mock private lateinit var speakersViewAdapterFactory:SpeakersViewAdapterFactory
+    @Mock private lateinit var speakersViewAdapter: SpeakersRecyclerViewAdapter
+    @Mock private lateinit var speakersViewAdapterFactory: SpeakersViewAdapterFactory
     @Mock private lateinit var qtn:SpeakersFragment
     @Mock private lateinit var view:View
     @Mock private lateinit var speakersView:RecyclerView

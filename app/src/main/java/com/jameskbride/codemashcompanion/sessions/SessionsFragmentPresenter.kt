@@ -8,6 +8,7 @@ import com.jameskbride.codemashcompanion.bus.ConferenceDataRequestError
 import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSession
+import com.jameskbride.codemashcompanion.sessions.list.SessionData
 import io.reactivex.Scheduler
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe

@@ -1,9 +1,10 @@
-package com.jameskbride.codemashcompanion.sessions
+package com.jameskbride.codemashcompanion.sessions.list
 
 import com.jameskbride.codemashcompanion.data.model.FullSession
-import com.jameskbride.codemashcompanion.sessions.ListItem.Companion.DATE_HEADER_TYPE
-import com.jameskbride.codemashcompanion.sessions.ListItem.Companion.SESSION_ITEM_TYPE
-import com.jameskbride.codemashcompanion.sessions.ListItem.Companion.TIME_HEADER_TYPE
+import com.jameskbride.codemashcompanion.sessions.list.ListItem.Companion.DATE_HEADER_TYPE
+import com.jameskbride.codemashcompanion.sessions.list.ListItem.Companion.SESSION_ITEM_TYPE
+import com.jameskbride.codemashcompanion.sessions.list.ListItem.Companion.TIME_HEADER_TYPE
+
 import java.util.*
 
 interface ListItem {

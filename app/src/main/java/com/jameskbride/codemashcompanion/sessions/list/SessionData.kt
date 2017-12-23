@@ -1,4 +1,4 @@
-package com.jameskbride.codemashcompanion.sessions
+package com.jameskbride.codemashcompanion.sessions.list
 
 import com.jameskbride.codemashcompanion.data.model.FullSession
 

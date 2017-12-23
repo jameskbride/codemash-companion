@@ -1,10 +1,11 @@
-package com.jameskbride.codemashcompanion.sessions
+package com.jameskbride.codemashcompanion.sessions.list
 
 import android.view.View
 import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.Session
+import com.jameskbride.codemashcompanion.sessions.SessionsFragmentPresenter
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import java.text.SimpleDateFormat
 import java.util.*

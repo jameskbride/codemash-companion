@@ -1,10 +1,13 @@
-package com.jameskbride.codemashcompanion.sessions
+package com.jameskbride.codemashcompanion.sessions.list
 
 import android.view.View
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
 import com.jameskbride.codemashcompanion.data.model.FullSession
+import com.jameskbride.codemashcompanion.sessions.list.DateViewHolder
+import com.jameskbride.codemashcompanion.sessions.list.ItemViewHolder
+import com.jameskbride.codemashcompanion.sessions.list.TimeViewHolder
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify

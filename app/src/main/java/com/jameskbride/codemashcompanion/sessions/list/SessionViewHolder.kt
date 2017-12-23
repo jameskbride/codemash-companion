@@ -1,4 +1,4 @@
-package com.jameskbride.codemashcompanion.sessions
+package com.jameskbride.codemashcompanion.sessions.list
 
 import android.support.v7.widget.RecyclerView
 import android.view.View

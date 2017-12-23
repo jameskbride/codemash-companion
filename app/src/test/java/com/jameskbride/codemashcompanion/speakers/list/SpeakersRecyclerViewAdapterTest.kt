@@ -1,4 +1,4 @@
-package com.jameskbride.codemashcompanion.speakers
+package com.jameskbride.codemashcompanion.speakers.list
 
 import android.content.Context
 import android.view.View
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
+import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentPresenter
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
@@ -30,7 +31,7 @@ class SpeakersRecyclerViewAdapterTest {
     @Mock private lateinit var viewGroup:ViewGroup
     @Mock private lateinit var layoutInflaterFactory:LayoutInflaterFactory
     @Mock private lateinit var context:Context
-    @Mock private lateinit var speakersFragmentPresenter:SpeakersFragmentPresenter
+    @Mock private lateinit var speakersFragmentPresenter: SpeakersFragmentPresenter
 
     @Before
     fun setUp() {

@@ -15,6 +15,9 @@ import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivity
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityImpl
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailParam
+import com.jameskbride.codemashcompanion.sessions.list.SessionData
+import com.jameskbride.codemashcompanion.sessions.list.SessionsRecyclerViewAdapter
+import com.jameskbride.codemashcompanion.sessions.list.SessionsViewAdapterFactory
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.Toaster
 import com.nhaarman.mockito_kotlin.argumentCaptor
@@ -37,8 +40,8 @@ class SessionsFragmentImplTest {
     @Mock private lateinit var container:ViewGroup
     @Mock private lateinit var sessionsView:RecyclerView
     @Mock private lateinit var sessionsRefresh:SwipeRefreshLayout
-    @Mock private lateinit var sessionsViewAdapter:SessionsRecyclerViewAdapter
-    @Mock private lateinit var sessionsViewAdapterFactory:SessionsViewAdapterFactory
+    @Mock private lateinit var sessionsViewAdapter: SessionsRecyclerViewAdapter
+    @Mock private lateinit var sessionsViewAdapterFactory: SessionsViewAdapterFactory
     @Mock private lateinit var linearLayoutManager:LinearLayoutManager
     @Mock private lateinit var intentFactory:IntentFactory
     @Mock private lateinit var context:Context

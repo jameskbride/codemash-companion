@@ -1,4 +1,4 @@
-package com.jameskbride.codemashcompanion.sessions
+package com.jameskbride.codemashcompanion.sessions.list
 
 import android.content.Context
 import android.view.View
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.Session
+import com.jameskbride.codemashcompanion.sessions.SessionsFragmentPresenter
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.mock
@@ -26,7 +27,7 @@ class SessionsRecyclerViewAdapterImplTest {
     @Mock private lateinit var container:ViewGroup
     @Mock private lateinit var view: View
     @Mock private lateinit var context:Context
-    @Mock private lateinit var sessionsFragmentPresenter:SessionsFragmentPresenter
+    @Mock private lateinit var sessionsFragmentPresenter: SessionsFragmentPresenter
 
     private lateinit var subject: SessionsRecyclerViewAdapterImpl
 
@@ -82,7 +83,7 @@ class SessionsRecyclerViewAdapterImplTest {
         val firstTimeHeader: TimeHeaderListItem = result[1] as TimeHeaderListItem
         assertEquals(firstDate, firstTimeHeader.sessionTime)
 
-        val firstItem:SessionListItem = result[2] as SessionListItem
+        val firstItem: SessionListItem = result[2] as SessionListItem
         assertEquals(firstSession, firstItem.session)
 
         val secondDateHeader: DateHeaderListItem = result[3] as DateHeaderListItem
@@ -91,10 +92,10 @@ class SessionsRecyclerViewAdapterImplTest {
         val secondTimeHeader: TimeHeaderListItem = result[4] as TimeHeaderListItem
         assertEquals(secondDate, secondTimeHeader.sessionTime)
 
-        val secondItem:SessionListItem = result[5] as SessionListItem
+        val secondItem: SessionListItem = result[5] as SessionListItem
         assertEquals(secondSession, secondItem.session)
 
-        val thirdItem:SessionListItem = result[6] as SessionListItem
+        val thirdItem: SessionListItem = result[6] as SessionListItem
         assertEquals(thirdSession, thirdItem.session)
     }
 

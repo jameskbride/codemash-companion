@@ -12,6 +12,8 @@ import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl.Companion.PARAMETER_BLOCK
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakersParams
+import com.jameskbride.codemashcompanion.speakers.list.SpeakersRecyclerViewAdapter
+import com.jameskbride.codemashcompanion.speakers.list.SpeakersViewAdapterFactory
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.Toaster
 import javax.inject.Inject
