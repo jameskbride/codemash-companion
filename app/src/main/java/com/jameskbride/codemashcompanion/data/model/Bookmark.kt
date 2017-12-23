@@ -9,5 +9,5 @@ import java.io.Serializable
 @Entity(indices = arrayOf(Index(value = arrayOf("session_id"), unique = true)))
 class Bookmark constructor(
     @ColumnInfo(name = "session_id") var sessionId:String = "",
-    @ColumnInfo(name = "id") @PrimaryKey var id:Int = 0
+    @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) var id:Int = 0
 ): Serializable
