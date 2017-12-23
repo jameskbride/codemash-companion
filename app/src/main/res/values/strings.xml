@@ -20,4 +20,5 @@
     <string name="ok">OK</string>
     <string name="could_not_refresh">Couldn\'t refresh the data\nTry again later.</string>
     <string name="unexpected_error">An unexpected error occurred.</string>
+    <string name="no_sessions">It looks like there isn\'t any data right now.\nPull down down to refresh.</string>
 </resources>

@@ -4,12 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_gravity="center">
+    android:gravity="center|center_horizontal">
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_refresh"
+        android:layout_gravity="center|center_vertical"/>
     <TextView
-        android:layout_marginTop="50dp"
         android:id="@+id/empty_sessions"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="no sessions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/codemash_blue"
+        android:text="@string/no_sessions"
+        android:gravity="center|center_horizontal"
         />
+
 </LinearLayout>
