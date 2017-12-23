@@ -15,13 +15,13 @@ class BookmarkedSessionsRetrieverTest {
 
     @Mock private lateinit var conferenceRepository:ConferenceRepository
 
-    private lateinit var subject:BookmarkedSessionsRetriever
+    private lateinit var subject: ScheduledSessionsRetriever
 
     @Before
     fun setUp() {
         initMocks(this)
 
-        subject = BookmarkedSessionsRetriever(conferenceRepository)
+        subject = ScheduledSessionsRetriever(conferenceRepository)
     }
 
     @Test

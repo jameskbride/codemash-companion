@@ -20,19 +20,19 @@ import org.mockito.MockitoAnnotations.initMocks
 class BookmarksRecyclerViewAdapterImplTest {
 
     @Mock private lateinit var layoutInflaterFactory:LayoutInflaterFactory
-    @Mock private lateinit var qtn: BookmarksRecyclerViewAdapter
+    @Mock private lateinit var qtn: ScheduleRecyclerViewAdapter
     @Mock private lateinit var context:Context
     @Mock private lateinit var container:ViewGroup
     @Mock private lateinit var view:View
     @Mock private lateinit var presenter:SessionsFragmentPresenter
 
-    private lateinit var subject:BookmarksRecyclerViewAdapterImpl
+    private lateinit var subject: ScheduleRecyclerViewAdapterImpl
 
     @Before
     fun setUp() {
         initMocks(this)
 
-        subject = BookmarksRecyclerViewAdapterImpl(presenter, layoutInflaterFactory)
+        subject = ScheduleRecyclerViewAdapterImpl(presenter, layoutInflaterFactory)
 
         whenever(container.context).thenReturn(context)
     }

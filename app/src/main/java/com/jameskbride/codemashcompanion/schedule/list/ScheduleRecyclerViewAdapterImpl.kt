@@ -7,7 +7,7 @@ import com.jameskbride.codemashcompanion.sessions.list.EmptyViewHolder
 import com.jameskbride.codemashcompanion.sessions.list.SessionsRecyclerViewAdapterImpl
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 
-class BookmarksRecyclerViewAdapterImpl constructor(
+class ScheduleRecyclerViewAdapterImpl constructor(
         override val sessionsFragmentPresenter: SessionsFragmentPresenter,
         override val layoutInflaterFactory: LayoutInflaterFactory = LayoutInflaterFactory())
     : SessionsRecyclerViewAdapterImpl(sessionsFragmentPresenter, layoutInflaterFactory) {

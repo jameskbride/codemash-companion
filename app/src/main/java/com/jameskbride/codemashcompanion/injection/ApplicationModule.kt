@@ -11,8 +11,8 @@ import com.jameskbride.codemashcompanion.error.ErrorDialogPresenter
 import com.jameskbride.codemashcompanion.main.MainActivityImpl
 import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.service.CodemashService
-import com.jameskbride.codemashcompanion.schedule.BookmarkedSessionsRetriever
-import com.jameskbride.codemashcompanion.schedule.list.BookmarksViewAdapterFactory
+import com.jameskbride.codemashcompanion.schedule.ScheduledSessionsRetriever
+import com.jameskbride.codemashcompanion.schedule.list.ScheduleViewAdapterFactory
 import com.jameskbride.codemashcompanion.sessions.*
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityImpl
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityPresenter
@@ -189,7 +189,7 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     @Named("Bookmarked")
     @Provides
     fun makeBookmarkedSessionsRetriever(conferenceRepository: ConferenceRepository):SessionsRetriever {
-        return BookmarkedSessionsRetriever(conferenceRepository)
+        return ScheduledSessionsRetriever(conferenceRepository)
     }
 
     @Provides
@@ -209,7 +209,7 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     @Provides
     @Named("Bookmarked")
     fun makeBookmarksSessionsViewAdapterFactory():SessionsViewAdapterFactory {
-        return BookmarksViewAdapterFactory()
+        return ScheduleViewAdapterFactory()
     }
 
     @Named("Bookmarked")
