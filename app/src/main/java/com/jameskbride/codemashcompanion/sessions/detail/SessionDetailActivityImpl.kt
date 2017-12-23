@@ -30,6 +30,8 @@ class SessionDetailActivityImpl @Inject constructor(
     private lateinit var removeBookmarkFAB: FloatingActionButton
     private lateinit var addBookmarkFAB: FloatingActionButton
 
+    private lateinit var sessionDetail: SessionDetailParam
+
     fun onCreate(savedInstanceState: Bundle?, qtn: SessionDetailActivity) {
         this.qtn = qtn
         presenter.view = this
@@ -37,18 +39,16 @@ class SessionDetailActivityImpl @Inject constructor(
         removeBookmarkFAB = qtn.findViewById(R.id.remove_bookmark_fab)
         addBookmarkFAB = qtn.findViewById(R.id.add_bookmark_fab)
 
-        val sessionDetail: SessionDetailParam = getSessionDetailParam(qtn)
+        sessionDetail = getSessionDetailParam(qtn)
 
         configureActionBar(qtn)
-        val session = sessionDetail.session
-        configureForSession(session)
-        configureSpeakersBlock(sessionDetail)
     }
 
     override fun configureForSession(session: FullSession) {
         configureSessionDetails(session)
         configureTimes(session)
         configureBookmarkFAB(session)
+        configureSpeakersBlock(session.Id, sessionDetail.showSpeakers)
     }
 
     private fun configureSessionDetails(session: FullSession) {
@@ -63,9 +63,7 @@ class SessionDetailActivityImpl @Inject constructor(
     }
 
     private fun getSessionDetailParam(qtn: SessionDetailActivity): SessionDetailParam {
-        val sessionDetail: SessionDetailParam =
-                qtn.intent.getSerializableExtra(PARAMETER_BLOCK) as SessionDetailParam
-        return sessionDetail
+        return qtn.intent.getSerializableExtra(PARAMETER_BLOCK) as SessionDetailParam
     }
 
     private fun configureTimes(session: FullSession) {
@@ -87,9 +85,9 @@ class SessionDetailActivityImpl @Inject constructor(
         qtn.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun configureSpeakersBlock(sessionDetail: SessionDetailParam) {
-        when (sessionDetail.showSpeakers) {
-            true -> presenter.retrieveSpeakers(sessionDetail.session)
+    private fun configureSpeakersBlock(sessionId: String, showSpeakers:Boolean) {
+        when (showSpeakers) {
+            true -> presenter.retrieveSpeakers(sessionId)
             else -> qtn.findViewById<LinearLayout>(R.id.speakers_block).visibility = View.GONE
         }
     }
@@ -112,6 +110,7 @@ class SessionDetailActivityImpl @Inject constructor(
 
     override fun displaySpeakers(speakers: Array<FullSpeaker>) {
         val speakersHolder = qtn.findViewById<LinearLayout>(R.id.speakers_holder)
+        speakersHolder.removeAllViews()
         speakers.forEachIndexed{ index, speaker ->
             val speakerHeadshot = speakerHeadshotFactory.make(speaker, qtn)
             speakerHeadshot.layoutParams =
@@ -152,6 +151,7 @@ class SessionDetailActivityImpl @Inject constructor(
 
     fun onResume(sessionDetailActivity: SessionDetailActivity) {
         presenter.open()
+        presenter.retrieveSession(sessionId = sessionDetail.sessionId)
     }
 
     fun onPause(sessionDetailActivity: SessionDetailActivity) {
@@ -159,4 +159,4 @@ class SessionDetailActivityImpl @Inject constructor(
     }
 }
 
-class SessionDetailParam(val session: FullSession, val showSpeakers:Boolean = true): Serializable
+class SessionDetailParam(val showSpeakers: Boolean = true, val sessionId: String = ""): Serializable

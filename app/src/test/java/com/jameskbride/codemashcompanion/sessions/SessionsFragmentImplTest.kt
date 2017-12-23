@@ -167,7 +167,7 @@ class SessionsFragmentImplTest {
 
         verify(intent).putExtra(eq(SessionDetailActivityImpl.PARAMETER_BLOCK), extraCaptor.capture())
         val speakerDetailParams = extraCaptor.firstValue
-        assertEquals(session, speakerDetailParams.session)
+        assertEquals(session.Id, speakerDetailParams.sessionId)
 
         verify(activity).startActivity(intent)
     }

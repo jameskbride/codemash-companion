@@ -49,38 +49,28 @@ class SessionDetailActivityPresenterTest {
 
     @Test
     fun itCanRetrieveSpeakers() {
-        val fullSession = FullSession(
-                sessionSpeakers = listOf(
-                        SessionSpeaker(sessionId = "1", speakerId = "1"),
-                        SessionSpeaker(sessionId = "1", speakerId = "2")
-                )
-        )
+        val fullSession = FullSession(Id = "123")
 
         val speakers = arrayOf(FullSpeaker("1"), FullSpeaker("2"))
         val speakerObservable = Maybe.just(speakers)
-        whenever(conferenceRepository.getSpeakers(anyList<String>())).thenReturn(speakerObservable)
+        whenever(conferenceRepository.getSpeakersBySession("123")).thenReturn(speakerObservable)
 
-        subject.retrieveSpeakers(fullSession)
+        subject.retrieveSpeakers(fullSession.Id)
         testScheduler.triggerActions()
 
-        val speakerIdsCaptor = argumentCaptor<List<String>>()
-        verify(conferenceRepository).getSpeakers(speakerIdsCaptor.capture())
+        val sessionIdCaptor = argumentCaptor<String>()
+        verify(conferenceRepository).getSpeakersBySession(sessionIdCaptor.capture())
 
-        assertTrue(speakerIdsCaptor.firstValue.containsAll(listOf("1", "2")))
+        assertEquals("123", sessionIdCaptor.firstValue)
         verify(view).displaySpeakers(speakers)
     }
 
     @Test
     fun itDisplaysAnErrorMessageMessageWhenAnErrorOccursRetrievingSpeakers() {
-        val fullSession = FullSession(
-                sessionSpeakers = listOf(
-                        SessionSpeaker(sessionId = "1", speakerId = "1"),
-                        SessionSpeaker(sessionId = "1", speakerId = "2")
-                )
-        )
-        whenever(conferenceRepository.getSpeakers(any())).thenReturn(Maybe.error(Exception("Woops!")))
+        val fullSession = FullSession(Id = "123")
+        whenever(conferenceRepository.getSpeakersBySession("123")).thenReturn(Maybe.error(Exception("Woops!")))
 
-        subject.retrieveSpeakers(fullSession)
+        subject.retrieveSpeakers(fullSession.Id)
         testScheduler.triggerActions()
 
         verify(view).displayErrorMessage(R.string.unexpected_error)

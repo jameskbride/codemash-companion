@@ -88,11 +88,18 @@ class SessionDetailActivityImplTest {
     }
 
     @Test
-    fun onCreateItConfiguresTheView() {
+    fun onCreateRetrievesTheSessionDetail() {
         subject.onCreate(null, qtn)
 
         verify(qtn).getIntent()
         verify(intent).getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)
+    }
+
+    @Test
+    fun itCanConfigureTheViewForASession() {
+        initSessionDetailActivity()
+
+        subject.configureForSession(fullSession)
 
         verify(title).setText(fullSession.Title)
         verify(abstract).setText(fullSession.Abstract)
@@ -114,18 +121,20 @@ class SessionDetailActivityImplTest {
     }
 
     @Test
-    fun onCreateRequestsTheSpeakersForTheSession() {
+    fun configureForSessionRequestsTheSpeakersForTheSession() {
         subject.onCreate(null, qtn)
+        subject.configureForSession(fullSession)
 
-        verify(presenter).retrieveSpeakers(fullSession)
+        verify(presenter).retrieveSpeakers(fullSession.Id)
     }
 
     @Test
-    fun onCreateDoesNotRequestSpeakersWhenShowSpeakersIsFalse() {
+    fun configureForSessionDoesNotRequestSpeakersWhenShowSpeakersIsFalse() {
         buildSessionDetailParam(buildDefaultFullSession(), false)
         whenever(intent.getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
-
         subject.onCreate(null, qtn)
+
+        subject.configureForSession(fullSession)
 
         verify(speakersBlock).setVisibility(View.GONE)
         verify(presenter, never()).retrieveSpeakers(any())
@@ -143,18 +152,17 @@ class SessionDetailActivityImplTest {
 
         subject.onCreate(null, qtn)
 
+        subject.configureForSession(fullSession)
+
         verify(removeBookmarkFAB).setVisibility(View.VISIBLE)
         verify(addBookmarkFAB).setVisibility(View.GONE)
     }
 
     @Test
     fun whenTheSessionHasBeenNotBookmarkedTheAddFABIsVisible() {
-        fullSession = buildDefaultFullSession()
+        initSessionDetailActivity()
 
-        buildSessionDetailParam(fullSession)
-        whenever(intent.getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
-
-        subject.onCreate(null, qtn)
+        subject.configureForSession(fullSession)
 
         verify(removeBookmarkFAB).setVisibility(View.GONE)
         verify(addBookmarkFAB).setVisibility(View.VISIBLE)
@@ -162,12 +170,9 @@ class SessionDetailActivityImplTest {
 
     @Test
     fun addBookmarkCanAddABookmark() {
-        fullSession = buildDefaultFullSession()
+        initSessionDetailActivity()
 
-        buildSessionDetailParam(fullSession)
-        whenever(intent.getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
-
-        subject.onCreate(null, qtn)
+        subject.configureForSession(fullSession)
 
         val onClickListenerCaptor = argumentCaptor<View.OnClickListener>()
         verify(addBookmarkFAB).setOnClickListener(onClickListenerCaptor.capture())
@@ -178,12 +183,9 @@ class SessionDetailActivityImplTest {
 
     @Test
     fun removeBookmarkCanRemoveABookmark() {
-        fullSession = buildDefaultFullSession()
+        initSessionDetailActivity()
 
-        buildSessionDetailParam(fullSession)
-        whenever(intent.getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
-
-        subject.onCreate(null, qtn)
+        subject.configureForSession(fullSession)
 
         val onClickListenerCaptor = argumentCaptor<View.OnClickListener>()
         verify(removeBookmarkFAB).setOnClickListener(onClickListenerCaptor.capture())
@@ -201,6 +203,7 @@ class SessionDetailActivityImplTest {
         subject.onCreate(null, qtn)
         subject.displaySpeakers(speakers)
 
+        verify(speakersHolder).removeAllViews()
         verify(speakersHolder, times(2)).addView(speakerHeadshot)
         verify(speakerHeadshot, times(2))
                 .setLayoutParams(any())
@@ -266,9 +269,25 @@ class SessionDetailActivityImplTest {
 
     @Test
     fun onResumeItOpensThePresenter() {
+        initSessionDetailActivity()
         subject.onResume(qtn)
 
         verify(presenter).open()
+    }
+
+    @Test
+    fun onResumeRetrievesTheSession() {
+        initSessionDetailActivity()
+
+        subject.onResume(qtn)
+
+        verify(presenter).retrieveSession(sessionDetailParam.sessionId)
+    }
+
+    private fun initSessionDetailActivity() {
+        buildSessionDetailParam(fullSession)
+        whenever(intent.getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
+        subject.onCreate(null, qtn)
     }
 
     @Test
@@ -295,6 +314,6 @@ class SessionDetailActivityImplTest {
     }
 
     private fun buildSessionDetailParam(fullSession: FullSession, showSpeakers: Boolean = true) {
-        sessionDetailParam = SessionDetailParam(fullSession, showSpeakers = showSpeakers)
+        sessionDetailParam = SessionDetailParam(showSpeakers = showSpeakers, sessionId = fullSession.Id)
     }
 }

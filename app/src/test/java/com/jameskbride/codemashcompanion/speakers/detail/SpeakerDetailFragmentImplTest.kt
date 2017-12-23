@@ -293,7 +293,7 @@ class SpeakerDetailFragmentImplTest {
         val extraCaptor = argumentCaptor<SessionDetailParam>()
         verify(intent, atLeastOnce()).putExtra(eq(SessionDetailActivityImpl.PARAMETER_BLOCK), extraCaptor.capture())
         val sessionDetailParam = extraCaptor.firstValue
-        assertEquals(sessions[0], sessionDetailParam.session)
+        assertEquals(sessions[0].Id, sessionDetailParam.sessionId)
         assertFalse(sessionDetailParam.showSpeakers)
 
         verify(qtn).startActivity(intent)

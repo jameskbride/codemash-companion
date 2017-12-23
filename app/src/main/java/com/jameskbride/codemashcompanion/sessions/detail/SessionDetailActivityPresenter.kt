@@ -21,9 +21,8 @@ class SessionDetailActivityPresenter @Inject constructor(
 
     lateinit var view:SessionDetailActivityView
 
-    fun retrieveSpeakers(session: FullSession) {
-        val speakerIds = session.sessionSpeakers.map { it.speakerId }
-        conferenceRepository.getSpeakers(speakerIds)
+    fun retrieveSpeakers(sessionId: String) {
+        conferenceRepository.getSpeakersBySession(sessionId)
                 .subscribeOn(processScheduler)
                 .observeOn(androidScheduler)
                 .subscribe (
@@ -42,12 +41,17 @@ class SessionDetailActivityPresenter @Inject constructor(
 
     @Subscribe
     fun updateSession(sessionUpdatedEvent: SessionUpdatedEvent) {
-        conferenceRepository.getSessions(arrayOf(sessionUpdatedEvent.sessionId))
+        val sessionId = sessionUpdatedEvent.sessionId
+        retrieveSession(sessionId)
+    }
+
+    fun retrieveSession(sessionId: String) {
+        conferenceRepository.getSessions(arrayOf(sessionId))
                 .subscribeOn(processScheduler)
                 .observeOn(androidScheduler)
                 .subscribe(
-                        {result -> view.configureForSession(result[0])},
-                        {error -> view.displayErrorMessage(R.string.unexpected_error)}
+                        { result -> view.configureForSession(result[0]) },
+                        { error -> view.displayErrorMessage(R.string.unexpected_error) }
                 )
     }
 

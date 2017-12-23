@@ -59,7 +59,7 @@ class SessionsFragmentImpl(val presenter: SessionsFragmentPresenter,
 
     override fun navigateToSessionDetail(session: FullSession) {
         val intent = intentFactory.make(qtn.context, SessionDetailActivity::class.java)
-        intent.putExtra(SpeakerDetailActivityImpl.PARAMETER_BLOCK, SessionDetailParam(session))
+        intent.putExtra(SpeakerDetailActivityImpl.PARAMETER_BLOCK, SessionDetailParam(sessionId = session.Id))
 
         qtn.activity!!.startActivity(intent)
     }
