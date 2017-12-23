@@ -120,4 +120,8 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         conferenceDao.delete(bookmark)
         eventBus.post(SessionUpdatedEvent(bookmark.sessionId))
     }
+
+    fun getSpeakersBySession(sessionId: String): Maybe<Array<FullSpeaker>> {
+        return conferenceDao.getSpeakersBySession(sessionId)
+    }
 }

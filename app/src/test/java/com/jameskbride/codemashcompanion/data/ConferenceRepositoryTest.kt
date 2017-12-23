@@ -244,6 +244,17 @@ class ConferenceRepositoryTest {
     }
 
     @Test
+    fun getSpeakersBySessionIdReturnsTheSpeakersFromTheDao() {
+        val speakers = arrayOf(FullSpeaker("1"), FullSpeaker("2"))
+
+        val maybe = Maybe.just(speakers)
+        whenever(conferenceDao.getSpeakersBySession("1")).thenReturn(maybe)
+
+        val result = subject.getSpeakersBySession("1")
+        assertEquals(maybe, result)
+    }
+
+    @Test
     fun getSessionsReturnsTheSessionsFromTheDao() {
         val sessions:Array<FullSession> = arrayOf(FullSession(
                 Id = "123",

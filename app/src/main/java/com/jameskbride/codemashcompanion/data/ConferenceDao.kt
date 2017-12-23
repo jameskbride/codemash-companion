@@ -39,4 +39,9 @@ interface ConferenceDao {
 
     @Delete
     fun delete(bookmark: Bookmark)
+
+    @Query("SELECT * FROM Speaker INNER JOIN SessionSpeaker " +
+            "ON Speaker.id = SessionSpeaker.speaker_id "+
+            "WHERE SessionSpeaker.session_id = :sessionId")
+    fun getSpeakersBySession(sessionId: String): Maybe<Array<FullSpeaker>>
 }
