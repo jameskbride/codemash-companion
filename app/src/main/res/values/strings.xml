@@ -24,6 +24,8 @@
     <string name="empty_schedule">Such empty!\nCheck out this year\'s sessions and add a few to your schedule.</string>
     <string name="author_name">Jim Kirkbride</string>
     <string name="author_label">Author:</string>
+    <string name="codemash_companion_url">https://github.com/jameskbride/codemash-companion</string>
+    <string name="about_blurb">Thanks for downloading this app, and I hope you\'ve found it useful!\n\nFind a bug or think of a cool new feature? Create an issue on Github or email me at james.kirkbride@gmail.com.\n\nPull requests are also welcome!</string>
     <string name="creative_commons_license">The Android robot is reproduced or modified from work created and shared by Google and used according to terms described in the Creative Commons 3.0 Attribution License.</string>
     <string name="license_text">The MIT License (MIT)\n\nCopyright (c) 2015 James G Kirkbride\n\nPermission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -1,13 +1,18 @@
 package com.jameskbride.codemashcompanion.about
 
+import android.content.Intent
+import android.content.res.Resources
+import android.net.Uri
 import android.support.annotation.IdRes
 import android.support.v7.app.ActionBar
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
+import android.view.View
+import android.widget.LinearLayout
 import com.jameskbride.codemashcompanion.R
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
+import com.jameskbride.codemashcompanion.utils.IntentFactory
+import com.jameskbride.codemashcompanion.utils.UriWrapper
+import com.nhaarman.mockito_kotlin.*
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -19,17 +24,29 @@ class AboutActivityImplTest {
     @Mock private lateinit var qtn:AboutActivity
     @Mock private lateinit var toolbar:Toolbar
     @Mock private lateinit var actionBar: ActionBar
+    @Mock private lateinit var intentFactory:IntentFactory
+    @Mock private lateinit var intent:Intent
+    @Mock private lateinit var uri: Uri
+    @Mock private lateinit var githubBlock:LinearLayout
+    @Mock private lateinit var uriWrapper:UriWrapper
+    @Mock private lateinit var resources:Resources
 
     private lateinit var subject:AboutActivityImpl
+
+    val urlString = "url"
 
     @Before
     fun setUp() {
         initMocks(this)
 
-        subject = AboutActivityImpl()
+        subject = AboutActivityImpl(intentFactory, uriWrapper)
 
         whenever(qtn.findViewById<Toolbar>(R.id.toolbar)).thenReturn(toolbar)
         whenever(qtn.supportActionBar).thenReturn(actionBar)
+        whenever(qtn.findViewById<LinearLayout>(R.id.github_block)).thenReturn(githubBlock)
+        whenever(qtn.resources).thenReturn(resources)
+        whenever(resources.getString(R.string.codemash_companion_url)).thenReturn(urlString)
+        whenever(uriWrapper.parse(urlString)).thenReturn(uri)
     }
 
     @Test
@@ -67,5 +84,19 @@ class AboutActivityImplTest {
         subject.onOptionsItemSelected(menuItem, qtn)
 
         verify(qtn).callSuperOnOptionsItemSelected(menuItem)
+    }
+
+    @Test
+    fun clickingOnGithubLinkLaunchesAnActivity() {
+        whenever(intentFactory.make(Intent.ACTION_VIEW)).thenReturn(intent)
+        subject.onCreate(null, qtn)
+
+        val onClickListenerCaptor = argumentCaptor<View.OnClickListener>()
+        verify(githubBlock).setOnClickListener(onClickListenerCaptor.capture())
+        onClickListenerCaptor.firstValue.onClick(null)
+
+        verify(intentFactory).make(Intent.ACTION_VIEW)
+        verify(intent).setData(uri)
+        verify(qtn).startActivity(intent)
     }
 }
