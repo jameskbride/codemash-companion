@@ -1,9 +1,10 @@
 package com.jameskbride.codemashcompanion.about
 
 import android.os.Bundle
+import com.jameskbride.codemashcompanion.R
 
 class AboutActivityImpl {
     fun onCreate(savedInstanceState: Bundle?, aboutActivity: AboutActivity) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        aboutActivity.setContentView(R.layout.about)
     }
 }
