@@ -99,7 +99,7 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     }
 
     fun getSessions(): Maybe<Array<FullSession>> {
-        return conferenceDao.getFullSessions()
+        return conferenceDao.getSessions()
     }
 
     fun getSpeakers(ids: List<String>):Maybe<Array<FullSpeaker>> {
@@ -107,7 +107,7 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     }
 
     fun getSessions(ids: Array<String>): Maybe<Array<FullSession>> {
-        return conferenceDao.getFullSessions(ids)
+        return conferenceDao.getSessions(ids)
     }
 
     fun addBookmark(fullSession: FullSession) {

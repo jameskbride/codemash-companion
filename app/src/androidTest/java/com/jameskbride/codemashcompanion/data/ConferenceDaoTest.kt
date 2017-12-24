@@ -33,7 +33,7 @@ class ConferenceDaoTest {
     fun itCanRetrieveSessionSpeakersFromAFullSpeaker() {
         val sessionId = "1"
         val speakerId = "1"
-        insertSessionSpeakers(sessionId, speakerId)
+        setupSessionSpeakers(sessionId, speakerId)
 
         var speakerResults: Array<FullSpeaker> = getSpeakersById(speakerId)
 
@@ -45,7 +45,7 @@ class ConferenceDaoTest {
     fun itCanRetrieveSessionSpeakersFromAFullSpeakerBySessionId() {
         val sessionId = "1"
         val speakerId = "1"
-        insertSessionSpeakers(sessionId, speakerId)
+        setupSessionSpeakers(sessionId, speakerId)
 
         var speakerResults: Array<FullSpeaker> = getSpeakersBySessionId(sessionId)
 
@@ -57,9 +57,9 @@ class ConferenceDaoTest {
     fun itCanRetrieveSessionSpeakersIndirectlyOnFullSpeakersFromFullSessions() {
         val sessionId = "1"
         val speakerId = "1"
-        insertSessionSpeakers(sessionId, speakerId)
+        setupSessionSpeakers(sessionId, speakerId)
 
-        var sessionResults: Array<FullSession> = getFullSessionsById(sessionId)
+        var sessionResults: Array<FullSession> = getSessionsById(sessionId)
 
         assertEquals(1, sessionResults.size)
 
@@ -78,31 +78,6 @@ class ConferenceDaoTest {
 
         assertEquals(1, sessionResults.size)
         assertEquals(sessionId, sessionResults[0].Id)
-    }
-
-    @Test
-    fun itCanDeletesBookmarksWhenASessionIsDeleted() {
-        val sessionId = "1"
-
-        insertBookmark(sessionId)
-
-        val results = getSessionsById(sessionId)
-
-        conferenceDao.delete(results)
-
-        assertEquals(0, getBookmarkedSession().size)
-    }
-
-    private fun getSessionsById(sessionId: String): Array<Session> {
-        var sessions:Array<Session> = arrayOf()
-
-        conferenceDao.getSessions(arrayOf(sessionId))
-                .subscribeOn(testScheduler)
-                .observeOn(testScheduler)
-                .subscribe { result -> sessions = result }
-        testScheduler.triggerActions()
-
-        return sessions
     }
 
     private fun getBookmarkedSession(): Array<FullSession> {
@@ -135,7 +110,7 @@ class ConferenceDaoTest {
         return speakerResults
     }
 
-    private fun insertSessionSpeakers(sessionId: String, speakerId: String) {
+    private fun setupSessionSpeakers(sessionId: String, speakerId: String) {
         val session = Session(Id = sessionId)
         val speaker = Speaker(Id = speakerId)
 
@@ -157,8 +132,8 @@ class ConferenceDaoTest {
         return speakerResults
     }
 
-    private fun getFullSessionsById(sessionId: String): Array<FullSession> {
-        val response = conferenceDao.getFullSessions(arrayOf(sessionId))
+    private fun getSessionsById(sessionId: String): Array<FullSession> {
+        val response = conferenceDao.getSessions(arrayOf(sessionId))
 
         var sessionResults: Array<FullSession> = arrayOf()
         response
