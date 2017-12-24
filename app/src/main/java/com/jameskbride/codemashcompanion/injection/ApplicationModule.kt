@@ -2,6 +2,7 @@ package com.jameskbride.codemashcompanion.injection
 
 import android.arch.persistence.room.Room
 import com.jameskbride.codemashcompanion.BuildConfig
+import com.jameskbride.codemashcompanion.about.AboutActivityImpl
 import com.jameskbride.codemashcompanion.application.CodemashCompanionApplication
 import com.jameskbride.codemashcompanion.data.ConferenceDao
 import com.jameskbride.codemashcompanion.data.ConferenceDatabase
@@ -254,6 +255,11 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     @Provides
     fun makeErrorDialogImpl(errorDialogPresenter: ErrorDialogPresenter):ErrorDialogImpl {
         return ErrorDialogImpl(errorDialogPresenter)
+    }
+
+    @Provides
+    fun makeAboutActivityImpl():AboutActivityImpl {
+        return AboutActivityImpl()
     }
 
 }

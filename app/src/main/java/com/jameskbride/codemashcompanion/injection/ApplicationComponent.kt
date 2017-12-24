@@ -1,5 +1,6 @@
 package com.jameskbride.codemashcompanion.injection
 
+import com.jameskbride.codemashcompanion.about.AboutActivity
 import com.jameskbride.codemashcompanion.schedule.ScheduleFragment
 import com.jameskbride.codemashcompanion.application.CodemashCompanionApplication
 import com.jameskbride.codemashcompanion.error.ErrorDialog
@@ -26,4 +27,5 @@ interface ApplicationComponent {
     fun inject(scheduleFragment: ScheduleFragment)
     fun inject(sessionDetailActivity: SessionDetailActivity)
     fun inject(errorDialog: ErrorDialog)
+    fun inject(aboutActivity: AboutActivity)
 }

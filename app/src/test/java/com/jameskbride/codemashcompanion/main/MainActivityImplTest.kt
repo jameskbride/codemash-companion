@@ -1,13 +1,20 @@
 package com.jameskbride.codemashcompanion.main
 
+import android.content.Intent
 import android.content.res.Resources
 import android.support.design.widget.TabLayout
 import android.support.v4.app.FragmentManager
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.Toolbar
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import com.jameskbride.codemashcompanion.R
+import com.jameskbride.codemashcompanion.about.AboutActivity
+import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.nhaarman.mockito_kotlin.*
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -21,6 +28,11 @@ class MainActivityImplTest {
     @Mock private lateinit var tabs: TabLayout
     @Mock private lateinit var toolbar: Toolbar
     @Mock private lateinit var resources: Resources
+    @Mock private lateinit var menuInflater:MenuInflater
+    @Mock private lateinit var menu:Menu
+    @Mock private lateinit var menuItem:MenuItem
+    @Mock private lateinit var intent:Intent
+    @Mock private lateinit var intentFactory:IntentFactory
 
     private lateinit var subject: MainActivityImpl
 
@@ -32,7 +44,7 @@ class MainActivityImplTest {
     fun setUp() {
         initMocks(this)
 
-        subject = MainActivityImpl()
+        subject = MainActivityImpl(intentFactory)
 
         whenever(mainActivity.findViewById<ViewPager>(R.id.container)).thenReturn(container)
         whenever(mainActivity.findViewById<TabLayout>(R.id.tabs)).thenReturn(tabs)
@@ -113,5 +125,30 @@ class MainActivityImplTest {
         tabSelectedListener.onTabSelected(tab)
 
         verify(toolbar).setTitle(schedule)
+    }
+
+    @Test
+    fun onCreateOptionsMenuInflatesTheMenu() {
+        subject.onCreate(null, mainActivity)
+
+        whenever(mainActivity.menuInflater).thenReturn(menuInflater)
+
+        val result = subject.onCreateOptionsMenu(menu, mainActivity)
+
+        assertTrue(result)
+        verify(menuInflater).inflate(R.menu.menu_main, menu)
+    }
+
+    @Test
+    fun onOptionsItemSelectedNavigatesToAbout() {
+        whenever(menuItem.itemId).thenReturn(R.id.action_about)
+        subject.onCreate(null, mainActivity)
+
+        whenever(intentFactory.make(mainActivity, AboutActivity::class.java)).thenReturn(intent)
+
+        val result = subject.onOptionsItemSelected(menuItem, mainActivity)
+
+        assertTrue(result)
+        verify(mainActivity).startActivity(intent)
     }
 }
