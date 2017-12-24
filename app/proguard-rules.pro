@@ -25,6 +25,10 @@
 -dontwarn com.squareup.okhttp.**
 -dontwarn retrofit2.Platform$Java8
 -keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keep,includedescriptorclasses class com.crashlytics.**
+-keep,includedescriptorclasses class io.fabric.sdk.android.**
+-dontwarn com.crashlytics.**
 -keepclassmembers class ** {
     @org.greenrobot.eventbus.Subscribe <methods>;
 }
@@ -33,4 +37,6 @@
 -keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
 -keep public class com.jameskbride.codemashcompanion.application.ApplicationComponentFactory {*;}
 -keep class kotlin.jvm.internal.DefaultConstructorMarker {*;}
--keep class org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement {*;}
+-keep,includedescriptorclasses class com.jameskbride.codemashcompanion.utils.FabricWrapper {*;}
+-keep,includedescriptorclasses class com.jameskbride.codemashcompanion.utils.CrashlyticsFactory {*;}
+-keep,includedescriptorclasses class com.jameskbride.codemashcompanion.bus.** {*;}

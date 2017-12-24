@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.crashlytics.android.Crashlytics
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
@@ -16,6 +17,7 @@ import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityIm
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakersParams
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.Toaster
+import io.fabric.sdk.android.services.common.Crash
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import javax.inject.Inject
@@ -93,7 +95,10 @@ class SessionDetailActivityImpl @Inject constructor(
     }
 
     private fun configureBookmarkFAB(session: FullSession) {
-        removeBookmarkFAB.setOnClickListener { view: View? -> presenter.removeBookmark(session) }
+        removeBookmarkFAB.setOnClickListener { view: View? ->
+            Crashlytics.getInstance().crash()
+            presenter.removeBookmark(session)
+        }
         addBookmarkFAB.setOnClickListener {view: View? -> presenter.addBookmark(session) }
 
         when (session.isBookmarked) {

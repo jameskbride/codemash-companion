@@ -6,10 +6,14 @@ import com.jameskbride.codemashcompanion.injection.ApplicationComponent
 import com.jameskbride.codemashcompanion.injection.ApplicationModule
 import com.jameskbride.codemashcompanion.injection.DaggerApplicationComponent
 import com.jameskbride.codemashcompanion.network.service.CodemashService
+import com.jameskbride.codemashcompanion.utils.CrashlyticsFactory
+import com.jameskbride.codemashcompanion.utils.FabricWrapper
 import javax.inject.Inject
 
 class CodemashCompanionApplication
-constructor(val applicationComponentFactory: ApplicationComponentFactory = ApplicationComponentFactory()) : Application() {
+constructor(
+        val applicationComponentFactory: ApplicationComponentFactory = ApplicationComponentFactory(),
+        val fabricWrapper: FabricWrapper = FabricWrapper(), val crashlyticsFactory: CrashlyticsFactory = CrashlyticsFactory()) : Application() {
 
     @Inject
     lateinit var codemashService: CodemashService
@@ -21,6 +25,7 @@ constructor(val applicationComponentFactory: ApplicationComponentFactory = Appli
         super.onCreate()
 
         configure()
+        fabricWrapper.with(this, crashlyticsFactory.make())
     }
 
     fun configure() {

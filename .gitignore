@@ -12,3 +12,4 @@
 .externalNativeBuild
 /out
 /release.properties
+/crashlytics.properties
