@@ -37,11 +37,15 @@ interface ConferenceDao {
 
     @Transaction
     @Query("SELECT * FROM Session")
-    fun getSessions(): Maybe<Array<FullSession>>
+    fun getFullSessions(): Maybe<Array<FullSession>>
+
+    @Transaction
+    @Query("SELECT * FROM Session WHERE id in (:ids) ORDER BY title")
+    fun getSessions(ids: Array<String>): Maybe<Array<Session>>
 
     @Transaction
     @Query("SELECT * FROM Session WHERE id IN (:ids) ORDER BY title")
-    fun getSessions(ids:Array<String>): Maybe<Array<FullSession>>
+    fun getFullSessions(ids:Array<String>): Maybe<Array<FullSession>>
 
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -61,4 +65,8 @@ interface ConferenceDao {
     @Query("SELECT Session.* FROM Session INNER JOIN Bookmark " +
             "ON Session.id = Bookmark.session_id ")
     fun getBookmarkedSessions(): Maybe<Array<FullSession>>
+
+    @Transaction
+    @Delete
+    fun delete(session: Array<Session>)
 }

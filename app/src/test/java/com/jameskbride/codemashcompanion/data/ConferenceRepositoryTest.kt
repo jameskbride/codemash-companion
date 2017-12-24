@@ -7,7 +7,6 @@ import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
 import com.jameskbride.codemashcompanion.network.model.ShortSpeaker
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultApiSpeakers
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
-import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -268,7 +267,7 @@ class ConferenceRepositoryTest {
         ))
 
         val maybe = Maybe.just(sessions)
-        whenever(conferenceDao.getSessions()).thenReturn(maybe)
+        whenever(conferenceDao.getFullSessions()).thenReturn(maybe)
 
         var result = subject.getSessions()
 
@@ -288,7 +287,7 @@ class ConferenceRepositoryTest {
 
         val maybe = Maybe.just(sessions)
         val ids = arrayOf("1", "2")
-        whenever(conferenceDao.getSessions(ids)).thenReturn(maybe)
+        whenever(conferenceDao.getFullSessions(ids)).thenReturn(maybe)
 
         var result = subject.getSessions(ids)
 
