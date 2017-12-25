@@ -2,7 +2,6 @@ package com.jameskbride.codemashcompanion.sessions.detail
 
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
-import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -38,12 +37,12 @@ class SessionDetailActivityImpl @Inject constructor(
         this.qtn = qtn as SessionDetailActivity
         presenter.view = this
         qtn.setContentView(R.layout.activity_session_detail)
+        setTitle(qtn, R.string.session_detail)
+        configureActionBar(qtn)
         removeBookmarkFAB = qtn.findViewById(R.id.remove_bookmark_fab)
         addBookmarkFAB = qtn.findViewById(R.id.add_bookmark_fab)
 
         sessionDetail = getSessionDetailParam(qtn)
-
-        configureActionBar(qtn)
     }
 
     override fun configureForSession(session: FullSession) {
@@ -80,11 +79,6 @@ class SessionDetailActivityImpl @Inject constructor(
         val sessionEndTime = SimpleDateFormat(Session.TIMESTAMP_FORMAT).parse(session.SessionEndTime)
         val formattedEndTime = timeFormat.format(sessionEndTime)
         qtn.findViewById<TextView>(R.id.session_time).text = "${formattedStartTime} - ${formattedEndTime}"
-    }
-
-    private fun configureActionBar(qtn: SessionDetailActivity) {
-        qtn.setSupportActionBar(qtn.findViewById(R.id.toolbar))
-        qtn.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun configureSpeakersBlock(sessionId: String, showSpeakers:Boolean) {
@@ -127,16 +121,6 @@ class SessionDetailActivityImpl @Inject constructor(
 
     override fun displayErrorMessage(message: Int) {
         toaster.makeText(qtn, message, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?, qtn: BaseActivity): Boolean {
-        when(item?.itemId) {
-            android.R.id.home ->  {
-                qtn.onBackPressed()
-                return true
-            }
-            else -> return (qtn as SessionDetailActivity).callSuperOnOptionsItemSelected(item)
-        }
     }
 
     private fun navigateToSpeakerDetail(speakers: Array<FullSpeaker>, index:Int) {

@@ -89,6 +89,13 @@ class SessionDetailActivityImplTest {
     }
 
     @Test
+    fun onCreateSetsTheTitle() {
+        subject.onCreate(null, qtn)
+
+        verify(toolbar).setTitle(R.string.session_detail)
+    }
+
+    @Test
     fun onCreateRetrievesTheSessionDetail() {
         subject.onCreate(null, qtn)
 
