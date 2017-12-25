@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.TextView
+import com.jameskbride.codemashcompanion.BuildConfig
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.UriWrapper
@@ -12,6 +14,8 @@ import com.jameskbride.codemashcompanion.utils.UriWrapper
 class AboutActivityImpl constructor(val intentFactory: IntentFactory = IntentFactory(), val uriWrapper: UriWrapper = UriWrapper()) {
     fun onCreate(savedInstanceState: Bundle?, qtn: AboutActivity) {
         qtn.setContentView(R.layout.activity_about)
+
+        qtn.findViewById<TextView>(R.id.version_number).text = BuildConfig.VERSION_NAME
 
         configureActionBar(qtn)
         makeNavigableLink(qtn.resources.getString(R.string.codemash_companion_url), qtn, R.id.github_block)

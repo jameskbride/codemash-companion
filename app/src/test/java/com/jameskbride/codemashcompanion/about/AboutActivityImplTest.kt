@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.TextView
+import com.jameskbride.codemashcompanion.BuildConfig
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.UriWrapper
@@ -30,6 +32,7 @@ class AboutActivityImplTest {
     @Mock private lateinit var githubBlock:LinearLayout
     @Mock private lateinit var uriWrapper:UriWrapper
     @Mock private lateinit var resources:Resources
+    @Mock private lateinit var versionNumber:TextView
 
     private lateinit var subject:AboutActivityImpl
 
@@ -44,6 +47,7 @@ class AboutActivityImplTest {
         whenever(qtn.findViewById<Toolbar>(R.id.toolbar)).thenReturn(toolbar)
         whenever(qtn.supportActionBar).thenReturn(actionBar)
         whenever(qtn.findViewById<LinearLayout>(R.id.github_block)).thenReturn(githubBlock)
+        whenever(qtn.findViewById<TextView>(R.id.version_number)).thenReturn(versionNumber)
         whenever(qtn.resources).thenReturn(resources)
         whenever(resources.getString(R.string.codemash_companion_url)).thenReturn(urlString)
         whenever(uriWrapper.parse(urlString)).thenReturn(uri)
@@ -54,6 +58,13 @@ class AboutActivityImplTest {
         subject.onCreate(null, qtn)
 
         verify(qtn).setContentView(R.layout.activity_about)
+    }
+
+    @Test
+    fun itSetsTheVersionNumber() {
+        subject.onCreate(null, qtn)
+
+        verify(versionNumber).setText(BuildConfig.VERSION_NAME)
     }
 
     @Test
