@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
-import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl.Companion.PARAMETER_BLOCK
+import com.jameskbride.codemashcompanion.framework.BaseActivityImpl.Companion.PARAMETER_BLOCK
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
@@ -58,6 +58,13 @@ class SpeakerDetailActivityImplTest {
         subject.onCreate(null, qtn)
 
         verify(qtn).setContentView(R.layout.activity_speaker_detail)
+    }
+
+    @Test
+    fun onCreateSetsTheTitle() {
+        subject.onCreate(null, qtn)
+
+        verify(toolbar).setTitle(R.string.speaker_detail)
     }
 
     @Test

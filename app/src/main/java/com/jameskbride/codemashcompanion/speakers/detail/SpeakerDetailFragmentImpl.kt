@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
+import com.jameskbride.codemashcompanion.framework.BaseActivityImpl.Companion.PARAMETER_BLOCK
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivity
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailParam
 import com.jameskbride.codemashcompanion.utils.IntentFactory
@@ -94,7 +95,7 @@ class SpeakerDetailFragmentImpl @Inject constructor(
 
     private fun navigateToSessionDetail(session: FullSession) {
         val intent = intentFactory.make(qtn.context, SessionDetailActivity::class.java)
-        intent.putExtra(SpeakerDetailActivityImpl.PARAMETER_BLOCK, SessionDetailParam(showSpeakers = false, sessionId = session.Id))
+        intent.putExtra(PARAMETER_BLOCK, SessionDetailParam(showSpeakers = false, sessionId = session.Id))
 
         qtn.startActivity(intent)
     }

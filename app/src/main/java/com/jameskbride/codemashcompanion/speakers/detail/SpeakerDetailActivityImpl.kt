@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.view.MenuItem
 import com.jameskbride.codemashcompanion.R
+import com.jameskbride.codemashcompanion.framework.BaseActivity
+import com.jameskbride.codemashcompanion.framework.BaseActivityImpl
 
-class SpeakerDetailActivityImpl(val speakerPagerAdapterFactory: SpeakerPagerAdapterFactory = SpeakerPagerAdapterFactory()) {
-
+class SpeakerDetailActivityImpl(val speakerPagerAdapterFactory: SpeakerPagerAdapterFactory = SpeakerPagerAdapterFactory())
+    : BaseActivityImpl() {
     lateinit var speakerDetailPagerAdapter: SpeakerPagerAdapter
 
-    fun onCreate(savedInstanceState: Bundle?, qtn: SpeakerDetailActivity) {
+    override fun onCreate(savedInstanceState: Bundle?, qtn: BaseActivity) {
         qtn.setContentView(R.layout.activity_speaker_detail)
+        setTitle(qtn, R.string.speaker_detail)
 
         val speakerDetailParams: SpeakersParams =
                 qtn.intent.getSerializableExtra(PARAMETER_BLOCK) as SpeakersParams
@@ -26,8 +29,10 @@ class SpeakerDetailActivityImpl(val speakerPagerAdapterFactory: SpeakerPagerAdap
 
     }
 
-    companion object {
-        val PARAMETER_BLOCK:String = "PARAMETER_BLOCK"
+    override fun onResume(sessionDetailActivity: BaseActivity) {
+    }
+
+    override fun onPause(sessionDetailActivity: BaseActivity) {
     }
 
     fun onOptionsItemSelected(item: MenuItem?, qtn:SpeakerDetailActivity): Boolean {

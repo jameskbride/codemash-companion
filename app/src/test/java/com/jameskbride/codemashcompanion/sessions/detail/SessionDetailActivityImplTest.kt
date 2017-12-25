@@ -237,7 +237,7 @@ class SessionDetailActivityImplTest {
 
         val extraCaptor = argumentCaptor<SpeakersParams>()
 
-        verify(intent).putExtra(eq(SpeakerDetailActivityImpl.PARAMETER_BLOCK), extraCaptor.capture())
+        verify(intent).putExtra(eq(PARAMETER_BLOCK), extraCaptor.capture())
         val speakerDetailParams = extraCaptor.firstValue
         Assert.assertArrayEquals(speakers, speakerDetailParams.speakers)
         assertEquals(0, speakerDetailParams.index)

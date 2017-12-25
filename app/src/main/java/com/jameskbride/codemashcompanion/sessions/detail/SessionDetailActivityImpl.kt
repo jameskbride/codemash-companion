@@ -125,7 +125,7 @@ class SessionDetailActivityImpl @Inject constructor(
 
     private fun navigateToSpeakerDetail(speakers: Array<FullSpeaker>, index:Int) {
         val intent = intentFactory.make(qtn, SpeakerDetailActivity::class.java)
-        intent.putExtra(SpeakerDetailActivityImpl.PARAMETER_BLOCK, SpeakersParams(speakers, index))
+        intent.putExtra(PARAMETER_BLOCK, SpeakersParams(speakers, index))
 
         qtn.startActivity(intent)
     }
