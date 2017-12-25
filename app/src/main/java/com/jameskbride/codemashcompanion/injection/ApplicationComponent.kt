@@ -4,6 +4,7 @@ import com.jameskbride.codemashcompanion.about.AboutActivity
 import com.jameskbride.codemashcompanion.schedule.ScheduleFragment
 import com.jameskbride.codemashcompanion.application.CodemashCompanionApplication
 import com.jameskbride.codemashcompanion.error.ErrorDialog
+import com.jameskbride.codemashcompanion.framework.BaseActivity
 import com.jameskbride.codemashcompanion.main.MainActivity
 import com.jameskbride.codemashcompanion.sessions.SessionsFragment
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivity
@@ -28,4 +29,5 @@ interface ApplicationComponent {
     fun inject(sessionDetailActivity: SessionDetailActivity)
     fun inject(errorDialog: ErrorDialog)
     fun inject(aboutActivity: AboutActivity)
+    fun inject(baseActivity: BaseActivity)
 }

@@ -11,6 +11,8 @@ import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.data.model.Session
+import com.jameskbride.codemashcompanion.framework.BaseActivity
+import com.jameskbride.codemashcompanion.framework.BaseActivityImpl
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakersParams
@@ -24,7 +26,7 @@ class SessionDetailActivityImpl @Inject constructor(
         val presenter:SessionDetailActivityPresenter,
         val speakerHeadshotFactory: SpeakerHeadshotFactory = SpeakerHeadshotFactory(),
         val intentFactory: IntentFactory = IntentFactory(),
-        val toaster: Toaster = Toaster()) : SessionDetailActivityView {
+        val toaster: Toaster = Toaster()) : SessionDetailActivityView, BaseActivityImpl() {
     private lateinit var qtn: SessionDetailActivity
 
     private lateinit var removeBookmarkFAB: FloatingActionButton
@@ -32,8 +34,8 @@ class SessionDetailActivityImpl @Inject constructor(
 
     private lateinit var sessionDetail: SessionDetailParam
 
-    fun onCreate(savedInstanceState: Bundle?, qtn: SessionDetailActivity) {
-        this.qtn = qtn
+    override fun onCreate(savedInstanceState: Bundle?, qtn: BaseActivity) {
+        this.qtn = qtn as SessionDetailActivity
         presenter.view = this
         qtn.setContentView(R.layout.activity_session_detail)
         removeBookmarkFAB = qtn.findViewById(R.id.remove_bookmark_fab)
@@ -127,13 +129,13 @@ class SessionDetailActivityImpl @Inject constructor(
         toaster.makeText(qtn, message, Toast.LENGTH_SHORT).show()
     }
 
-    fun onOptionsItemSelected(item: MenuItem?, qtn: SessionDetailActivity): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem?, qtn: BaseActivity): Boolean {
         when(item?.itemId) {
             android.R.id.home ->  {
                 qtn.onBackPressed()
                 return true
             }
-            else -> return qtn.callSuperOnOptionsItemSelected(item)
+            else -> return (qtn as SessionDetailActivity).callSuperOnOptionsItemSelected(item)
         }
     }
 
@@ -144,17 +146,12 @@ class SessionDetailActivityImpl @Inject constructor(
         qtn.startActivity(intent)
     }
 
-    companion object {
-
-        val PARAMETER_BLOCK:String = "PARAMETER_BLOCK"
-    }
-
-    fun onResume(sessionDetailActivity: SessionDetailActivity) {
+    override fun onResume(sessionDetailActivity: BaseActivity) {
         presenter.open()
         presenter.retrieveSession(sessionId = sessionDetail.sessionId)
     }
 
-    fun onPause(sessionDetailActivity: SessionDetailActivity) {
+    override fun onPause(sessionDetailActivity: BaseActivity) {
         presenter.close()
     }
 }

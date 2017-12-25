@@ -15,6 +15,7 @@ import android.widget.Toast
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
+import com.jameskbride.codemashcompanion.framework.BaseActivityImpl.Companion.PARAMETER_BLOCK
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivity
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityImpl
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailParam
@@ -291,7 +292,7 @@ class SpeakerDetailFragmentImplTest {
         onClickCaptor.firstValue.onClick(null)
 
         val extraCaptor = argumentCaptor<SessionDetailParam>()
-        verify(intent, atLeastOnce()).putExtra(eq(SessionDetailActivityImpl.PARAMETER_BLOCK), extraCaptor.capture())
+        verify(intent, atLeastOnce()).putExtra(eq(PARAMETER_BLOCK), extraCaptor.capture())
         val sessionDetailParam = extraCaptor.firstValue
         assertEquals(sessions[0].Id, sessionDetailParam.sessionId)
         assertFalse(sessionDetailParam.showSpeakers)

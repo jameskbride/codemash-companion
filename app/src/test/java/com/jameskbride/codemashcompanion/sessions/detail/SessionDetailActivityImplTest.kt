@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.*
+import com.jameskbride.codemashcompanion.framework.BaseActivityImpl.Companion.PARAMETER_BLOCK
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakersParams
@@ -77,7 +78,7 @@ class SessionDetailActivityImplTest {
         whenever(qtn.findViewById<FloatingActionButton>(R.id.add_bookmark_fab)).thenReturn(addBookmarkFAB)
         whenever(qtn.findViewById<FloatingActionButton>(R.id.remove_bookmark_fab)).thenReturn(removeBookmarkFAB)
         whenever(qtn.intent).thenReturn(intent)
-        whenever(intent.getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
+        whenever(intent.getSerializableExtra(PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
     }
 
     @Test
@@ -92,7 +93,7 @@ class SessionDetailActivityImplTest {
         subject.onCreate(null, qtn)
 
         verify(qtn).getIntent()
-        verify(intent).getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)
+        verify(intent).getSerializableExtra(PARAMETER_BLOCK)
     }
 
     @Test
@@ -131,7 +132,7 @@ class SessionDetailActivityImplTest {
     @Test
     fun configureForSessionDoesNotRequestSpeakersWhenShowSpeakersIsFalse() {
         buildSessionDetailParam(buildDefaultFullSession(), false)
-        whenever(intent.getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
+        whenever(intent.getSerializableExtra(PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
         subject.onCreate(null, qtn)
 
         subject.configureForSession(fullSession)
@@ -148,7 +149,7 @@ class SessionDetailActivityImplTest {
         )
 
         buildSessionDetailParam(fullSession)
-        whenever(intent.getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
+        whenever(intent.getSerializableExtra(PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
 
         subject.onCreate(null, qtn)
 
@@ -286,7 +287,7 @@ class SessionDetailActivityImplTest {
 
     private fun initSessionDetailActivity() {
         buildSessionDetailParam(fullSession)
-        whenever(intent.getSerializableExtra(SessionDetailActivityImpl.PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
+        whenever(intent.getSerializableExtra(PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
         subject.onCreate(null, qtn)
     }
 

@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
+import com.jameskbride.codemashcompanion.framework.BaseActivityImpl.Companion.PARAMETER_BLOCK
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivity
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityImpl
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailParam
@@ -168,7 +169,7 @@ class SessionsFragmentImplTest {
 
         val extraCaptor = argumentCaptor<SessionDetailParam>()
 
-        verify(intent).putExtra(eq(SessionDetailActivityImpl.PARAMETER_BLOCK), extraCaptor.capture())
+        verify(intent).putExtra(eq(PARAMETER_BLOCK), extraCaptor.capture())
         val speakerDetailParams = extraCaptor.firstValue
         assertEquals(session.Id, speakerDetailParams.sessionId)
 
