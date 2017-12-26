@@ -42,4 +42,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.</string>
     <string name="license">License</string>
     <string name="version_label">Version:</string>
+    <string name="map">Map</string>
 </resources>

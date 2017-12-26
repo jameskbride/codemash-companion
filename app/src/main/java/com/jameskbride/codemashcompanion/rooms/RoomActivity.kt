@@ -1,17 +1,18 @@
 package com.jameskbride.codemashcompanion.rooms
 
 import android.os.Bundle
+import com.jameskbride.codemashcompanion.application.CodemashCompanionApplication
 import com.jameskbride.codemashcompanion.framework.BaseActivity
-import com.jameskbride.codemashcompanion.framework.BaseActivityImpl
+import javax.inject.Inject
 
-class RoomActivity: BaseActivityImpl() {
-    override fun onCreate(savedInstanceState: Bundle?, qtn: BaseActivity) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+class RoomActivity: BaseActivity() {
 
-    override fun onResume(sessionDetailActivity: BaseActivity) {
-    }
+    @Inject
+    override lateinit var impl: RoomActivityImpl
 
-    override fun onPause(sessionDetailActivity: BaseActivity) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        CodemashCompanionApplication.applicationComponent.inject(this)
+        impl.onCreate(savedInstanceState, this)
     }
 }

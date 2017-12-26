@@ -12,6 +12,7 @@ import com.jameskbride.codemashcompanion.error.ErrorDialogPresenter
 import com.jameskbride.codemashcompanion.main.MainActivityImpl
 import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.service.CodemashService
+import com.jameskbride.codemashcompanion.rooms.RoomActivityImpl
 import com.jameskbride.codemashcompanion.schedule.ScheduledSessionsRetriever
 import com.jameskbride.codemashcompanion.schedule.list.ScheduleViewAdapterFactory
 import com.jameskbride.codemashcompanion.sessions.*
@@ -262,4 +263,8 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
         return AboutActivityImpl()
     }
 
+    @Provides
+    fun makeRoomActivityImpl():RoomActivityImpl {
+        return RoomActivityImpl()
+    }
 }

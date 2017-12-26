@@ -41,6 +41,11 @@
             android:label="@string/action_about"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".rooms.RoomActivity"
+            android:label="@string/map"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
