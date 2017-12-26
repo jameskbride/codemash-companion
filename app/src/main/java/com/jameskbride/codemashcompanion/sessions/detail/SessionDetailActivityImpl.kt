@@ -13,6 +13,8 @@ import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.data.model.Session
 import com.jameskbride.codemashcompanion.framework.BaseActivity
 import com.jameskbride.codemashcompanion.framework.BaseActivityImpl
+import com.jameskbride.codemashcompanion.rooms.RoomActivity
+import com.jameskbride.codemashcompanion.rooms.RoomParams
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakersParams
 import com.jameskbride.codemashcompanion.utils.IntentFactory
@@ -62,9 +64,9 @@ class SessionDetailActivityImpl @Inject constructor(
     }
 
     override fun navigateToMap(mapId: Int) {
-        //        val intent = intentFactory.make(qtn, RoomActivity::class.java)
-//        intent.putExtra(PARAMETER_BLOCK, RoomParams(rooms = conferenceRooms))
-//        qtn.startActivity(intent)
+        val intent = intentFactory.make(qtn, RoomActivity::class.java)
+        intent.putExtra(PARAMETER_BLOCK, RoomParams(room = mapId))
+        qtn.startActivity(intent)
     }
 
     private fun configureSessionDetails(session: FullSession) {

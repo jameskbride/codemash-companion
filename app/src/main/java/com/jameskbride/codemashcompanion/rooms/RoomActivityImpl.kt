@@ -1,8 +1,8 @@
 package com.jameskbride.codemashcompanion.rooms
 
 import android.os.Bundle
+import android.widget.ImageView
 import com.jameskbride.codemashcompanion.R
-import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
 import com.jameskbride.codemashcompanion.framework.BaseActivity
 import com.jameskbride.codemashcompanion.framework.BaseActivityImpl
 import java.io.Serializable
@@ -13,6 +13,8 @@ class RoomActivityImpl @Inject constructor(): BaseActivityImpl() {
         qtn.setContentView(R.layout.activity_room)
         configureActionBar(qtn)
         setTitle(qtn, R.string.map)
+        val roomParams = qtn.intent.getSerializableExtra(PARAMETER_BLOCK) as RoomParams
+        qtn.findViewById<ImageView>(R.id.map_view).setImageResource(roomParams.room)
     }
 
     override fun onResume(sessionDetailActivity: BaseActivity) {
@@ -22,4 +24,4 @@ class RoomActivityImpl @Inject constructor(): BaseActivityImpl() {
     }
 }
 
-class RoomParams(val rooms:List<ConferenceRoom> = listOf()): Serializable
+class RoomParams(val room: Int): Serializable

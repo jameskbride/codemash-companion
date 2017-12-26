@@ -261,11 +261,20 @@ class SessionDetailActivityImplTest {
         onClickCaptor.firstValue.onClick(null)
 
         verify(presenter).navigateToMap(fullSession.conferenceRooms)
-        //TODO Move this into a method called by the presenter
-//        val roomParamsCaptor = argumentCaptor<RoomParams>()
-//        verify(intent).putExtra(eq(PARAMETER_BLOCK), roomParamsCaptor.capture())
-//        assertTrue(roomParamsCaptor.firstValue.rooms.containsAll(fullSession.conferenceRooms))
-//        verify(qtn).startActivity(intent)
+    }
+
+    @Test
+    fun onNavigateToMapItPassesTheMapIdToTheRoomsActivity() {
+        subject.onCreate(null, qtn)
+        subject.configureForSession(fullSession)
+
+        whenever(intentFactory.make(qtn, RoomActivity::class.java)).thenReturn(intent)
+        subject.navigateToMap(R.drawable.full)
+
+        val roomParamsCaptor = argumentCaptor<RoomParams>()
+        verify(intent).putExtra(eq(PARAMETER_BLOCK), roomParamsCaptor.capture())
+        assertEquals(R.drawable.full, roomParamsCaptor.firstValue.room)
+        verify(qtn).startActivity(intent)
     }
 
     @Test
