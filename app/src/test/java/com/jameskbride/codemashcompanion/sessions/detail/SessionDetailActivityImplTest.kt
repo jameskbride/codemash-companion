@@ -260,10 +260,12 @@ class SessionDetailActivityImplTest {
         verify(roomsBlock).setOnClickListener(onClickCaptor.capture())
         onClickCaptor.firstValue.onClick(null)
 
-        val roomParamsCaptor = argumentCaptor<RoomParams>()
-        verify(intent).putExtra(eq(PARAMETER_BLOCK), roomParamsCaptor.capture())
-        assertTrue(roomParamsCaptor.firstValue.rooms.containsAll(fullSession.conferenceRooms))
-        verify(qtn).startActivity(intent)
+        verify(presenter).navigateToMap(fullSession.conferenceRooms)
+        //TODO Move this into a method called by the presenter
+//        val roomParamsCaptor = argumentCaptor<RoomParams>()
+//        verify(intent).putExtra(eq(PARAMETER_BLOCK), roomParamsCaptor.capture())
+//        assertTrue(roomParamsCaptor.firstValue.rooms.containsAll(fullSession.conferenceRooms))
+//        verify(qtn).startActivity(intent)
     }
 
     @Test

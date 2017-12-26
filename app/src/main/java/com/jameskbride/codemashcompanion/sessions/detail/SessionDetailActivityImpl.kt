@@ -64,9 +64,10 @@ class SessionDetailActivityImpl @Inject constructor(
     }
 
     private fun navigateToRooms(conferenceRooms: List<ConferenceRoom>) {
-        val intent = intentFactory.make(qtn, RoomActivity::class.java)
-        intent.putExtra(PARAMETER_BLOCK, RoomParams(rooms = conferenceRooms))
-        qtn.startActivity(intent)
+        presenter.navigateToMap(conferenceRooms)
+//        val intent = intentFactory.make(qtn, RoomActivity::class.java)
+//        intent.putExtra(PARAMETER_BLOCK, RoomParams(rooms = conferenceRooms))
+//        qtn.startActivity(intent)
     }
 
     private fun configureSessionDetails(session: FullSession) {

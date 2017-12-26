@@ -5,6 +5,7 @@ import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.bus.BusAware
 import com.jameskbride.codemashcompanion.bus.SessionUpdatedEvent
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
+import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import io.reactivex.Scheduler
@@ -61,6 +62,10 @@ class SessionDetailActivityPresenter @Inject constructor(
         }.subscribeOn(processScheduler)
                 .observeOn(androidScheduler)
                 .subscribe { result ->  }
+    }
+
+    fun navigateToMap(conferenceRooms: List<ConferenceRoom>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
 
