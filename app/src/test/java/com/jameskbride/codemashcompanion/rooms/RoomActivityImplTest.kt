@@ -5,6 +5,7 @@ import android.support.annotation.DrawableRes
 import android.support.v7.app.ActionBar
 import android.support.v7.widget.Toolbar
 import android.widget.ImageView
+import com.github.chrisbanes.photoview.PhotoView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.error.PARAMETER_BLOCK
 import com.nhaarman.mockito_kotlin.verify
@@ -20,7 +21,7 @@ class RoomActivityImplTest {
     @Mock private lateinit var toolbar:Toolbar
     @Mock private lateinit var actionBar:ActionBar
     @Mock private lateinit var intent:Intent
-    @Mock private lateinit var mapView:ImageView
+    @Mock private lateinit var mapView:PhotoView
 
     private lateinit var subject:RoomActivityImpl
 

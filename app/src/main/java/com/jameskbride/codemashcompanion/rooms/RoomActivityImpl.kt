@@ -1,7 +1,7 @@
 package com.jameskbride.codemashcompanion.rooms
 
 import android.os.Bundle
-import android.widget.ImageView
+import com.github.chrisbanes.photoview.PhotoView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.framework.BaseActivity
 import com.jameskbride.codemashcompanion.framework.BaseActivityImpl
@@ -14,7 +14,7 @@ class RoomActivityImpl @Inject constructor(): BaseActivityImpl() {
         configureActionBar(qtn)
         setTitle(qtn, R.string.map)
         val roomParams = qtn.intent.getSerializableExtra(PARAMETER_BLOCK) as RoomParams
-        qtn.findViewById<ImageView>(R.id.map_view).setImageResource(roomParams.room)
+        qtn.findViewById<PhotoView>(R.id.map_view).setImageResource(roomParams.room)
     }
 
     override fun onResume(sessionDetailActivity: BaseActivity) {
