@@ -7,11 +7,14 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.jameskbride.codemashcompanion.R
+import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.data.model.Session
 import com.jameskbride.codemashcompanion.framework.BaseActivity
 import com.jameskbride.codemashcompanion.framework.BaseActivityImpl
+import com.jameskbride.codemashcompanion.rooms.RoomActivity
+import com.jameskbride.codemashcompanion.rooms.RoomParams
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakersParams
@@ -47,9 +50,24 @@ class SessionDetailActivityImpl @Inject constructor(
 
     override fun configureForSession(session: FullSession) {
         configureSessionDetails(session)
+        configureRooms(session)
         configureTimes(session)
         configureBookmarkFAB(session)
         configureSpeakersBlock(session.Id, sessionDetail.showSpeakers)
+    }
+
+    private fun configureRooms(session: FullSession) {
+        qtn.findViewById<TextView>(R.id.session_rooms).text =
+                session.conferenceRooms.map { it.name }.joinToString(", ")
+        qtn.findViewById<LinearLayout>(R.id.rooms_block).setOnClickListener { view: View? ->
+            navigateToRooms(session.conferenceRooms)
+        }
+    }
+
+    private fun navigateToRooms(conferenceRooms: List<ConferenceRoom>) {
+        val intent = intentFactory.make(qtn, RoomActivity::class.java)
+        intent.putExtra(PARAMETER_BLOCK, RoomParams(rooms = conferenceRooms))
+        qtn.startActivity(intent)
     }
 
     private fun configureSessionDetails(session: FullSession) {
@@ -57,8 +75,6 @@ class SessionDetailActivityImpl @Inject constructor(
         qtn.findViewById<TextView>(R.id.session_abstract).text = session.Abstract
         qtn.findViewById<TextView>(R.id.session_category).text = session.Category
         qtn.findViewById<TextView>(R.id.session_type).text = session.SessionType
-        qtn.findViewById<TextView>(R.id.session_rooms).text =
-                session.conferenceRooms.map { it.name }.joinToString(", ")
         qtn.findViewById<TextView>(R.id.session_tags).text =
                 session.tags.map { it.name }.joinToString(", ")
     }

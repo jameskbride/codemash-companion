@@ -13,6 +13,8 @@ import android.widget.Toast
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.*
 import com.jameskbride.codemashcompanion.framework.BaseActivityImpl.Companion.PARAMETER_BLOCK
+import com.jameskbride.codemashcompanion.rooms.RoomActivity
+import com.jameskbride.codemashcompanion.rooms.RoomParams
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakersParams
@@ -49,6 +51,8 @@ class SessionDetailActivityImplTest {
     @Mock private lateinit var speakerHeadshotFactory:SpeakerHeadshotFactory
     @Mock private lateinit var intentFactory:IntentFactory
     @Mock private lateinit var toaster:Toaster
+    @Mock private lateinit var speakerHeadshot:SpeakerHeadshot
+    @Mock private lateinit var roomsBlock:LinearLayout
 
     private lateinit var subject: SessionDetailActivityImpl
 
@@ -77,8 +81,11 @@ class SessionDetailActivityImplTest {
         whenever(qtn.findViewById<Toolbar>(R.id.toolbar)).thenReturn(toolbar)
         whenever(qtn.findViewById<FloatingActionButton>(R.id.add_bookmark_fab)).thenReturn(addBookmarkFAB)
         whenever(qtn.findViewById<FloatingActionButton>(R.id.remove_bookmark_fab)).thenReturn(removeBookmarkFAB)
+        whenever(qtn.findViewById<LinearLayout>(R.id.rooms_block)).thenReturn(roomsBlock)
         whenever(qtn.intent).thenReturn(intent)
         whenever(intent.getSerializableExtra(PARAMETER_BLOCK)).thenReturn(sessionDetailParam)
+
+        whenever(speakerHeadshotFactory.make(any(), eq(qtn))).thenReturn(speakerHeadshot)
     }
 
     @Test
@@ -205,8 +212,6 @@ class SessionDetailActivityImplTest {
     @Test
     fun itDisplaysAllSpeakersForTheSession() {
         val speakers = arrayOf(FullSpeaker(), FullSpeaker())
-        val speakerHeadshot:SpeakerHeadshot = mock()
-        whenever(speakerHeadshotFactory.make(any(), eq(qtn))).thenReturn(speakerHeadshot)
 
         subject.onCreate(null, qtn)
         subject.displaySpeakers(speakers)
@@ -241,6 +246,24 @@ class SessionDetailActivityImplTest {
         val speakerDetailParams = extraCaptor.firstValue
         Assert.assertArrayEquals(speakers, speakerDetailParams.speakers)
         assertEquals(0, speakerDetailParams.index)
+    }
+
+    @Test
+    fun onClickOfRoomsNavigatesToTheRoomsView() {
+        subject.onCreate(null, qtn)
+        subject.configureForSession(fullSession)
+
+        val intent = mock<Intent>()
+        whenever(intentFactory.make(qtn, RoomActivity::class.java)).thenReturn(intent)
+
+        val onClickCaptor = argumentCaptor<View.OnClickListener>()
+        verify(roomsBlock).setOnClickListener(onClickCaptor.capture())
+        onClickCaptor.firstValue.onClick(null)
+
+        val roomParamsCaptor = argumentCaptor<RoomParams>()
+        verify(intent).putExtra(eq(PARAMETER_BLOCK), roomParamsCaptor.capture())
+        assertTrue(roomParamsCaptor.firstValue.rooms.containsAll(fullSession.conferenceRooms))
+        verify(qtn).startActivity(intent)
     }
 
     @Test
