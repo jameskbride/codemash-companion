@@ -198,7 +198,7 @@
         android:layout_marginRight="10dp"
         app:fabSize="normal"
         app:elevation="6dp"
-        app:rippleColor="@color/colorAccent"
+        app:rippleColor="@color/codemash_green"
         />
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/remove_bookmark_fab"
@@ -213,6 +213,6 @@
         android:visibility="gone"
         app:fabSize="normal"
         app:elevation="6dp"
-        app:rippleColor="@color/colorAccent"
+        app:rippleColor="@color/codemash_green"
         />
 </android.support.design.widget.CoordinatorLayout>
