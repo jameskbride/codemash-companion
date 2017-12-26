@@ -82,6 +82,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/rooms"
+                        android:textStyle="bold"
                         android:textColor="@color/codemash_orange" />
 
                     <TextView
@@ -89,6 +90,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textStyle="bold"
                         android:gravity="end"
                         android:textColor="@color/codemash_orange" />
                 </LinearLayout>
