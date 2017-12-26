@@ -61,6 +61,13 @@ class AboutActivityImplTest {
     }
 
     @Test
+    fun onCreateSetsTheTitle() {
+        subject.onCreate(null, qtn)
+
+        verify(toolbar).setTitle(R.string.action_about)
+    }
+
+    @Test
     fun itSetsTheVersionNumber() {
         subject.onCreate(null, qtn)
 
