@@ -6,8 +6,9 @@ import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
 import com.jameskbride.codemashcompanion.framework.BaseActivity
 import com.jameskbride.codemashcompanion.framework.BaseActivityImpl
 import java.io.Serializable
+import javax.inject.Inject
 
-class RoomActivityImpl: BaseActivityImpl() {
+class RoomActivityImpl @Inject constructor(): BaseActivityImpl() {
     override fun onCreate(savedInstanceState: Bundle?, qtn: BaseActivity) {
         qtn.setContentView(R.layout.activity_room)
         configureActionBar(qtn)

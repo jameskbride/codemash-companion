@@ -6,6 +6,7 @@ import com.jameskbride.codemashcompanion.application.CodemashCompanionApplicatio
 import com.jameskbride.codemashcompanion.error.ErrorDialog
 import com.jameskbride.codemashcompanion.framework.BaseActivity
 import com.jameskbride.codemashcompanion.main.MainActivity
+import com.jameskbride.codemashcompanion.rooms.RoomActivity
 import com.jameskbride.codemashcompanion.sessions.SessionsFragment
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivity
 import com.jameskbride.codemashcompanion.speakers.SpeakersFragment
@@ -30,4 +31,5 @@ interface ApplicationComponent {
     fun inject(errorDialog: ErrorDialog)
     fun inject(aboutActivity: AboutActivity)
     fun inject(baseActivity: BaseActivity)
+    fun inject(roomActivity: RoomActivity)
 }
