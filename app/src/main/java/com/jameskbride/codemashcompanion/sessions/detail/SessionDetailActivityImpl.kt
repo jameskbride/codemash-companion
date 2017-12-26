@@ -13,8 +13,6 @@ import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.data.model.Session
 import com.jameskbride.codemashcompanion.framework.BaseActivity
 import com.jameskbride.codemashcompanion.framework.BaseActivityImpl
-import com.jameskbride.codemashcompanion.rooms.RoomActivity
-import com.jameskbride.codemashcompanion.rooms.RoomParams
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakersParams
 import com.jameskbride.codemashcompanion.utils.IntentFactory
@@ -31,8 +29,8 @@ class SessionDetailActivityImpl @Inject constructor(
     private lateinit var qtn: SessionDetailActivity
 
     private lateinit var removeBookmarkFAB: FloatingActionButton
-    private lateinit var addBookmarkFAB: FloatingActionButton
 
+    private lateinit var addBookmarkFAB: FloatingActionButton
     private lateinit var sessionDetail: SessionDetailParam
 
     override fun onCreate(savedInstanceState: Bundle?, qtn: BaseActivity) {
@@ -59,13 +57,12 @@ class SessionDetailActivityImpl @Inject constructor(
         qtn.findViewById<TextView>(R.id.session_rooms).text =
                 session.conferenceRooms.map { it.name }.joinToString(", ")
         qtn.findViewById<LinearLayout>(R.id.rooms_block).setOnClickListener { view: View? ->
-            navigateToRooms(session.conferenceRooms)
+            presenter.navigateToMap(session.conferenceRooms)
         }
     }
 
-    private fun navigateToRooms(conferenceRooms: List<ConferenceRoom>) {
-        presenter.navigateToMap(conferenceRooms)
-//        val intent = intentFactory.make(qtn, RoomActivity::class.java)
+    override fun navigateToMap(mapId: Int) {
+        //        val intent = intentFactory.make(qtn, RoomActivity::class.java)
 //        intent.putExtra(PARAMETER_BLOCK, RoomParams(rooms = conferenceRooms))
 //        qtn.startActivity(intent)
     }

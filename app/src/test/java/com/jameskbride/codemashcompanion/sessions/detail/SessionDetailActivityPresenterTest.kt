@@ -3,10 +3,8 @@ package com.jameskbride.codemashcompanion.sessions.detail
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.bus.SessionUpdatedEvent
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
-import com.jameskbride.codemashcompanion.data.model.Bookmark
-import com.jameskbride.codemashcompanion.data.model.FullSession
-import com.jameskbride.codemashcompanion.data.model.FullSpeaker
-import com.jameskbride.codemashcompanion.data.model.SessionSpeaker
+import com.jameskbride.codemashcompanion.data.model.*
+import com.jameskbride.codemashcompanion.rooms.MapFinder
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.verify
@@ -27,6 +25,8 @@ class SessionDetailActivityPresenterTest {
 
     @Mock private lateinit var conferenceRepository:ConferenceRepository
     @Mock private lateinit var view:SessionDetailActivityView
+    @Mock private lateinit var mapFinder:MapFinder
+
     private lateinit var subject: SessionDetailActivityPresenter
 
     private lateinit var testScheduler:TestScheduler
@@ -37,7 +37,7 @@ class SessionDetailActivityPresenterTest {
         initMocks(this)
         testScheduler = TestScheduler()
         eventBus = EventBus.getDefault()
-        subject = SessionDetailActivityPresenter(conferenceRepository, testScheduler, testScheduler, eventBus)
+        subject = SessionDetailActivityPresenter(conferenceRepository, testScheduler, testScheduler, eventBus, mapFinder)
         subject.open()
         subject.view = view
     }
@@ -114,5 +114,16 @@ class SessionDetailActivityPresenterTest {
 
         verify(conferenceRepository).getSessions(any())
         verify(view).configureForSession(fullSession)
+    }
+
+    @Test
+    fun onNavigateToMapItTellsTheViewWhatMapToDisplay() {
+        val conferenceRooms = listOf<ConferenceRoom>()
+        whenever(mapFinder.findMap(conferenceRooms)).thenReturn(R.drawable.indigo_bay)
+
+        subject.navigateToMap(conferenceRooms)
+
+        verify(mapFinder).findMap(conferenceRooms)
+        verify(view).navigateToMap(R.drawable.indigo_bay)
     }
 }
