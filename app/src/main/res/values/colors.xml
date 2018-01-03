@@ -5,5 +5,5 @@
     <color name="codemash_blue">#0c84a9</color>
     <color name="colorPrimary">@color/codemash_orange</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#ffffff</color>
 </resources>
