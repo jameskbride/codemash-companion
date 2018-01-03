@@ -11,6 +11,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.about.AboutActivity
+import com.jameskbride.codemashcompanion.codeofconduct.CodeOfConductActivity
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.nhaarman.mockito_kotlin.*
 import org.junit.Assert.assertNotNull
@@ -145,6 +146,19 @@ class MainActivityImplTest {
         subject.onCreate(null, mainActivity)
 
         whenever(intentFactory.make(mainActivity, AboutActivity::class.java)).thenReturn(intent)
+
+        val result = subject.onOptionsItemSelected(menuItem, mainActivity)
+
+        assertTrue(result)
+        verify(mainActivity).startActivity(intent)
+    }
+
+    @Test
+    fun onOptionsItemSelectedNavigatesToCodeOfConduct() {
+        whenever(menuItem.itemId).thenReturn(R.id.action_code_of_conduct)
+        subject.onCreate(null, mainActivity)
+
+        whenever(intentFactory.make(mainActivity, CodeOfConductActivity::class.java)).thenReturn(intent)
 
         val result = subject.onOptionsItemSelected(menuItem, mainActivity)
 

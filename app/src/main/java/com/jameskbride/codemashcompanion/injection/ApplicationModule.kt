@@ -4,6 +4,7 @@ import android.arch.persistence.room.Room
 import com.jameskbride.codemashcompanion.BuildConfig
 import com.jameskbride.codemashcompanion.about.AboutActivityImpl
 import com.jameskbride.codemashcompanion.application.CodemashCompanionApplication
+import com.jameskbride.codemashcompanion.codeofconduct.CodeOfConductActivityImpl
 import com.jameskbride.codemashcompanion.data.ConferenceDao
 import com.jameskbride.codemashcompanion.data.ConferenceDatabase
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
@@ -266,5 +267,10 @@ open class ApplicationModule(private val codemashCompanionApplication: CodemashC
     @Provides
     fun makeRoomActivityImpl():RoomActivityImpl {
         return RoomActivityImpl()
+    }
+
+    @Provides
+    fun makeCodeOfConductActivityImpl(): CodeOfConductActivityImpl {
+        return CodeOfConductActivityImpl()
     }
 }

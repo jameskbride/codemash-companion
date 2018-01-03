@@ -8,6 +8,9 @@ import android.view.Menu
 import android.view.MenuItem
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.about.AboutActivity
+import com.jameskbride.codemashcompanion.codeofconduct.CodeOfConductActivity
+import com.jameskbride.codemashcompanion.codeofconduct.CodeOfConductActivityImpl
+import com.jameskbride.codemashcompanion.framework.BaseActivity
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 
 
@@ -46,8 +49,17 @@ class MainActivityImpl constructor(val intentFactory: IntentFactory = IntentFact
                 navigateToAbout()
                 true
             }
+            R.id.action_code_of_conduct -> {
+                navigateToCodeOfConduct()
+                return true
+            }
             else -> mainActivity.onSuperOptionsItemSelected(item)
         }
+    }
+
+    private fun navigateToCodeOfConduct() {
+        val intent = intentFactory.make(mainActivity, CodeOfConductActivity::class.java)
+        mainActivity.startActivity(intent)
     }
 
     private fun navigateToAbout() {
