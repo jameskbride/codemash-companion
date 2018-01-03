@@ -21,6 +21,12 @@ android {
         versionCode 4
         versionName "1.2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation":
+                                     "$projectDir/schemas".toString()]
+            }
+        }
     }
     signingConfigs {
         release {
@@ -49,6 +55,10 @@ android {
             buildConfigField "String", "BASE_URL", '"https://speakers.codemash.org/"'
             buildConfigField "String", "BASE_URL", '"https://speakers.codemash.org/"'
         }
+    }
+    sourceSets {
+        androidTest.assets.srcDirs +=
+                files("$projectDir/schemas".toString())
     }
 }
 
