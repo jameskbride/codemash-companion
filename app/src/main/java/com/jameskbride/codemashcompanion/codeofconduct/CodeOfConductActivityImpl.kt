@@ -6,10 +6,13 @@ import android.webkit.WebViewClient
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.framework.BaseActivity
 import com.jameskbride.codemashcompanion.framework.BaseActivityImpl
+import com.jameskbride.codemashcompanion.framework.DefaultToolbar
 
-class CodeOfConductActivityImpl: BaseActivityImpl() {
+class CodeOfConductActivityImpl(defaultToolbar: DefaultToolbar = DefaultToolbar()) : BaseActivityImpl(defaultToolbar) {
     override fun onCreate(savedInstanceState: Bundle?, qtn: BaseActivity) {
         qtn.setContentView(R.layout.activity_code_of_conduct)
+        defaultToolbar.configureActionBar(qtn)
+        defaultToolbar.setTitle(qtn, R.string.code_of_conduct)
 
         val webView = qtn.findViewById<WebView>(R.id.code_of_conduct_webview)
         val webSettings = webView.settings

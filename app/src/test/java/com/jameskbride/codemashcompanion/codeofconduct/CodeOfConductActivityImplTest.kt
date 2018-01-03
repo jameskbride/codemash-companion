@@ -5,6 +5,7 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.jameskbride.codemashcompanion.R
+import com.jameskbride.codemashcompanion.framework.DefaultToolbar
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -20,6 +21,7 @@ class CodeOfConductActivityImplTest {
     @Mock private lateinit var codeOfConductWebView:WebView
     @Mock private lateinit var webSettings:WebSettings
     @Mock private lateinit var resources:Resources
+    @Mock private lateinit var defaultToolbar:DefaultToolbar
 
     private lateinit var subject:CodeOfConductActivityImpl
 
@@ -27,7 +29,7 @@ class CodeOfConductActivityImplTest {
     fun setUp() {
         initMocks(this)
 
-        subject = CodeOfConductActivityImpl()
+        subject = CodeOfConductActivityImpl(defaultToolbar)
 
         whenever(qtn.findViewById<WebView>(R.id.code_of_conduct_webview)).thenReturn(codeOfConductWebView)
         whenever(codeOfConductWebView.settings).thenReturn(webSettings)
@@ -54,5 +56,13 @@ class CodeOfConductActivityImplTest {
         verify(codeOfConductWebView).setWebViewClient(argumentCaptor.capture())
 
         assertFalse(argumentCaptor.firstValue.shouldOverrideUrlLoading(null, ""))
+    }
+
+    @Test
+    fun onCreateConfiguresTheToolbar() {
+        subject.onCreate(null, qtn)
+
+        verify(defaultToolbar).setTitle(qtn, R.string.code_of_conduct)
+        verify(defaultToolbar).configureActionBar(qtn)
     }
 }

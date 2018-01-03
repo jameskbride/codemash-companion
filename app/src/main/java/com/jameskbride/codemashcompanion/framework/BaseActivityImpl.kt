@@ -5,7 +5,7 @@ import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import com.jameskbride.codemashcompanion.R
 
-open abstract class BaseActivityImpl {
+open abstract class BaseActivityImpl constructor(val defaultToolbar: DefaultToolbar = DefaultToolbar()) {
     abstract fun onCreate(savedInstanceState: Bundle?, qtn: BaseActivity)
 
     fun onOptionsItemSelected(item: MenuItem?, qtn: BaseActivity): Boolean {
@@ -23,15 +23,26 @@ open abstract class BaseActivityImpl {
     abstract fun onPause(sessionDetailActivity: BaseActivity)
 
     fun configureActionBar(qtn: BaseActivity) {
-        qtn.setSupportActionBar(qtn.findViewById(R.id.toolbar))
-        qtn.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        defaultToolbar.configureActionBar(qtn)
     }
 
-    protected fun setTitle(qtn: BaseActivity, title: Int) {
-        qtn.findViewById<Toolbar>(R.id.toolbar).setTitle(title)
+    fun setTitle(qtn: BaseActivity, title: Int) {
+        defaultToolbar.setTitle(qtn, title)
     }
 
     companion object {
         val PARAMETER_BLOCK: String = "PARAMETER_BLOCK"
+    }
+}
+
+class DefaultToolbar {
+
+    fun configureActionBar(qtn: BaseActivity) {
+        qtn.setSupportActionBar(qtn.findViewById(R.id.toolbar))
+        qtn.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    fun setTitle(qtn: BaseActivity, title: Int) {
+        qtn.findViewById<Toolbar>(R.id.toolbar).setTitle(title)
     }
 }
