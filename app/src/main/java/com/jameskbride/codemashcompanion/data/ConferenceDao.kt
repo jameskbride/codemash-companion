@@ -28,11 +28,11 @@ interface ConferenceDao {
     fun insertAll(arrayOfSessionSpeakers: Array<SessionSpeaker>)
 
     @Transaction
-    @Query("SELECT * FROM Speaker ORDER BY first_name IS NULL")
+    @Query("SELECT * FROM Speaker ORDER BY first_name IS NULL, LOWER(last_name)")
     fun getSpeakers(): Maybe<Array<FullSpeaker>>
 
     @Transaction
-    @Query("SELECT * FROM Speaker WHERE id IN (:ids) ORDER BY first_name")
+    @Query("SELECT * FROM Speaker WHERE id IN (:ids) ORDER BY first_name, LOWER(last_name)")
     fun getSpeakers(ids:Array<String>): Maybe<Array<FullSpeaker>>
 
     @Transaction
