@@ -42,6 +42,11 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
+            android:name=".codeofconduct.CodeOfConductActivity"
+            android:label="@string/action_code_of_conduct"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name=".rooms.RoomActivity"
             android:label="@string/map"
             android:theme="@style/AppTheme.NoActionBar">
