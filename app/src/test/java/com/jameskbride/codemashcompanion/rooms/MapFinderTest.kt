@@ -261,6 +261,14 @@ class MapFinderTest {
     }
 
     @Test
+    fun itCanFindIronwoodOpenSpacez() {
+        val name = "Ironwood - Open Spacez"
+        val room = buildOneRoomList(name)
+
+        assertEquals(R.drawable.ironwood, subject.findMap(room))
+    }
+
+    @Test
     fun itCanFindRosewood() {
         val name = "Rosewood"
         val room = buildOneRoomList(name)

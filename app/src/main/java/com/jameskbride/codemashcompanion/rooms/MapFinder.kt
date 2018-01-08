@@ -33,6 +33,7 @@ class MapFinder {
             Pair("Acacia - Sessionz", R.drawable.acacia),
             Pair("Crown Palm", R.drawable.crown_palm),
             Pair("Ironwood", R.drawable.ironwood),
+            Pair("Ironwood - Open Spacez", R.drawable.ironwood),
             Pair("Banyan", R.drawable.banyan),
             Pair("Banyan Hut", R.drawable.banyan),
             Pair("Portia", R.drawable.portia),
