@@ -34,6 +34,7 @@ class MapFinder {
             Pair("Crown Palm", R.drawable.crown_palm),
             Pair("Ironwood", R.drawable.ironwood),
             Pair("Banyan", R.drawable.banyan),
+            Pair("Banyan Hut", R.drawable.banyan),
             Pair("Portia", R.drawable.portia),
             Pair("Wisteria", R.drawable.wisteria),
             Pair("Empress", R.drawable.empress),
