@@ -34,6 +34,7 @@ class MapFinder {
             Pair("Crown Palm", R.drawable.crown_palm),
             Pair("Ironwood", R.drawable.ironwood),
             Pair("Ironwood - Open Spacez", R.drawable.ironwood),
+            Pair("Salon B + G = Board Game", R.drawable.board_games),
             Pair("Banyan", R.drawable.banyan),
             Pair("Banyan Hut", R.drawable.banyan),
             Pair("Portia", R.drawable.portia),
