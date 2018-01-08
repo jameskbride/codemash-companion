@@ -61,4 +61,12 @@ interface ConferenceDao {
     @Query("SELECT Session.* FROM Session INNER JOIN Bookmark " +
             "ON Session.id = Bookmark.session_id ")
     fun getBookmarkedSessions(): Maybe<Array<FullSession>>
+
+    @Transaction
+    @Query("DELETE FROM Tag")
+    fun deleteTags()
+
+    @Transaction
+    @Query("DELETE FROM ConferenceRoom")
+    fun deleteRooms()
 }

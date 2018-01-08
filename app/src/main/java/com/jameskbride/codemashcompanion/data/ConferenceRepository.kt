@@ -24,6 +24,8 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     fun onSessionsReceivedEvent(sessionsReceivedEvent: SessionsReceivedEvent) {
         val apiSessions = sessionsReceivedEvent.sessions
         val sessions = mapApiSessionsToDomain(apiSessions)
+        conferenceDao.deleteTags()
+        conferenceDao.deleteRooms()
         conferenceDao.insertAll(sessions)
         val sessionSpeakers = buildSessionSpeakers(apiSessions)
         conferenceDao.insertAll(sessionSpeakers)

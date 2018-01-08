@@ -109,6 +109,24 @@ class ConferenceRepositoryTest {
     }
 
     @Test
+    fun onSessionsReceivedEventItDeletesAllTags() {
+        val apiSessions:List<ApiSession> = buildApiSessions()
+
+        subject.onSessionsReceivedEvent(SessionsReceivedEvent(sessions = apiSessions))
+
+        verify(conferenceDao).deleteTags()
+    }
+
+    @Test
+    fun onSessionsReceivedEventItDeletesAllRooms() {
+        val apiSessions:List<ApiSession> = buildApiSessions()
+
+        subject.onSessionsReceivedEvent(SessionsReceivedEvent(sessions = apiSessions))
+
+        verify(conferenceDao).deleteRooms()
+    }
+
+    @Test
     fun onSessionsReceivedEventItInsertsAllSessions() {
         val apiSessions:List<ApiSession> = buildApiSessions()
 
