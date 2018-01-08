@@ -315,6 +315,14 @@ class MapFinderTest {
     }
 
     @Test
+    fun itCanFindKilimanjaroBallroom() {
+        val name = "Killamanjaro Ballroom"
+        val room = buildOneRoomList(name)
+
+        assertEquals(R.drawable.ballroom, subject.findMap(room))
+    }
+
+    @Test
     fun itReturnsTheFullMapThereThereAreNoRooms() {
         assertEquals(R.drawable.full, subject.findMap(listOf()))
     }

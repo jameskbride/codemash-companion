@@ -43,7 +43,8 @@ class MapFinder {
             Pair("Mangrove", R.drawable.mangrove),
             Pair("Ebony", R.drawable.ebony),
             Pair("Tamarind", R.drawable.tamarind),
-            Pair("Guava", R.drawable.guava)
+            Pair("Guava", R.drawable.guava),
+            Pair("Killamanjaro Ballroom", R.drawable.ballroom)
     )
 
     fun findMap(conferenceRooms: List<ConferenceRoom> = listOf()):Int {
