@@ -12,7 +12,7 @@ open class SessionsRecyclerViewAdapter constructor(val sessionsFragmentPresenter
         return impl.getItemViewType(position)
     }
 
-    override fun onBindViewHolder(holder: SessionViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: SessionViewHolder, position: Int) {
         impl.onBindViewHolder(holder, position)
     }
 
@@ -20,7 +20,7 @@ open class SessionsRecyclerViewAdapter constructor(val sessionsFragmentPresenter
         return impl.getItemCount()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SessionViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionViewHolder {
         return impl.onCreateViewHolder(parent, viewType)
     }
 

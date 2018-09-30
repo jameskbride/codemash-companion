@@ -9,8 +9,6 @@ import android.view.MenuItem
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.about.AboutActivity
 import com.jameskbride.codemashcompanion.codeofconduct.CodeOfConductActivity
-import com.jameskbride.codemashcompanion.codeofconduct.CodeOfConductActivityImpl
-import com.jameskbride.codemashcompanion.framework.BaseActivity
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 
 

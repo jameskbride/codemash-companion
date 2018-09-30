@@ -8,7 +8,7 @@ import android.view.ViewGroup
 
 class LayoutInflaterFactory {
 
-    fun inflate(context: Context, @LayoutRes layoutId: Int, viewGroup: ViewGroup, addToRoot:Boolean = false): View? {
+    fun inflate(context: Context, @LayoutRes layoutId: Int, viewGroup: ViewGroup, addToRoot:Boolean = false): View {
         return LayoutInflater.from(context).inflate(layoutId, viewGroup, addToRoot)
     }
 }

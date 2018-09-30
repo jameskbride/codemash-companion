@@ -15,7 +15,6 @@ import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailParam
 import com.jameskbride.codemashcompanion.sessions.list.SessionData
 import com.jameskbride.codemashcompanion.sessions.list.SessionsRecyclerViewAdapter
 import com.jameskbride.codemashcompanion.sessions.list.SessionsViewAdapterFactory
-import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.Toaster
 import javax.inject.Inject

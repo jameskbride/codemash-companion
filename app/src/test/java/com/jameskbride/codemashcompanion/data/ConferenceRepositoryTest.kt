@@ -7,7 +7,6 @@ import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
 import com.jameskbride.codemashcompanion.network.model.ShortSpeaker
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultApiSpeakers
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
-import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever

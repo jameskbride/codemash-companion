@@ -7,7 +7,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.jameskbride.codemashcompanion.R
-import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.data.model.Session

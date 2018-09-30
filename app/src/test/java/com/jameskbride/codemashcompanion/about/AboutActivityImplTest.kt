@@ -14,7 +14,10 @@ import com.jameskbride.codemashcompanion.BuildConfig
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.UriWrapper
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockito_kotlin.argumentCaptor
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test

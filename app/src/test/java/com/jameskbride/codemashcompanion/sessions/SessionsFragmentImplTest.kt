@@ -14,7 +14,6 @@ import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.framework.BaseActivityImpl.Companion.PARAMETER_BLOCK
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivity
-import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityImpl
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailParam
 import com.jameskbride.codemashcompanion.sessions.list.SessionData
 import com.jameskbride.codemashcompanion.sessions.list.SessionsRecyclerViewAdapter

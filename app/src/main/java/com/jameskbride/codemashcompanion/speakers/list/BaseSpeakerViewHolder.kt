@@ -12,16 +12,16 @@ import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
 
 
-open class BaseSpeakerViewHolder(itemView: View?): RecyclerView.ViewHolder(itemView) {
+open class BaseSpeakerViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     var view = itemView
 }
 
-class EmptySpeakerViewHolder(itemView: View?): BaseSpeakerViewHolder(itemView) {
+class EmptySpeakerViewHolder(itemView: View): BaseSpeakerViewHolder(itemView) {
     fun bind() {
     }
 }
 
-class SpeakerViewHolder(itemView: View?, val picassoLoader: PicassoLoader = PicassoLoader()) : BaseSpeakerViewHolder(itemView) {
+class SpeakerViewHolder(itemView: View, val picassoLoader: PicassoLoader = PicassoLoader()) : BaseSpeakerViewHolder(itemView) {
     var speakerImage: ImageView?
     var speakerFirstName: TextView?
     var speakerLastName: TextView?

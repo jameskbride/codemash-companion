@@ -3,7 +3,10 @@ package com.jameskbride.codemashcompanion.sessions.detail
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.bus.SessionUpdatedEvent
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
-import com.jameskbride.codemashcompanion.data.model.*
+import com.jameskbride.codemashcompanion.data.model.Bookmark
+import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
+import com.jameskbride.codemashcompanion.data.model.FullSession
+import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.rooms.MapFinder
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.argumentCaptor
@@ -14,10 +17,8 @@ import io.reactivex.schedulers.TestScheduler
 import org.greenrobot.eventbus.EventBus
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers.anyList
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations.initMocks
 

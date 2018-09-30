@@ -17,7 +17,6 @@ import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.framework.BaseActivityImpl.Companion.PARAMETER_BLOCK
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivity
-import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailActivityImpl
 import com.jameskbride.codemashcompanion.sessions.detail.SessionDetailParam
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
@@ -25,14 +24,11 @@ import com.jameskbride.codemashcompanion.utils.Toaster
 import com.jameskbride.codemashcompanion.utils.UriWrapper
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import com.nhaarman.mockito_kotlin.*
-import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentCaptor
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations.initMocks
-import java.io.Serializable
 
 class SpeakerDetailFragmentImplTest {
 

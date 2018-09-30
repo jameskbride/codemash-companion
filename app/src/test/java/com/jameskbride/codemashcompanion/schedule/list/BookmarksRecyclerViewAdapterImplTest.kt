@@ -11,7 +11,7 @@ import com.jameskbride.codemashcompanion.sessions.list.SessionData
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
-import org.junit.Assert.*
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock

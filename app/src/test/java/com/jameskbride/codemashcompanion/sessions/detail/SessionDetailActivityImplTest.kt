@@ -16,7 +16,6 @@ import com.jameskbride.codemashcompanion.framework.BaseActivityImpl.Companion.PA
 import com.jameskbride.codemashcompanion.rooms.RoomActivity
 import com.jameskbride.codemashcompanion.rooms.RoomParams
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivity
-import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailActivityImpl
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakersParams
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.Toaster

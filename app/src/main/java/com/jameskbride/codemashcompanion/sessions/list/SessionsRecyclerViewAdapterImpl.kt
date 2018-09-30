@@ -70,7 +70,7 @@ open class SessionsRecyclerViewAdapterImpl(open val sessionsFragmentPresenter: S
         }
     }
 
-    fun onBindViewHolder(holder: SessionViewHolder?, position: Int) {
+    fun onBindViewHolder(holder: SessionViewHolder, position: Int) {
         when(getItemViewType(position)) {
             ListItem.TIME_HEADER_TYPE -> bindTimeHeaderListItem(holder, position)
             ListItem.DATE_HEADER_TYPE -> bindDateHeaderListItem(holder, position)
@@ -84,7 +84,7 @@ open class SessionsRecyclerViewAdapterImpl(open val sessionsFragmentPresenter: S
         emptyViewHolder.bind()
     }
 
-    private fun bindSessionListItem(holder: SessionViewHolder?, position: Int) {
+    private fun bindSessionListItem(holder: SessionViewHolder, position: Int) {
         var itemViewHolder = holder as ItemViewHolder
         var sessionListItem = sessionsList[position] as SessionListItem
         itemViewHolder.bind(sessionListItem.session)
@@ -93,19 +93,19 @@ open class SessionsRecyclerViewAdapterImpl(open val sessionsFragmentPresenter: S
         }
     }
 
-    private fun bindDateHeaderListItem(holder: SessionViewHolder?, position: Int) {
+    private fun bindDateHeaderListItem(holder: SessionViewHolder, position: Int) {
         var dateHeaderViewHolder = holder as DateViewHolder
         var dateHeaderListItem = sessionsList[position] as DateHeaderListItem
         dateHeaderViewHolder.bind(dateHeaderListItem.text)
     }
 
-    private fun bindTimeHeaderListItem(holder: SessionViewHolder?, position: Int) {
+    private fun bindTimeHeaderListItem(holder: SessionViewHolder, position: Int) {
         var headerViewHolder = holder as TimeViewHolder
         var headerListItem = sessionsList[position] as TimeHeaderListItem
         headerViewHolder.bind(headerListItem.sessionTime)
     }
 
-    fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SessionViewHolder {
+    fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionViewHolder {
         if (ListItem.TIME_HEADER_TYPE == viewType) {
             val view = layoutInflaterFactory.inflate(parent!!.context, R.layout.sessions_time_header, parent!!)
             return TimeViewHolder(view!!)
@@ -120,7 +120,7 @@ open class SessionsRecyclerViewAdapterImpl(open val sessionsFragmentPresenter: S
         return buildEmptyViewHolder(parent)
     }
 
-    open fun buildEmptyViewHolder(parent: ViewGroup?): EmptyViewHolder {
+    open fun buildEmptyViewHolder(parent: ViewGroup): EmptyViewHolder {
         val view = layoutInflaterFactory.inflate(parent!!.context, R.layout.no_data, parent!!)
         return EmptyViewHolder(view!!)
     }

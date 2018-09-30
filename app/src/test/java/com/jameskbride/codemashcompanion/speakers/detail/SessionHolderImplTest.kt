@@ -2,7 +2,6 @@ package com.jameskbride.codemashcompanion.speakers.detail
 
 import android.content.Context
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession

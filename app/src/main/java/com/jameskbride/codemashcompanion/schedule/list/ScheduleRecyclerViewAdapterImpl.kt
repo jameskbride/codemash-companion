@@ -12,7 +12,7 @@ class ScheduleRecyclerViewAdapterImpl constructor(
         override val layoutInflaterFactory: LayoutInflaterFactory = LayoutInflaterFactory())
     : SessionsRecyclerViewAdapterImpl(sessionsFragmentPresenter, layoutInflaterFactory) {
 
-    override fun buildEmptyViewHolder(parent: ViewGroup?): EmptyViewHolder {
+    override fun buildEmptyViewHolder(parent: ViewGroup): EmptyViewHolder {
         val view = layoutInflaterFactory.inflate(parent!!.context, R.layout.empty_schedule, parent!!)
         return EmptyViewHolder(view!!)
     }
