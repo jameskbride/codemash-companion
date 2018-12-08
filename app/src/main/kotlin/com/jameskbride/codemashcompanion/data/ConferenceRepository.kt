@@ -39,6 +39,24 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         eventBus.post(ConferenceDataPersistedEvent())
     }
 
+    fun getSpeakers(): Maybe<Array<FullSpeaker>> {
+        return conferenceDao.getSpeakers()
+    }
+
+    private fun buildSessionSpeakers(sessions:List<ApiSession>):Array<SessionSpeaker> {
+        val sessionSpeakers = sessions.map { session ->
+            mapApiSessionSpeakersToDomain(session)
+        }
+        return sessionSpeakers.flatten().toTypedArray()
+    }
+
+    private fun buildRooms(apiSessions: List<ApiSession>): MutableList<ConferenceRoom> {
+        val allRooms = apiSessions.map { session ->
+            mapApiSessionRoomsToDomain(session)
+        }
+        return allRooms.flatten().toMutableList()
+    }
+
     private fun mapApiSpeakersToDomain(apiSpeakers: List<ApiSpeaker>): Array<Speaker> {
         return apiSpeakers.map {
             Speaker(
@@ -55,35 +73,18 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         }.toTypedArray()
     }
 
-    fun getSpeakers(): Maybe<Array<FullSpeaker>> {
-        return conferenceDao.getSpeakers()
-    }
+    private fun mapApiSessionSpeakersToDomain(session: ApiSession) =
+            session.shortSpeakers!!.map { speaker ->
+                SessionSpeaker(sessionId = session.id.toString(), speakerId = speaker.id!!)
+            }
 
-    private fun buildSessionSpeakers(sessions:List<ApiSession>):Array<SessionSpeaker> {
-        var sessionSpeakers = mutableListOf<SessionSpeaker>()
-        sessions.forEach { session ->
-            session.shortSpeakers?.forEach { speaker ->
-                sessionSpeakers.add(SessionSpeaker(sessionId = session.id.toString(), speakerId = speaker.id!!)) }
+    private fun mapApiSessionRoomsToDomain(session: ApiSession) =
+        session.rooms!!.map { room ->
+            ConferenceRoom(sessionId = session.id.toString(), name = room)
         }
-        return sessionSpeakers.toTypedArray()
-    }
 
-    private fun buildRooms(apiSessions: List<ApiSession>): MutableList<ConferenceRoom> {
-        var conferenceRooms = mutableListOf<ConferenceRoom>()
-        apiSessions.forEach { session ->
-            session.rooms?.forEach { room ->
-                conferenceRooms.add(ConferenceRoom(sessionId = session.id.toString(), name = room)) }
-        }
-        return conferenceRooms
-    }
-
-    private fun buildTags(apiSessions: List<ApiSession>): MutableList<Tag> {
-        var tags = mutableListOf<Tag>()
-        apiSessions.forEach { session ->
-            session.tags?.forEach { tag -> tags.add(Tag(sessionId = session.id.toString(), name = tag)) }
-        }
-        return tags
-    }
+    private fun mapApiSessionTagsToDomain(session: ApiSession) =
+            session.tags!!.map { tag -> Tag(sessionId = session.id.toString(), name = tag) }
 
     private fun mapApiSessionsToDomain(apiSessions: List<ApiSession>): Array<Session> {
         return apiSessions.map {
@@ -98,6 +99,14 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
                     Abstract = it.abstract
             )
         }.toTypedArray()
+    }
+
+    private fun buildTags(apiSessions: List<ApiSession>): MutableList<Tag> {
+        val allTags = apiSessions.map { session ->
+            mapApiSessionTagsToDomain(session)
+        }
+
+        return allTags.flatten().toMutableList()
     }
 
     fun getSessions(): Maybe<Array<FullSession>> {
