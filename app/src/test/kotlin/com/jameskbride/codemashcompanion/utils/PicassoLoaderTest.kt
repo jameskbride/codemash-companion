@@ -4,7 +4,7 @@ import android.content.Context
 import android.widget.ImageView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
-import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
+import com.jameskbride.codemashcompanion.utils.test.buildDefaultFullSpeakers
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
@@ -36,7 +36,7 @@ class PicassoLoaderTest {
 
     @Test
     fun bindLoadsTheSpeakerDataIntoTheView() {
-        val speaker = buildDefaultSpeakers()[0]
+        val speaker = buildDefaultFullSpeakers()[0]
         setupBasicBuilderSteps(speaker)
 
         picassoLoader.load(speaker, speakerImage)
@@ -46,7 +46,7 @@ class PicassoLoaderTest {
 
     @Test
     fun itAddsATransformationWhenOneIsProvided() {
-        val speaker = buildDefaultSpeakers()[0]
+        val speaker = buildDefaultFullSpeakers()[0]
         setupBasicBuilderSteps(speaker)
 
         val transformation = CircleTransform()

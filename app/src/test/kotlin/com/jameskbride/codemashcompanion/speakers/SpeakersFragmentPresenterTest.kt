@@ -6,7 +6,7 @@ import com.jameskbride.codemashcompanion.bus.ConferenceDataRequestError
 import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
-import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
+import com.jameskbride.codemashcompanion.utils.test.buildDefaultFullSpeakers
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -51,7 +51,7 @@ class SpeakersFragmentPresenterTest {
 
     @Test
     fun whenSpeakerDataIsReceivedThenTheDataIsPassedToTheView() {
-        val speakers = buildDefaultSpeakers()
+        val speakers = buildDefaultFullSpeakers()
 
         whenever(conferenceRepository.getSpeakers()).thenReturn(Maybe.just(speakers))
 
@@ -74,7 +74,7 @@ class SpeakersFragmentPresenterTest {
 
     @Test
     fun itDelegatesToTheViewToNavigateToDetails() {
-        val speakers = buildDefaultSpeakers()
+        val speakers = buildDefaultFullSpeakers()
 
         subject.navigateToDetails(speakers, 0)
 
@@ -90,7 +90,7 @@ class SpeakersFragmentPresenterTest {
 
     @Test
     fun onConferenceDataPersistedItRequestsSessions() {
-        val speakers = buildDefaultSpeakers()
+        val speakers = buildDefaultFullSpeakers()
 
         whenever(conferenceRepository.getSpeakers()).thenReturn(Maybe.just(speakers))
 

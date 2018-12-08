@@ -2,6 +2,7 @@ package com.jameskbride.codemashcompanion.network.service
 
 import com.jameskbride.codemashcompanion.bus.*
 import com.jameskbride.codemashcompanion.network.CodemashApi
+import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSpeakersToDomain
 import io.reactivex.Scheduler
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -19,7 +20,7 @@ class CodemashService @Inject constructor(private val codemashApi: CodemashApi,
                .subscribeOn(processScheduler)
                .observeOn(androidScheduler)
                .subscribe (
-                       {result -> eventBus.post(SpeakersReceivedEvent(speakers = result))},
+                       {result -> eventBus.post(SpeakersUpdatedEvent(speakers = mapApiSpeakersToDomain(result)))},
                        {error -> eventBus.post(ConferenceDataRequestError())}
                )
     }

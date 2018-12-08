@@ -9,7 +9,7 @@ import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentPresenter
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
-import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
+import com.jameskbride.codemashcompanion.utils.test.buildDefaultFullSpeakers
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
@@ -47,7 +47,7 @@ class SpeakersRecyclerViewAdapterTest {
         val speakerViewHolder = mock<SpeakerViewHolder>()
         val qtn = mock<SpeakersRecyclerViewAdapter>()
         val subject = SpeakersRecyclerViewAdapterImpl(speakersFragmentPresenter, layoutInflaterFactory)
-        val speakers = buildDefaultSpeakers()
+        val speakers = buildDefaultFullSpeakers()
         subject.setSpeakers(speakers, qtn)
         whenever(speakerViewHolder.view).thenReturn(view)
 
@@ -76,7 +76,7 @@ class SpeakersRecyclerViewAdapterTest {
         val speakerViewHolder = mock<SpeakerViewHolder>()
         val qtn = mock<SpeakersRecyclerViewAdapter>()
         val subject = SpeakersRecyclerViewAdapterImpl(speakersFragmentPresenter, layoutInflaterFactory)
-        val speakers = buildDefaultSpeakers()
+        val speakers = buildDefaultFullSpeakers()
         subject.setSpeakers(speakers, qtn)
         whenever(speakerViewHolder.view).thenReturn(view)
 
@@ -93,7 +93,7 @@ class SpeakersRecyclerViewAdapterTest {
     @Test
     fun itCanCreateTheViewHolder() {
         val qtn = mock<SpeakersRecyclerViewAdapter>()
-        val speakers = buildDefaultSpeakers()
+        val speakers = buildDefaultFullSpeakers()
         val subject = SpeakersRecyclerViewAdapterImpl(speakersFragmentPresenter, layoutInflaterFactory)
         subject.setSpeakers(speakers, qtn)
         whenever(viewGroup.context).thenReturn(context)
@@ -123,7 +123,7 @@ class SpeakersRecyclerViewAdapterTest {
 
     @Test
     fun itCanGetItemCount() {
-        val speakers = buildDefaultSpeakers()
+        val speakers = buildDefaultFullSpeakers()
         val qtn = mock<SpeakersRecyclerViewAdapter>()
         val subject = SpeakersRecyclerViewAdapterImpl(speakersFragmentPresenter, layoutInflaterFactory)
         subject.setSpeakers(speakers, qtn)
@@ -154,7 +154,7 @@ class SpeakersRecyclerViewAdapterTest {
 
     @Test
     fun whereThereAreSpeakersTheItemViewTypeIsSpeaker() {
-        val speakers = buildDefaultSpeakers()
+        val speakers = buildDefaultFullSpeakers()
         val qtn = mock<SpeakersRecyclerViewAdapter>()
         val subject = SpeakersRecyclerViewAdapterImpl(speakersFragmentPresenter, layoutInflaterFactory)
         subject.setSpeakers(speakers, qtn)
@@ -173,7 +173,7 @@ class SpeakersRecyclerViewAdapterTest {
 
     @Test
     fun bindLoadsTheSpeakerDataIntoTheView() {
-        val speaker = buildDefaultSpeakers()[0]
+        val speaker = buildDefaultFullSpeakers()[0]
 
         val subject = SpeakerViewHolder(view, picassoLoader = picassoLoader)
 

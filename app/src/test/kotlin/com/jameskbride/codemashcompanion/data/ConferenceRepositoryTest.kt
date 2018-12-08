@@ -3,9 +3,8 @@ package com.jameskbride.codemashcompanion.data
 import com.jameskbride.codemashcompanion.bus.*
 import com.jameskbride.codemashcompanion.data.model.*
 import com.jameskbride.codemashcompanion.network.model.ApiSession
-import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
 import com.jameskbride.codemashcompanion.network.model.ShortSpeaker
-import com.jameskbride.codemashcompanion.utils.test.buildDefaultApiSpeakers
+import com.jameskbride.codemashcompanion.utils.test.buildDefaultFullSpeakers
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.verify
@@ -49,60 +48,60 @@ class ConferenceRepositoryTest {
 
     @Test
     fun onSpeakersReceivedEventItInsertsAllSpeakers() {
-        val apiSpeakers = listOf(ApiSpeaker(
-                id = "1234",
-                firstName = "John",
-                lastName = "Smith",
-                linkedInProfile = "linkedin",
-                twitterLink = "twitter",
-                gitHubLink = "github",
-                biography = "biography",
-                blogUrl = "blog"
+        val speakers = listOf(Speaker(
+                Id = "1234",
+                FirstName = "John",
+                LastName = "Smith",
+                LinkedInProfile = "linkedin",
+                TwitterLink = "twitter",
+                GitHubLink = "github",
+                Biography = "biography",
+                BlogUrl = "blog"
         ))
 
-        subject.onSpeakersReceivedEvent(SpeakersReceivedEvent(apiSpeakers))
+        subject.onSpeakersUpdatedEvent(SpeakersUpdatedEvent(speakers))
 
         val speakersCaptor = argumentCaptor<Array<Speaker>>()
         verify(conferenceDao).insertAll(speakersCaptor.capture())
 
         val actualSpeakers = speakersCaptor.firstValue
-        assertEquals(apiSpeakers.size, actualSpeakers.size)
+        assertEquals(speakers.size, actualSpeakers.size)
 
-        val apiSpeaker = apiSpeakers[0]
+        val speaker = speakers[0]
         val actualSpeaker = actualSpeakers[0]
-        assertEquals(apiSpeaker.id, actualSpeaker.Id)
-        assertEquals(apiSpeaker.firstName, actualSpeaker.FirstName)
-        assertEquals(apiSpeaker.lastName, actualSpeaker.LastName)
-        assertEquals(apiSpeaker.linkedInProfile, actualSpeaker.LinkedInProfile)
-        assertEquals(apiSpeaker.twitterLink, actualSpeaker.TwitterLink)
-        assertEquals(apiSpeaker.gitHubLink, actualSpeaker.GitHubLink)
-        assertEquals(apiSpeaker.biography, actualSpeaker.Biography)
-        assertEquals(apiSpeaker.blogUrl, actualSpeaker.BlogUrl)
+        assertEquals(speaker.Id, actualSpeaker.Id)
+        assertEquals(speaker.FirstName, actualSpeaker.FirstName)
+        assertEquals(speaker.LastName, actualSpeaker.LastName)
+        assertEquals(speaker.LinkedInProfile, actualSpeaker.LinkedInProfile)
+        assertEquals(speaker.TwitterLink, actualSpeaker.TwitterLink)
+        assertEquals(speaker.GitHubLink, actualSpeaker.GitHubLink)
+        assertEquals(speaker.Biography, actualSpeaker.Biography)
+        assertEquals(speaker.BlogUrl, actualSpeaker.BlogUrl)
     }
 
     @Test
     fun onSpeakersReceivedEventItInsertsSpeakersWithTheCorrectedGravatarUrl() {
-        val apiSpeakers = listOf(ApiSpeaker(
-                gravatarUrl = "//gravitar"
+        val speakers = listOf(Speaker(
+                GravatarUrl = "//gravitar"
         ))
 
-        subject.onSpeakersReceivedEvent(SpeakersReceivedEvent(apiSpeakers))
+        subject.onSpeakersUpdatedEvent(SpeakersUpdatedEvent(speakers))
 
         val speakersCaptor = argumentCaptor<Array<Speaker>>()
         verify(conferenceDao).insertAll(speakersCaptor.capture())
 
         val actualSpeakers = speakersCaptor.firstValue
 
-        val apiSpeaker = apiSpeakers[0]
+        val speaker = speakers[0]
         val actualSpeaker = actualSpeakers[0]
-        assertEquals("http:${apiSpeaker.gravatarUrl}", actualSpeaker.GravatarUrl)
+        assertEquals("http:${speaker.GravatarUrl}", actualSpeaker.GravatarUrl)
     }
 
     @Test
     fun onSpeakersReceivedEventItNotifiesSpeakersPersisted() {
-        val speakers = buildDefaultApiSpeakers()
+        val speakers = buildDefaultSpeakers()
 
-        subject.onSpeakersReceivedEvent(SpeakersReceivedEvent(speakers.asList()))
+        subject.onSpeakersUpdatedEvent(SpeakersUpdatedEvent(speakers.asList()))
 
         assertTrue(speakersPersistedEventFired)
     }
@@ -238,7 +237,7 @@ class ConferenceRepositoryTest {
 
     @Test
     fun getSpeakersReturnsTheSpeakersFromTheDao() {
-        val speakers = buildDefaultSpeakers()
+        val speakers = buildDefaultFullSpeakers()
 
         val maybe = Maybe.just(speakers)
         whenever(conferenceDao.getSpeakers()).thenReturn(maybe)

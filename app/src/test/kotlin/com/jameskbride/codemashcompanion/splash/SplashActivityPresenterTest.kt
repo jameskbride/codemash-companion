@@ -6,7 +6,7 @@ import com.jameskbride.codemashcompanion.bus.NoDataEvent
 import com.jameskbride.codemashcompanion.bus.RequestConferenceDataEvent
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
-import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
+import com.jameskbride.codemashcompanion.utils.test.buildDefaultFullSpeakers
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -60,7 +60,7 @@ class SplashActivityPresenterTest {
 
     @Test
     fun requestConferenceDataNavigatesToMainWhenDataIsAlreadyPresent() {
-        val speakers = buildDefaultSpeakers()
+        val speakers = buildDefaultFullSpeakers()
         val emptySpeakersMaybe: Maybe<Array<FullSpeaker>> = Maybe.just(speakers)
         whenever(conferenceRepository.getSpeakers()).thenReturn(emptySpeakersMaybe)
 

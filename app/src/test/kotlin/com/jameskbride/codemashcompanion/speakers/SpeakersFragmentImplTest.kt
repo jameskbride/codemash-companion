@@ -19,7 +19,7 @@ import com.jameskbride.codemashcompanion.speakers.list.SpeakersRecyclerViewAdapt
 import com.jameskbride.codemashcompanion.speakers.list.SpeakersViewAdapterFactory
 import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.Toaster
-import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
+import com.jameskbride.codemashcompanion.utils.test.buildDefaultFullSpeakers
 import com.nhaarman.mockito_kotlin.*
 import org.junit.Assert.*
 import org.junit.Before
@@ -128,7 +128,7 @@ class SpeakersFragmentImplTest {
     @Test
     fun itSetsTheSpeakersOnSpeakerDataReceived() {
         subject.onCreateView(layoutInflater, viewGroup, null, qtn)
-        val speakers = buildDefaultSpeakers()
+        val speakers = buildDefaultFullSpeakers()
 
         reset(qtn)
         whenever(qtn.makeGridLayoutManager(2)).thenReturn(gridLayoutManager)
@@ -176,7 +176,7 @@ class SpeakersFragmentImplTest {
     @Test
     fun itNavigatesToTheDetailsView() {
         val intent = mock<Intent>()
-        val speakers = buildDefaultSpeakers()
+        val speakers = buildDefaultFullSpeakers()
         whenever(intentFactory.make(context, SpeakerDetailActivity::class.java)).thenReturn(intent)
         subject.onCreateView(layoutInflater, viewGroup, null, qtn)
 

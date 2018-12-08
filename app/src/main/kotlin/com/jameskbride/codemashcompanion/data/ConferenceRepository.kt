@@ -8,7 +8,6 @@ import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.b
 import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.buildSessionSpeakers
 import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.buildTags
 import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSessionsToDomain
-import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSpeakersToDomain
 import io.reactivex.Maybe
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -18,10 +17,9 @@ import javax.inject.Inject
 class ConferenceRepository @Inject constructor(private val conferenceDao: ConferenceDao, override val eventBus: EventBus): BusAware {
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    fun onSpeakersReceivedEvent(speakersReceivedEvent: SpeakersReceivedEvent) {
-        val apiSpeakers = speakersReceivedEvent.speakers
-        val speakers = mapApiSpeakersToDomain(apiSpeakers)
-        conferenceDao.insertAll(speakers)
+    fun onSpeakersUpdatedEvent(speakersUpdatedEvent: SpeakersUpdatedEvent) {
+        val speakers = speakersUpdatedEvent.speakers
+        conferenceDao.insertAll(speakers.toTypedArray())
         eventBus.post(SpeakersPersistedEvent())
     }
 

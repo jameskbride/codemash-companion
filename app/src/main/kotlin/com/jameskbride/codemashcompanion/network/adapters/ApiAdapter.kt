@@ -7,7 +7,7 @@ import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
 class ApiAdapter {
 
     companion object {
-        fun mapApiSpeakersToDomain(apiSpeakers: List<ApiSpeaker>): Array<Speaker> {
+        fun mapApiSpeakersToDomain(apiSpeakers: List<ApiSpeaker>): List<Speaker> {
             return apiSpeakers.map {
                 Speaker(
                         Id = it.id,
@@ -20,7 +20,7 @@ class ApiAdapter {
                         Biography = it.biography,
                         BlogUrl = it.blogUrl
                 )
-            }.toTypedArray()
+            }
         }
 
         fun mapApiSessionSpeakersToDomain(session: ApiSession) =

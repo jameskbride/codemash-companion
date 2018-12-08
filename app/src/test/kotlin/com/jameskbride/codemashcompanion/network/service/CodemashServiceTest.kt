@@ -1,8 +1,10 @@
 package com.jameskbride.codemashcompanion.network.service
 
 import com.jameskbride.codemashcompanion.bus.*
+import com.jameskbride.codemashcompanion.data.model.Speaker
 import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.model.ApiSession
+import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultApiSpeakers
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Observable
@@ -25,7 +27,7 @@ class CodemashServiceTest {
 
     private lateinit var subject: CodemashService
 
-    private var speakersReceivedEvent: SpeakersReceivedEvent = SpeakersReceivedEvent()
+    private var speakersUpdatedEvent: SpeakersUpdatedEvent = SpeakersUpdatedEvent()
     private var sessionsReceivedEvent: SessionsReceivedEvent = SessionsReceivedEvent()
     private var conferenceDataRequestErrorFired: Boolean = false
 
@@ -49,7 +51,7 @@ class CodemashServiceTest {
     }
 
     @Test
-    fun onRequestConferenceDataEventSendsTheSpeakersReceivedEvent() {
+    fun onRequestConferenceDataEventSendsTheSpeakersUpdatedEvent() {
         val speaker = buildDefaultApiSpeakers()[0]
 
         whenever(codemashApi.getSpeakers()).thenReturn(Observable.fromArray(listOf(speaker)))
@@ -58,8 +60,9 @@ class CodemashServiceTest {
 
         testScheduler.triggerActions()
 
-        val actualSpeakers = speakersReceivedEvent.speakers
-        assertEquals(speaker, actualSpeakers[0])
+        val expectedSpeaker = convertApiSpeakerToDomain(speaker)
+        val actualSpeakers = speakersUpdatedEvent.speakers
+        assertEquals(expectedSpeaker, actualSpeakers[0])
     }
 
     @Test
@@ -106,8 +109,8 @@ class CodemashServiceTest {
     }
 
     @Subscribe
-    fun onSpeakersReceivedEvent(speakersReceivedEvent: SpeakersReceivedEvent) {
-        this.speakersReceivedEvent = speakersReceivedEvent
+    fun onSpeakersReceivedEvent(speakersReceivedEvent: SpeakersUpdatedEvent) {
+        this.speakersUpdatedEvent = speakersReceivedEvent
     }
 
     @Subscribe
@@ -118,5 +121,13 @@ class CodemashServiceTest {
     @Subscribe
     fun onRequestConferenceDataErrorEvent(conferenceDataRequestError: ConferenceDataRequestError) {
         this.conferenceDataRequestErrorFired = true
+    }
+
+    private fun convertApiSpeakerToDomain(speaker: ApiSpeaker): Speaker {
+        return Speaker(Id = speaker.id, FirstName = speaker.firstName,
+                LastName = speaker.lastName, LinkedInProfile = speaker.linkedInProfile,
+                TwitterLink = speaker.twitterLink, GitHubLink = speaker.gitHubLink,
+                GravatarUrl = "http:${speaker.gravatarUrl}", Biography = speaker.biography,
+                BlogUrl = speaker.blogUrl)
     }
 }
