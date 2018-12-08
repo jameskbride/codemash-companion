@@ -4,7 +4,7 @@ import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.bus.BusAware
-import com.jameskbride.codemashcompanion.bus.SessionUpdatedEvent
+import com.jameskbride.codemashcompanion.bus.SessionBookmarkUpdated
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
 import com.jameskbride.codemashcompanion.data.model.FullSession
@@ -44,8 +44,8 @@ class SessionDetailActivityPresenter @Inject constructor(
     }
 
     @Subscribe
-    fun updateSession(sessionUpdatedEvent: SessionUpdatedEvent) {
-        val sessionId = sessionUpdatedEvent.sessionId
+    fun onSessionBookmarkUpdated(sessionBookmarkUpdated: SessionBookmarkUpdated) {
+        val sessionId = sessionBookmarkUpdated.sessionId
         retrieveSession(sessionId)
     }
 

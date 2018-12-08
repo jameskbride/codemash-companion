@@ -369,7 +369,7 @@ class ConferenceRepositoryTest {
     }
 
     @Subscribe
-    fun onSessionUpdatedEvent(sessionUpdatedEvent: SessionUpdatedEvent) {
+    fun onSessionUpdatedEvent(sessionUpdatedEvent: SessionBookmarkUpdated) {
         sessionUpdatedEventFired = true
     }
 

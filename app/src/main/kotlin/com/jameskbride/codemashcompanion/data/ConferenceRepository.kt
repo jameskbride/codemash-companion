@@ -29,8 +29,8 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onSessionsReceivedEvent(sessionsReceivedEvent: SessionsReceivedEvent) {
         val apiSessions = sessionsReceivedEvent.sessions
-        onSessionsUpdatedEvent(apiSessions)
 
+        onSessionsUpdatedEvent(apiSessions)
         onSessionSpeakersUpdatedEvent(SessionSpeakersUpdatedEvent(sessionSpeakers = buildSessionSpeakers(apiSessions)))
         onTagsUpdatedEvent(TagsUpdatedEvent(tags = buildTags(apiSessions)))
         onRoomsUpdatedEvent(RoomsUpdatedEvent(conferenceRooms = buildRooms(apiSessions)))
@@ -82,12 +82,12 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     fun addBookmark(fullSession: FullSession) {
         conferenceDao.insert(Bookmark(sessionId = fullSession.Id))
 
-        eventBus.post(SessionUpdatedEvent(fullSession.Id))
+        eventBus.post(SessionBookmarkUpdated(fullSession.Id))
     }
 
     fun removeBookmark(bookmark: Bookmark) {
         conferenceDao.delete(bookmark)
-        eventBus.post(SessionUpdatedEvent(bookmark.sessionId))
+        eventBus.post(SessionBookmarkUpdated(bookmark.sessionId))
     }
 
     fun getSpeakersBySession(sessionId: String): Maybe<Array<FullSpeaker>> {
