@@ -9,7 +9,6 @@ import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.b
 import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.buildTags
 import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSessionsToDomain
 import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSpeakersToDomain
-import com.jameskbride.codemashcompanion.network.model.ApiSession
 import io.reactivex.Maybe
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -30,7 +29,7 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     fun onSessionsReceivedEvent(sessionsReceivedEvent: SessionsReceivedEvent) {
         val apiSessions = sessionsReceivedEvent.sessions
 
-        onSessionsUpdatedEvent(apiSessions)
+        onSessionsUpdatedEvent(SessionsUpdatedEvent(sessions = mapApiSessionsToDomain(apiSessions)))
         onSessionSpeakersUpdatedEvent(SessionSpeakersUpdatedEvent(sessionSpeakers = buildSessionSpeakers(apiSessions)))
         onTagsUpdatedEvent(TagsUpdatedEvent(tags = buildTags(apiSessions)))
         onRoomsUpdatedEvent(RoomsUpdatedEvent(conferenceRooms = buildRooms(apiSessions)))
@@ -44,9 +43,10 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         conferenceDao.insertAll(sessionSpeakers.toTypedArray())
     }
 
-    private fun onSessionsUpdatedEvent(apiSessions: List<ApiSession>) {
-        val sessions = mapApiSessionsToDomain(apiSessions)
-        conferenceDao.insertAll(sessions)
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onSessionsUpdatedEvent(sessionsUpdatedEvent: SessionsUpdatedEvent) {
+        val sessions = sessionsUpdatedEvent.sessions
+        conferenceDao.insertAll(sessions.toTypedArray())
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)

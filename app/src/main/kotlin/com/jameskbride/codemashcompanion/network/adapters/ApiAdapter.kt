@@ -36,7 +36,7 @@ class ApiAdapter {
         fun mapApiSessionTagsToDomain(session: ApiSession) =
                 session.tags!!.map { tag -> Tag(sessionId = session.id.toString(), name = tag) }
 
-        fun mapApiSessionsToDomain(apiSessions: List<ApiSession>): Array<Session> {
+        fun mapApiSessionsToDomain(apiSessions: List<ApiSession>): List<Session> {
             return apiSessions.map {
                 Session(
                         Id = it.id.toString(),
@@ -48,7 +48,7 @@ class ApiAdapter {
                         Title = it.title,
                         Abstract = it.abstract
                 )
-            }.toTypedArray()
+            }
         }
 
         fun buildSessionSpeakers(sessions:List<ApiSession>):MutableList<SessionSpeaker> {
