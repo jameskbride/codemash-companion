@@ -1,10 +1,12 @@
 package com.jameskbride.codemashcompanion.data
 
 import com.jameskbride.codemashcompanion.bus.*
-import com.jameskbride.codemashcompanion.data.model.*
-import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSessionRoomsToDomain
-import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSessionSpeakersToDomain
-import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSessionTagsToDomain
+import com.jameskbride.codemashcompanion.data.model.Bookmark
+import com.jameskbride.codemashcompanion.data.model.FullSession
+import com.jameskbride.codemashcompanion.data.model.FullSpeaker
+import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.buildRooms
+import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.buildSessionSpeakers
+import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.buildTags
 import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSessionsToDomain
 import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSpeakersToDomain
 import com.jameskbride.codemashcompanion.network.model.ApiSession
@@ -27,46 +29,37 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onSessionsReceivedEvent(sessionsReceivedEvent: SessionsReceivedEvent) {
         val apiSessions = sessionsReceivedEvent.sessions
-        val sessions = mapApiSessionsToDomain(apiSessions)
-        conferenceDao.deleteTags()
-        conferenceDao.deleteRooms()
-        conferenceDao.insertAll(sessions)
+
+        onSessionsUpdatedEvent(apiSessions)
+
         val sessionSpeakers = buildSessionSpeakers(apiSessions)
         conferenceDao.insertAll(sessionSpeakers)
 
-        var conferenceRooms = buildRooms(apiSessions)
-        conferenceDao.insertAll(conferenceRooms.toTypedArray())
-
-        val tags = buildTags(apiSessions)
-        conferenceDao.insertAll(tags.toTypedArray())
+        onTagsUpdatedEvent(apiSessions)
+        onRoomsUpdatedEvent(apiSessions)
 
         eventBus.post(ConferenceDataPersistedEvent())
     }
 
+    private fun onSessionsUpdatedEvent(apiSessions: List<ApiSession>) {
+        val sessions = mapApiSessionsToDomain(apiSessions)
+        conferenceDao.insertAll(sessions)
+    }
+
+    private fun onRoomsUpdatedEvent(apiSessions: List<ApiSession>) {
+        conferenceDao.deleteRooms()
+        var conferenceRooms = buildRooms(apiSessions)
+        conferenceDao.insertAll(conferenceRooms.toTypedArray())
+    }
+
+    private fun onTagsUpdatedEvent(apiSessions: List<ApiSession>) {
+        conferenceDao.deleteTags()
+        val tags = buildTags(apiSessions)
+        conferenceDao.insertAll(tags.toTypedArray())
+    }
+
     fun getSpeakers(): Maybe<Array<FullSpeaker>> {
         return conferenceDao.getSpeakers()
-    }
-
-    private fun buildSessionSpeakers(sessions:List<ApiSession>):Array<SessionSpeaker> {
-        val sessionSpeakers = sessions.map { session ->
-            mapApiSessionSpeakersToDomain(session)
-        }
-        return sessionSpeakers.flatten().toTypedArray()
-    }
-
-    private fun buildRooms(apiSessions: List<ApiSession>): MutableList<ConferenceRoom> {
-        val allRooms = apiSessions.map { session ->
-            mapApiSessionRoomsToDomain(session)
-        }
-        return allRooms.flatten().toMutableList()
-    }
-
-    private fun buildTags(apiSessions: List<ApiSession>): MutableList<Tag> {
-        val allTags = apiSessions.map { session ->
-            mapApiSessionTagsToDomain(session)
-        }
-
-        return allTags.flatten().toMutableList()
     }
 
     fun getSessions(): Maybe<Array<FullSession>> {
