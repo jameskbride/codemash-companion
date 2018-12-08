@@ -2,8 +2,12 @@ package com.jameskbride.codemashcompanion.data
 
 import com.jameskbride.codemashcompanion.bus.*
 import com.jameskbride.codemashcompanion.data.model.*
+import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSessionRoomsToDomain
+import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSessionSpeakersToDomain
+import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSessionTagsToDomain
+import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSessionsToDomain
+import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSpeakersToDomain
 import com.jameskbride.codemashcompanion.network.model.ApiSession
-import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
 import io.reactivex.Maybe
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -55,50 +59,6 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
             mapApiSessionRoomsToDomain(session)
         }
         return allRooms.flatten().toMutableList()
-    }
-
-    private fun mapApiSpeakersToDomain(apiSpeakers: List<ApiSpeaker>): Array<Speaker> {
-        return apiSpeakers.map {
-            Speaker(
-                    Id = it.id,
-                    FirstName = it.firstName,
-                    LastName = it.lastName,
-                    LinkedInProfile = it.linkedInProfile,
-                    TwitterLink = it.twitterLink,
-                    GitHubLink = it.gitHubLink,
-                    GravatarUrl = "http:${it.gravatarUrl}",
-                    Biography = it.biography,
-                    BlogUrl = it.blogUrl
-            )
-        }.toTypedArray()
-    }
-
-    private fun mapApiSessionSpeakersToDomain(session: ApiSession) =
-            session.shortSpeakers!!.map { speaker ->
-                SessionSpeaker(sessionId = session.id.toString(), speakerId = speaker.id!!)
-            }
-
-    private fun mapApiSessionRoomsToDomain(session: ApiSession) =
-        session.rooms!!.map { room ->
-            ConferenceRoom(sessionId = session.id.toString(), name = room)
-        }
-
-    private fun mapApiSessionTagsToDomain(session: ApiSession) =
-            session.tags!!.map { tag -> Tag(sessionId = session.id.toString(), name = tag) }
-
-    private fun mapApiSessionsToDomain(apiSessions: List<ApiSession>): Array<Session> {
-        return apiSessions.map {
-            Session(
-                    Id = it.id.toString(),
-                    Category = it.category,
-                    SessionStartTime = it.sessionStartTime,
-                    SessionEndTime = it.sessionEndTime,
-                    SessionTime = it.sessionTime,
-                    SessionType = it.sessionType,
-                    Title = it.title,
-                    Abstract = it.abstract
-            )
-        }.toTypedArray()
     }
 
     private fun buildTags(apiSessions: List<ApiSession>): MutableList<Tag> {
