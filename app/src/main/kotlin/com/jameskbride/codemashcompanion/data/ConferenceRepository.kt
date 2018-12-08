@@ -36,7 +36,7 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         conferenceDao.insertAll(sessionSpeakers)
 
         onTagsUpdatedEvent(apiSessions)
-        onRoomsUpdatedEvent(apiSessions)
+        onRoomsUpdatedEvent(RoomsUpdatedEvent(conferenceRooms = buildRooms(apiSessions)))
 
         eventBus.post(ConferenceDataPersistedEvent())
     }
@@ -46,9 +46,10 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
         conferenceDao.insertAll(sessions)
     }
 
-    private fun onRoomsUpdatedEvent(apiSessions: List<ApiSession>) {
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onRoomsUpdatedEvent(roomsUpdatedEvent: RoomsUpdatedEvent) {
         conferenceDao.deleteRooms()
-        var conferenceRooms = buildRooms(apiSessions)
+        val conferenceRooms = roomsUpdatedEvent.conferenceRooms
         conferenceDao.insertAll(conferenceRooms.toTypedArray())
     }
 
