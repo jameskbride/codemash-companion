@@ -29,16 +29,19 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onSessionsReceivedEvent(sessionsReceivedEvent: SessionsReceivedEvent) {
         val apiSessions = sessionsReceivedEvent.sessions
-
         onSessionsUpdatedEvent(apiSessions)
 
-        val sessionSpeakers = buildSessionSpeakers(apiSessions)
-        conferenceDao.insertAll(sessionSpeakers)
-
+        onSessionSpeakersUpdatedEvent(SessionSpeakersUpdatedEvent(sessionSpeakers = buildSessionSpeakers(apiSessions)))
         onTagsUpdatedEvent(TagsUpdatedEvent(tags = buildTags(apiSessions)))
         onRoomsUpdatedEvent(RoomsUpdatedEvent(conferenceRooms = buildRooms(apiSessions)))
 
         eventBus.post(ConferenceDataPersistedEvent())
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onSessionSpeakersUpdatedEvent(speakersUpdatedEvent: SessionSpeakersUpdatedEvent) {
+        val sessionSpeakers = speakersUpdatedEvent.sessionSpeakers
+        conferenceDao.insertAll(sessionSpeakers.toTypedArray())
     }
 
     private fun onSessionsUpdatedEvent(apiSessions: List<ApiSession>) {

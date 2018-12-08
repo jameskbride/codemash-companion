@@ -51,11 +51,11 @@ class ApiAdapter {
             }.toTypedArray()
         }
 
-        fun buildSessionSpeakers(sessions:List<ApiSession>):Array<SessionSpeaker> {
+        fun buildSessionSpeakers(sessions:List<ApiSession>):MutableList<SessionSpeaker> {
             val sessionSpeakers = sessions.map { session ->
                 mapApiSessionSpeakersToDomain(session)
             }
-            return sessionSpeakers.flatten().toTypedArray()
+            return sessionSpeakers.flatten().toMutableList()
         }
 
         fun buildRooms(apiSessions: List<ApiSession>): MutableList<ConferenceRoom> {
