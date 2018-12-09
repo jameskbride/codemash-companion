@@ -13,12 +13,12 @@ class ApiAdapter {
                         Id = it.id,
                         FirstName = it.firstName,
                         LastName = it.lastName,
-                        LinkedInProfile = it.linkedInProfile,
-                        TwitterLink = it.twitterLink,
-                        GitHubLink = it.gitHubLink,
-                        GravatarUrl = "http:${it.gravatarUrl}",
-                        Biography = it.biography,
-                        BlogUrl = it.blogUrl
+//                        LinkedInProfile = it.linkedInProfile,
+//                        TwitterLink = it.twitterLink,
+//                        GitHubLink = it.gitHubLink,
+//                        GravatarUrl = "http:${it.gravatarUrl}",
+                        Biography = it.biography
+//                        BlogUrl = it.blogUrl
                 )
             }
         }

@@ -51,15 +51,15 @@ fun buildDefaultApiSpeakers(count:Int = 1): Array<ApiSpeaker> {
     for (i in 0 until count) {
         speakers.add(ApiSpeaker(
                 id = "1234",
-                linkedInProfile = "linkedin",
+//                linkedInProfile = "linkedin",
                 lastName = "Smith",
-                twitterLink = "twitter",
-                gitHubLink = "github",
+//                twitterLink = "twitter",
+//                gitHubLink = "github",
                 firstName = "John",
-                gravatarUrl = "gravatar",
-                biography = "biography",
-                blogUrl = "blog",
-                sessionIds = listOf("1", "2")
+//                gravatarUrl = "gravatar",
+                biography = "biography"
+//                blogUrl = "blog",
+//                sessionIds = listOf("1", "2")
         ))
     }
 

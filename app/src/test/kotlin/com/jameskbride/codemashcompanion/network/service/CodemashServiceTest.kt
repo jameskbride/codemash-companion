@@ -221,10 +221,15 @@ class CodemashServiceTest {
     }
 
     private fun convertApiSpeakerToDomain(speaker: ApiSpeaker): Speaker {
-        return Speaker(Id = speaker.id, FirstName = speaker.firstName,
-                LastName = speaker.lastName, LinkedInProfile = speaker.linkedInProfile,
-                TwitterLink = speaker.twitterLink, GitHubLink = speaker.gitHubLink,
-                GravatarUrl = "http:${speaker.gravatarUrl}", Biography = speaker.biography,
-                BlogUrl = speaker.blogUrl)
+        return Speaker(Id = speaker.id,
+                FirstName = speaker.firstName,
+                LastName = speaker.lastName,
+//                LinkedInProfile = speaker.linkedInProfile,
+//                TwitterLink = speaker.twitterLink,
+//                GitHubLink = speaker.gitHubLink,
+//                GravatarUrl = "http:${speaker.gravatarUrl}",
+                Biography = speaker.biography
+//                BlogUrl = speaker.blogUrl
+        )
     }
 }

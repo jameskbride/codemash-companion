@@ -4,14 +4,22 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class ApiSpeaker(
-        @SerializedName("Id") val id: String = "",
-        @SerializedName("LinkedInProfile") val linkedInProfile: String? = "",
-        @SerializedName("LastName") val lastName: String? = "",
-        @SerializedName("TwitterLink") val twitterLink: String? = "",
-        @SerializedName("GitHubLink") val gitHubLink: String? = "",
-        @SerializedName("FirstName") val firstName: String? = "",
-        @SerializedName("GravatarUrl") val gravatarUrl: String? = "",
-        @SerializedName("Biography") val biography: String? = "",
-        @SerializedName("BlogUrl") val blogUrl: String? = "",
-        @SerializedName("SessionIds") val sessionIds:List<String> = listOf()
+        @SerializedName("id") val id: String = "",
+        @SerializedName("firstName") val firstName: String? = "",
+        @SerializedName("lastName") val lastName: String? = "",
+        @SerializedName("bio") val biography: String? = "",
+        @SerializedName("profilePicture") val profilePicture: String? = "",
+        @SerializedName("sessions") var shortSessions:List<ShortSession>? = listOf(),
+        @SerializedName("links") var links:List<Link>? = listOf()
+): Serializable
+
+data class ShortSession constructor(
+        @SerializedName("id") val id: String = "",
+        @SerializedName("name") val firstName: String? = ""
+): Serializable
+
+data class Link constructor(
+        @SerializedName("title") val title: String = "",
+        @SerializedName("url") val url: String = "",
+        @SerializedName("linkType") val linkType: String = ""
 ): Serializable
