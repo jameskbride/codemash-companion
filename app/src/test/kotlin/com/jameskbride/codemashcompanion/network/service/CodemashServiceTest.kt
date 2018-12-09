@@ -5,6 +5,7 @@ import com.jameskbride.codemashcompanion.data.model.Speaker
 import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.model.ApiSession
 import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
+import com.jameskbride.codemashcompanion.network.model.ShortSpeaker
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultApiSpeakers
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -32,6 +33,7 @@ class CodemashServiceTest {
     private var sessionsUpdatedEvent: SessionsUpdatedEvent = SessionsUpdatedEvent()
     private var roomsUpdatedEvent: RoomsUpdatedEvent = RoomsUpdatedEvent()
     private var tagsUpdatedEvent: TagsUpdatedEvent = TagsUpdatedEvent()
+    private var sessionSpeakersUpdatedEvent: SessionSpeakersUpdatedEvent = SessionSpeakersUpdatedEvent()
     private var conferenceDataRequestErrorFired: Boolean = false
 
     @Before
@@ -160,6 +162,25 @@ class CodemashServiceTest {
     }
 
     @Test
+    fun onSpeakersPersistedEventUpdatesTheSessionSpeakerData() {
+        val sessionSpeaker = ShortSpeaker(id = "1234", firstName = "first", lastName = "last", gravatarUrl = "url")
+        val apiSession = ApiSession(
+                id  = 123,
+                shortSpeakers = listOf(sessionSpeaker)
+        )
+
+        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiSession)))
+
+        eventBus.post(SpeakersPersistedEvent())
+
+        testScheduler.triggerActions()
+
+        val actualSessionSpeaker = sessionSpeakersUpdatedEvent.sessionSpeakers[0]
+        assertEquals(apiSession.id.toString(), actualSessionSpeaker.sessionId)
+        assertEquals(sessionSpeaker.id, actualSessionSpeaker.speakerId)
+    }
+
+    @Test
     fun onSpeakersPersistedEventSendsConferenceDataRequestErrorEventWhenAnErrorOccurs() {
         whenever(codemashApi.getSessions()).thenReturn(Observable.error(Exception("Woops!")))
 
@@ -187,6 +208,11 @@ class CodemashServiceTest {
     @Subscribe
     fun onTagsUpdatedEvent(tagsUpdatedEvent: TagsUpdatedEvent) {
         this.tagsUpdatedEvent = tagsUpdatedEvent
+    }
+
+    @Subscribe
+    fun onSessionSpeakersUpdatedEvent(sessionSpeakersUpdatedEvent: SessionSpeakersUpdatedEvent) {
+        this.sessionSpeakersUpdatedEvent = sessionSpeakersUpdatedEvent
     }
 
     @Subscribe
