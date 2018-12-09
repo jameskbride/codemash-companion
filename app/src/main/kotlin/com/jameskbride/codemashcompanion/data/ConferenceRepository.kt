@@ -14,6 +14,7 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onSpeakersUpdatedEvent(speakersUpdatedEvent: SpeakersUpdatedEvent) {
+        conferenceDao.deleteSpeakers()
         val speakers = speakersUpdatedEvent.speakers
         conferenceDao.insertAll(speakers.toTypedArray())
         eventBus.post(SpeakersPersistedEvent())

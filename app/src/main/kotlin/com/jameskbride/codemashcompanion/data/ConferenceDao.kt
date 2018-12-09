@@ -69,4 +69,8 @@ interface ConferenceDao {
     @Transaction
     @Query("DELETE FROM ConferenceRoom")
     fun deleteRooms()
+
+    @Transaction
+    @Query("DELETE FROM Speaker")
+    fun deleteSpeakers()
 }

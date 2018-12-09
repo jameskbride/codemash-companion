@@ -89,6 +89,13 @@ class ConferenceRepositoryTest {
     }
 
     @Test
+    fun onSpeakersUpdatedEventItDeletesAllSpeakers() {
+        subject.onSpeakersUpdatedEvent(SpeakersUpdatedEvent())
+
+        verify(conferenceDao).deleteSpeakers()
+    }
+
+    @Test
     fun onTagsUpdatedEventItDeletesAllTags() {
         subject.onTagsUpdatedEvent(TagsUpdatedEvent(tags = listOf(Tag(sessionId = "sessionId", name = "some tag"))))
 
