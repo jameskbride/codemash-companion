@@ -8,20 +8,24 @@ class ApiAdapter {
 
     companion object {
         fun mapApiSpeakersToDomain(apiSpeakers: List<ApiSpeaker>): List<Speaker> {
-            return apiSpeakers.map {
-                Speaker(
-                        Id = it.id,
-                        FirstName = it.firstName,
-                        LastName = it.lastName,
-//                        LinkedInProfile = it.linkedInProfile,
-//                        TwitterLink = it.twitterLink,
-//                        GitHubLink = it.gitHubLink,
-                        GravatarUrl = it.profilePicture,
-                        Biography = it.biography
-//                        BlogUrl = it.blogUrl
-                )
-            }
+            return apiSpeakers.map { convertApiSpeakerWithCollections(it) }
         }
+
+        private fun convertApiSpeakerWithCollections(apiSpeaker: ApiSpeaker): Speaker {
+            return Speaker(
+                    Id = apiSpeaker.id,
+                    FirstName = apiSpeaker.firstName,
+                    LastName = apiSpeaker.lastName,
+                    LinkedInProfile = findLinkByType(apiSpeaker, "LinkedIn"),
+                    TwitterLink = findLinkByType(apiSpeaker, "Twitter"),
+                    BlogUrl = findLinkByType(apiSpeaker, "Blog"),
+                    GravatarUrl = apiSpeaker.profilePicture,
+                    Biography = apiSpeaker.biography
+            )
+        }
+
+        private fun findLinkByType(apiSpeaker: ApiSpeaker, type:String) =
+                apiSpeaker.links?.find { it -> it.linkType == type }?.url ?: null
 
         fun mapApiSessionSpeakersToDomain(session: ApiSession) =
                 session.shortSpeakers!!.map { speaker ->
