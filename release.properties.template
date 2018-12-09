@@ -1,0 +1,4 @@
+store.file=~/.android/debug.keystore
+store.password=android
+key.alias=codemash-androiddebugkey
+key.password=android
