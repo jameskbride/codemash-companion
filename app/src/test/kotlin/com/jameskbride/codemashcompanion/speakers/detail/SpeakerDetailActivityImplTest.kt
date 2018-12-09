@@ -10,7 +10,7 @@ import android.view.MenuItem
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.framework.BaseActivityImpl.Companion.PARAMETER_BLOCK
-import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
+import com.jameskbride.codemashcompanion.utils.test.buildDefaultFullSpeakers
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -38,7 +38,7 @@ class SpeakerDetailActivityImplTest {
     @Before
     fun setUp() {
         initMocks(this)
-        speakers = buildDefaultSpeakers()
+        speakers = buildDefaultFullSpeakers()
         speakerDetailParams = SpeakersParams(speakers, 0)
         intent = mock()
 

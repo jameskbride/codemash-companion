@@ -1,7 +1,7 @@
 package com.jameskbride.codemashcompanion.sessions.detail
 
 import com.jameskbride.codemashcompanion.R
-import com.jameskbride.codemashcompanion.bus.SessionUpdatedEvent
+import com.jameskbride.codemashcompanion.bus.SessionBookmarkUpdated
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.Bookmark
 import com.jameskbride.codemashcompanion.data.model.ConferenceRoom
@@ -110,7 +110,7 @@ class SessionDetailActivityPresenterTest {
 
         whenever(conferenceRepository.getSessions(arrayOf("1"))).thenReturn(fullSessionObservable)
 
-        subject.updateSession(SessionUpdatedEvent("1"))
+        subject.onSessionBookmarkUpdated(SessionBookmarkUpdated("1"))
         testScheduler.triggerActions()
 
         verify(conferenceRepository).getSessions(any())

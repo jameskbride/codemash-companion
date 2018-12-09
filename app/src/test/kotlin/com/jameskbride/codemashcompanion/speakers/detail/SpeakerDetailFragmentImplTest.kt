@@ -22,7 +22,7 @@ import com.jameskbride.codemashcompanion.utils.IntentFactory
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
 import com.jameskbride.codemashcompanion.utils.Toaster
 import com.jameskbride.codemashcompanion.utils.UriWrapper
-import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
+import com.jameskbride.codemashcompanion.utils.test.buildDefaultFullSpeakers
 import com.nhaarman.mockito_kotlin.*
 import org.junit.Assert.*
 import org.junit.Before
@@ -68,7 +68,7 @@ class SpeakerDetailFragmentImplTest {
     @Before
     fun setUp() {
         initMocks(this)
-        speaker = buildDefaultSpeakers()[0]
+        speaker = buildDefaultFullSpeakers()[0]
         speaker.LinkedInProfile = ""
         speaker.BlogUrl = ""
         speaker.GitHubLink = ""
