@@ -9,13 +9,7 @@ data class ApiSpeaker(
         @SerializedName("lastName") val lastName: String? = "",
         @SerializedName("bio") val biography: String? = "",
         @SerializedName("profilePicture") val profilePicture: String? = "",
-        @SerializedName("sessions") var shortSessions:List<ShortSession>? = listOf(),
         @SerializedName("links") var links:List<Link>? = listOf()
-): Serializable
-
-data class ShortSession constructor(
-        @SerializedName("id") val id: String = "",
-        @SerializedName("name") val firstName: String? = ""
 ): Serializable
 
 data class Link constructor(

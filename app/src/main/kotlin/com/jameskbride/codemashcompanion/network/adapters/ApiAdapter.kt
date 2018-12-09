@@ -16,7 +16,7 @@ class ApiAdapter {
 //                        LinkedInProfile = it.linkedInProfile,
 //                        TwitterLink = it.twitterLink,
 //                        GitHubLink = it.gitHubLink,
-//                        GravatarUrl = "http:${it.gravatarUrl}",
+                        GravatarUrl = it.profilePicture,
                         Biography = it.biography
 //                        BlogUrl = it.blogUrl
                 )

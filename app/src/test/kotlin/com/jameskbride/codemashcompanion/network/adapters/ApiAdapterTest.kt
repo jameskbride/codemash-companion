@@ -17,10 +17,21 @@ class ApiAdapterTest {
 
         val speakers = ApiAdapter.mapApiSpeakersToDomain(apiSpeakers)
 
-        assertEquals(1, speakers.size)
         assertEquals(apiSpeakers.first().id, speakers.first().Id)
         assertEquals(apiSpeakers.first().firstName, speakers.first().FirstName)
         assertEquals(apiSpeakers.first().lastName, speakers.first().LastName)
         assertEquals(apiSpeakers.first().biography, speakers.first().Biography)
+    }
+
+    @Test
+    fun mapApiSpeakersToDomainConvertsTheProfilePicture() {
+        val apiSpeakers = listOf(ApiSpeaker(
+                id = "1234",
+                profilePicture = "some url"
+        ))
+
+        val speakers = ApiAdapter.mapApiSpeakersToDomain(apiSpeakers)
+
+        assertEquals(apiSpeakers.first().profilePicture, speakers.first().GravatarUrl)
     }
 }
