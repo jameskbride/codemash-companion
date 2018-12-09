@@ -29,6 +29,7 @@ class CodemashServiceTest {
 
     private var speakersUpdatedEvent: SpeakersUpdatedEvent = SpeakersUpdatedEvent()
     private var sessionsReceivedEvent: SessionsReceivedEvent = SessionsReceivedEvent()
+    private var sessionsUpdatedEvent: SessionsUpdatedEvent = SessionsUpdatedEvent()
     private var conferenceDataRequestErrorFired: Boolean = false
 
     @Before
@@ -77,7 +78,7 @@ class CodemashServiceTest {
 
     @Test
     fun onSpeakersPersistedEventRequestsTheSessionsData() {
-        val session = ApiSession(
+        val apiSession = ApiSession(
                 id  = 123,
                 category = "DevOps",
                 sessionStartTime = "start time",
@@ -88,14 +89,21 @@ class CodemashServiceTest {
                 abstract = "abstract"
         )
 
-        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(session)))
+        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiSession)))
 
         eventBus.post(SpeakersPersistedEvent())
 
         testScheduler.triggerActions()
 
-        val actualSessions = sessionsReceivedEvent.sessions
-        assertEquals(session, actualSessions[0])
+        val actualSession = sessionsUpdatedEvent.sessions[0]
+        assertEquals(apiSession.id.toString(), actualSession.Id)
+        assertEquals(apiSession.category, actualSession.Category)
+        assertEquals(apiSession.sessionStartTime, actualSession.SessionStartTime)
+        assertEquals(apiSession.sessionEndTime, actualSession.SessionEndTime)
+        assertEquals(apiSession.sessionType, actualSession.SessionType)
+        assertEquals(apiSession.sessionTime, actualSession.SessionTime)
+        assertEquals(apiSession.title, actualSession.Title)
+        assertEquals(apiSession.abstract, actualSession.Abstract)
     }
 
     @Test
@@ -116,6 +124,11 @@ class CodemashServiceTest {
     @Subscribe
     fun onSessionsReceivedEvent(sessionsReceivedEvent: SessionsReceivedEvent) {
         this.sessionsReceivedEvent = sessionsReceivedEvent
+    }
+
+    @Subscribe
+    fun onSessionsUpdatedEvent(sessionsUpdatedEvent: SessionsUpdatedEvent) {
+        this.sessionsUpdatedEvent = sessionsUpdatedEvent
     }
 
     @Subscribe

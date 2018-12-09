@@ -2,12 +2,13 @@ package com.jameskbride.codemashcompanion.network.service
 
 import com.jameskbride.codemashcompanion.bus.*
 import com.jameskbride.codemashcompanion.network.CodemashApi
+import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSessionsToDomain
 import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSpeakersToDomain
+import com.jameskbride.codemashcompanion.network.model.ApiSession
 import io.reactivex.Scheduler
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import javax.inject.Inject
-
 
 class CodemashService @Inject constructor(private val codemashApi: CodemashApi,
                                           override val eventBus: EventBus,
@@ -31,8 +32,12 @@ class CodemashService @Inject constructor(private val codemashApi: CodemashApi,
                 .subscribeOn(processScheduler)
                 .observeOn(androidScheduler)
                 .subscribe (
-                        {result -> eventBus.post(SessionsReceivedEvent(sessions = result))},
+                        {result -> handleSessionsUpdated(result)},
                         {error -> eventBus.post(ConferenceDataRequestError())}
                 )
+    }
+
+    private fun handleSessionsUpdated(result: List<ApiSession>) {
+        eventBus.post(SessionsUpdatedEvent(sessions = mapApiSessionsToDomain(result)))
     }
 }
