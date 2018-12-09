@@ -6,6 +6,7 @@ import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.model.ApiSession
 import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultApiSpeakers
+import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Observable
 import io.reactivex.schedulers.TestScheduler
@@ -28,7 +29,6 @@ class CodemashServiceTest {
     private lateinit var subject: CodemashService
 
     private var speakersUpdatedEvent: SpeakersUpdatedEvent = SpeakersUpdatedEvent()
-    private var sessionsReceivedEvent: SessionsReceivedEvent = SessionsReceivedEvent()
     private var sessionsUpdatedEvent: SessionsUpdatedEvent = SessionsUpdatedEvent()
     private var conferenceDataRequestErrorFired: Boolean = false
 
@@ -77,7 +77,16 @@ class CodemashServiceTest {
     }
 
     @Test
-    fun onSpeakersPersistedEventRequestsTheSessionsData() {
+    fun onSpeakersPersistedEventGetsTheSessionData() {
+        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf()))
+
+        eventBus.post(SpeakersPersistedEvent())
+
+        verify(codemashApi).getSessions()
+    }
+
+    @Test
+    fun onSpeakersPersistedEventUpdatesTheSessionsData() {
         val apiSession = ApiSession(
                 id  = 123,
                 category = "DevOps",
@@ -119,11 +128,6 @@ class CodemashServiceTest {
     @Subscribe
     fun onSpeakersReceivedEvent(speakersReceivedEvent: SpeakersUpdatedEvent) {
         this.speakersUpdatedEvent = speakersReceivedEvent
-    }
-
-    @Subscribe
-    fun onSessionsReceivedEvent(sessionsReceivedEvent: SessionsReceivedEvent) {
-        this.sessionsReceivedEvent = sessionsReceivedEvent
     }
 
     @Subscribe
