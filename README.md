@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/jameskbride/codemash-companion.svg?style=svg)](https://circleci.com/gh/jameskbride/codemash-companion)
+
 Running the App Locally
 =======================
 To run the app locally you'll need to download and run the [codemash-data](https://github.com/jameskbride/codemash-data) project per the instructions.
