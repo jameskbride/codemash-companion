@@ -3,6 +3,7 @@ package com.jameskbride.codemashcompanion.network.service
 import com.jameskbride.codemashcompanion.bus.*
 import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.buildRooms
+import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.buildTags
 import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSessionsToDomain
 import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSpeakersToDomain
 import com.jameskbride.codemashcompanion.network.model.ApiSession
@@ -40,6 +41,7 @@ class CodemashService @Inject constructor(private val codemashApi: CodemashApi,
 
     private fun handleSessionsUpdated(apiSessions: List<ApiSession>) {
         eventBus.post(RoomsUpdatedEvent(conferenceRooms = buildRooms(apiSessions)))
+        eventBus.post(TagsUpdatedEvent(tags = buildTags(apiSessions)))
         eventBus.post(SessionsUpdatedEvent(sessions = mapApiSessionsToDomain(apiSessions)))
     }
 }

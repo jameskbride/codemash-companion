@@ -31,6 +31,7 @@ class CodemashServiceTest {
     private var speakersUpdatedEvent: SpeakersUpdatedEvent = SpeakersUpdatedEvent()
     private var sessionsUpdatedEvent: SessionsUpdatedEvent = SessionsUpdatedEvent()
     private var roomsUpdatedEvent: RoomsUpdatedEvent = RoomsUpdatedEvent()
+    private var tagsUpdatedEvent: TagsUpdatedEvent = TagsUpdatedEvent()
     private var conferenceDataRequestErrorFired: Boolean = false
 
     @Before
@@ -138,6 +139,27 @@ class CodemashServiceTest {
     }
 
     @Test
+    fun onSpeakersPersistedEventUpdatesTheTagData() {
+        val apiSession = ApiSession(
+                id  = 123,
+                tags = listOf("tag 1", "tag 2")
+        )
+
+        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiSession)))
+
+        eventBus.post(SpeakersPersistedEvent())
+
+        testScheduler.triggerActions()
+
+        assertEquals(2, tagsUpdatedEvent.tags.size)
+        val actualTags = tagsUpdatedEvent.tags
+        assertEquals("${apiSession.id}", actualTags[0].sessionId)
+        assertEquals("tag 1", actualTags[0].name)
+        assertEquals("${apiSession.id}", actualTags[1].sessionId)
+        assertEquals("tag 2", actualTags[1].name)
+    }
+
+    @Test
     fun onSpeakersPersistedEventSendsConferenceDataRequestErrorEventWhenAnErrorOccurs() {
         whenever(codemashApi.getSessions()).thenReturn(Observable.error(Exception("Woops!")))
 
@@ -160,6 +182,11 @@ class CodemashServiceTest {
     @Subscribe
     fun onRoomsUpdatedEvent(roomsUpdatedEvent: RoomsUpdatedEvent) {
         this.roomsUpdatedEvent = roomsUpdatedEvent
+    }
+
+    @Subscribe
+    fun onTagsUpdatedEvent(tagsUpdatedEvent: TagsUpdatedEvent) {
+        this.tagsUpdatedEvent = tagsUpdatedEvent
     }
 
     @Subscribe
