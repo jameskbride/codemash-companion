@@ -89,6 +89,13 @@ class ConferenceRepositoryTest {
     }
 
     @Test
+    fun onSpeakersUpdatedEventItDeletesAllSpeakers() {
+        subject.onSpeakersUpdatedEvent(SpeakersUpdatedEvent())
+
+        verify(conferenceDao).deleteSpeakers()
+    }
+
+    @Test
     fun onTagsUpdatedEventItDeletesAllTags() {
         subject.onTagsUpdatedEvent(TagsUpdatedEvent(tags = listOf(Tag(sessionId = "sessionId", name = "some tag"))))
 
@@ -100,6 +107,13 @@ class ConferenceRepositoryTest {
         subject.onRoomsUpdatedEvent(RoomsUpdatedEvent(conferenceRooms = listOf(ConferenceRoom(sessionId = "sessionId", name = "some room"))))
 
         verify(conferenceDao).deleteRooms()
+    }
+
+    @Test
+    fun onSessionsUpdatedEventItDeletesAllSessions() {
+        subject.onSessionsUpdatedEvent(SessionsUpdatedEvent())
+
+        verify(conferenceDao).deleteSessions()
     }
 
     @Test
@@ -154,6 +168,13 @@ class ConferenceRepositoryTest {
         assertEquals(1, tags.size)
 
         assertTrue(tags.contains(Tag(sessionId = "sessionId", name = "some tag")))
+    }
+
+    @Test
+    fun onSessionSpeakersUpdatedEventItDeletesAllSessionSpeakers() {
+        subject.onSessionSpeakersUpdatedEvent(SessionSpeakersUpdatedEvent())
+
+        verify(conferenceDao).deleteSessionSpeakers()
     }
 
     @Test
