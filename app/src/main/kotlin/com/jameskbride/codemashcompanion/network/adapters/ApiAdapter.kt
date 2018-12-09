@@ -46,7 +46,7 @@ class ApiAdapter {
             )
         }
 
-        fun buildSessionSpeakers(sessions:List<ApiSession>):MutableList<SessionSpeaker> {
+        fun buildSessionSpeakers(sessions:List<ApiSession>):List<SessionSpeaker> {
             val sessionSpeakers = sessions.map { session ->
                 mapApiSessionSpeakersToDomain(session)
             }
@@ -68,15 +68,23 @@ class ApiAdapter {
             return ConferenceRoom(id=session.roomId!!, sessionId = session.id, name = session.room!!)
         }
 
-        fun buildTags(apiSessions: List<ApiSession>): MutableList<Tag> {
-            val allTags = apiSessions.map { session ->
+        fun buildTags(apiSessions: List<ApiSession>): List<Tag>? {
+            var allTags:List<Tag>? = apiSessions.map { session ->
                 mapApiSessionTagsToDomain(session)
-            }
+            }.flatten()
 
-            return allTags.flatten().toMutableList()
+            return allTags!!.toList()
         }
 
-        private fun mapApiSessionTagsToDomain(session: ApiSession):List<Tag> = listOf()
-//                session.tags!!.map { tag -> Tag(sessionId = session.id, name = tag) }
+        private fun mapApiSessionTagsToDomain(apiSession: ApiSession):List<Tag> {
+            var tagCategory = apiSession.categories?.find {it -> it.name == "Tags"}
+            if (tagCategory == null) {
+                return listOf()
+            } else {
+                return tagCategory?.categoryItems?.map { tag ->
+                    Tag(sessionId = apiSession.id, name = tag.name!!)
+                }
+            }
+        }
     }
 }

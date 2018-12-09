@@ -42,7 +42,7 @@ class CodemashService @Inject constructor(private val codemashApi: CodemashApi,
 
     private fun handleSessionsUpdated(apiSessions: List<ApiSession>) {
         eventBus.post(RoomsUpdatedEvent(conferenceRooms = buildRooms(apiSessions)))
-        eventBus.post(TagsUpdatedEvent(tags = buildTags(apiSessions)))
+        eventBus.post(TagsUpdatedEvent(tags = buildTags(apiSessions)!!))
         eventBus.post(SessionSpeakersUpdatedEvent(sessionSpeakers = buildSessionSpeakers(apiSessions)))
         eventBus.post(SessionsUpdatedEvent(sessions = mapApiSessionsToDomain(apiSessions)))
     }

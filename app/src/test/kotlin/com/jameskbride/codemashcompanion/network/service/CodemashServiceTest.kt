@@ -129,8 +129,13 @@ class CodemashServiceTest {
 
     @Test
     fun onSpeakersPersistedEventUpdatesTheTagData() {
+        val tagsCategory = Category(
+                id = 1234,
+                name = "Tags",
+                categoryItems = listOf(CategoryItem(1234, name = "DevOps"), CategoryItem(id = 4567, name = ".NET")))
         val apiSession = ApiSession(
-                id  = "123"
+                id = "1234",
+                categories = listOf(tagsCategory)
         )
 
         whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiSession)))
@@ -139,10 +144,7 @@ class CodemashServiceTest {
 
         testScheduler.triggerActions()
 
-        assertEquals(1, tagsUpdatedEvent.tags.size)
-        val actualTags = tagsUpdatedEvent.tags
-        assertEquals("${apiSession.id}", actualTags[0].sessionId)
-        assertEquals("tag 1", actualTags[0].name)
+        assertEquals(2, tagsUpdatedEvent.tags.size)
     }
 
     @Test
