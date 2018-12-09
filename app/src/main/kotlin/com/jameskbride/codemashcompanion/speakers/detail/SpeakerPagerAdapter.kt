@@ -1,19 +1,19 @@
 package com.jameskbride.codemashcompanion.speakers.detail
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentStatePagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.speakers.detail.SpeakerDetailFragment.Companion.SPEAKER_KEY
 
-class SpeakerPagerAdapter constructor(fm: FragmentManager, val speakerPagerAdapterImpl:SpeakerPagerAdapterImpl = SpeakerPagerAdapterImpl()) : FragmentStatePagerAdapter(fm) {
+class SpeakerPagerAdapter constructor(fm: androidx.fragment.app.FragmentManager, val speakerPagerAdapterImpl:SpeakerPagerAdapterImpl = SpeakerPagerAdapterImpl()) : androidx.fragment.app.FragmentStatePagerAdapter(fm) {
 
     init {
         speakerPagerAdapterImpl.speakerPagerAdapter = this
     }
 
-    override fun getItem(position: Int): Fragment {
+    override fun getItem(position: Int): androidx.fragment.app.Fragment {
         return speakerPagerAdapterImpl.getItem(position)
     }
 
@@ -31,7 +31,7 @@ class SpeakerPagerAdapterImpl {
     lateinit var speakerPagerAdapter:SpeakerPagerAdapter
     var speakers:Array<FullSpeaker> = arrayOf()
 
-    fun getItem(position: Int): Fragment {
+    fun getItem(position: Int): androidx.fragment.app.Fragment {
         val speakerDetailFragment = SpeakerDetailFragment()
         val bundle = Bundle()
         bundle.putSerializable(SPEAKER_KEY, speakers[position])
@@ -51,7 +51,7 @@ class SpeakerPagerAdapterImpl {
 }
 
 class SpeakerPagerAdapterFactory {
-    fun make(fragmentManager: FragmentManager): SpeakerPagerAdapter {
+    fun make(fragmentManager: androidx.fragment.app.FragmentManager): SpeakerPagerAdapter {
         return SpeakerPagerAdapter(fragmentManager)
     }
 }

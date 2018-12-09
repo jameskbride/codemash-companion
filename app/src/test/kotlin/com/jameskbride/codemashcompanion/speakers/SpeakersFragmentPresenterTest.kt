@@ -105,14 +105,14 @@ class SpeakersFragmentPresenterTest {
 
     @Test
     fun onConferenceDataRequestErrorItNotifiesTheViewToDisplayAMessage() {
-        eventBus.post(ConferenceDataRequestError())
+        eventBus.post(ConferenceDataRequestError(Throwable()))
 
         verify(view).displayErrorMessage(R.string.could_not_refresh)
     }
 
     @Test
     fun onConferenceDataRequestErrorItNotifiesTheViewToStopRefreshing() {
-        eventBus.post(ConferenceDataRequestError())
+        eventBus.post(ConferenceDataRequestError(Throwable()))
 
         verify(view).stopRefreshing()
     }

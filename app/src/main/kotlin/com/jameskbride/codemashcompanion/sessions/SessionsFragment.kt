@@ -1,9 +1,6 @@
 package com.jameskbride.codemashcompanion.sessions
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +8,7 @@ import com.jameskbride.codemashcompanion.application.CodemashCompanionApplicatio
 import javax.inject.Inject
 import javax.inject.Named
 
-open class SessionsFragment: Fragment() {
+open class SessionsFragment: androidx.fragment.app.Fragment() {
     @Inject @field:Named("AllSessions")
     open lateinit var impl: SessionsFragmentImpl
 
@@ -30,7 +27,7 @@ open class SessionsFragment: Fragment() {
         impl.onPause()
     }
 
-    open fun makeLinearLayoutManager(): RecyclerView.LayoutManager? {
-        return LinearLayoutManager(view?.context)
+    open fun makeLinearLayoutManager(): androidx.recyclerview.widget.RecyclerView.LayoutManager? {
+        return androidx.recyclerview.widget.LinearLayoutManager(view?.context)
     }
 }

@@ -1,9 +1,9 @@
 package com.jameskbride.codemashcompanion.rooms
 
 import android.content.Intent
-import android.support.annotation.DrawableRes
-import android.support.v7.app.ActionBar
-import android.support.v7.widget.Toolbar
+import androidx.annotation.DrawableRes
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.widget.Toolbar
 import android.widget.ImageView
 import com.github.chrisbanes.photoview.PhotoView
 import com.jameskbride.codemashcompanion.R

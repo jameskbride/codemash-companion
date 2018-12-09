@@ -8,8 +8,8 @@ import com.squareup.picasso.Transformation
 class PicassoLoader constructor(val picassoWrapper: PicassoWrapper = PicassoWrapper(), val logWrapper: LogWrapper = LogWrapper()) {
 
     fun load(speaker: FullSpeaker, speakerImage: ImageView, width:Int = 500, height:Int = 500, transformation: Transformation? = null) {
-        val url = "${speaker.GravatarUrl}?s=180&d=mm"
-        logWrapper.d("PicassoLoader", "Requesting gravatar url: ${url}")
+        val url = "${speaker.GravatarUrl}"
+        logWrapper.d("PicassoLoader", "Requesting url: ${url}")
         picassoWrapper.with(speakerImage.context)
                 .load(url)
                 .placeholder(R.drawable.ic_person)

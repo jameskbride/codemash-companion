@@ -1,6 +1,6 @@
 package com.jameskbride.codemashcompanion.speakers.detail
 
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.FragmentManager
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultFullSpeakers
 import com.nhaarman.mockito_kotlin.mock
@@ -12,7 +12,7 @@ import org.junit.Test
 
 class SpeakerPagerAdapterTest {
 
-    private lateinit var fragmentManager:FragmentManager
+    private lateinit var fragmentManager: androidx.fragment.app.FragmentManager
     private lateinit var speakers:Array<FullSpeaker>
     private lateinit var subject:SpeakerPagerAdapter
     private lateinit var speakerPagerAdapterImpl:SpeakerPagerAdapterImpl

@@ -1,7 +1,7 @@
 package com.jameskbride.codemashcompanion.speakers.detail
 
 import android.os.Bundle
-import android.support.v4.view.ViewPager
+import androidx.viewpager.widget.ViewPager
 import android.view.MenuItem
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.framework.BaseActivity
@@ -21,7 +21,7 @@ class SpeakerDetailActivityImpl(val speakerPagerAdapterFactory: SpeakerPagerAdap
                 speakerPagerAdapterFactory.make(qtn.supportFragmentManager)
         speakerDetailPagerAdapter.updateSpeakers(speakerDetailParams.speakers)
 
-        val container = qtn.findViewById<ViewPager>(R.id.speaker_pager)
+        val container = qtn.findViewById<androidx.viewpager.widget.ViewPager>(R.id.speaker_pager)
         container.adapter = speakerDetailPagerAdapter
         container.currentItem = speakerDetailParams.index
         qtn.setSupportActionBar(qtn.findViewById(R.id.toolbar))

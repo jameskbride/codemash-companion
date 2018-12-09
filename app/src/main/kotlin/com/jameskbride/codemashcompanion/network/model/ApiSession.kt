@@ -4,23 +4,28 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class ApiSession constructor(
-        @SerializedName("Id") var id: Int,
-        @SerializedName("Category") var category: String? = "",
-        @SerializedName("SessionStartTime") var sessionStartTime: String? = "",
-        @SerializedName("SessionType") var sessionType: String? = "",
-        @SerializedName("SessionEndTime") var sessionEndTime: String? = "",
-        @SerializedName("SessionTime") var sessionTime: String? = "",
-        @SerializedName("Title") var title: String? = "",
-        @SerializedName("Abstract") var abstract: String? = "",
-        @SerializedName("Tags") var tags:List<String>? = listOf(),
-        @SerializedName("Room") var room:String? = "",
-        @SerializedName("Rooms") var rooms:List<String>? = listOf(),
-        @SerializedName("Speakers") var shortSpeakers:List<ShortSpeaker>? = listOf()
+        @SerializedName("id") var id: String = "",
+        @SerializedName("startsAt") var sessionStartTime: String? = "2019-01-08T08:00:00",
+        @SerializedName("endsAt") var sessionEndTime: String? = "2019-01-08T12:00:00",
+        @SerializedName("title") var title: String? = "",
+        @SerializedName("description") var abstract: String? = "",
+        @SerializedName("roomId") var roomId:Int? = -1,
+        @SerializedName("room") var room:String? = "",
+        @SerializedName("categories") var categories:List<Category>? = listOf(),
+        @SerializedName("speakers") var shortSpeakers:List<ShortSpeaker>? = listOf()
 ): Serializable
 
 data class ShortSpeaker constructor(
-        @SerializedName("Id") var id:String? = "",
-        @SerializedName("FirstName") var firstName:String? = "",
-        @SerializedName("LastName") var lastName:String =  "",
-        @SerializedName("GravatarUrl") var gravatarUrl:String? = ""
+        @SerializedName("id") var id:String? = ""
 ): Serializable
+
+data class Category constructor(
+        @SerializedName("id") var id:Int? = -1,
+        @SerializedName("name") var name:String? = "",
+        @SerializedName("categoryItems") var categoryItems:List<CategoryItem> = listOf()
+)
+
+data class CategoryItem constructor(
+        @SerializedName("id") var id:Int? = -1,
+        @SerializedName("name") var name:String? = ""
+)

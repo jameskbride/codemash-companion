@@ -3,74 +3,103 @@ package com.jameskbride.codemashcompanion.network.adapters
 import com.jameskbride.codemashcompanion.data.model.*
 import com.jameskbride.codemashcompanion.network.model.ApiSession
 import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
+import com.jameskbride.codemashcompanion.network.model.ShortSpeaker
 
 class ApiAdapter {
 
     companion object {
         fun mapApiSpeakersToDomain(apiSpeakers: List<ApiSpeaker>): List<Speaker> {
-            return apiSpeakers.map {
-                Speaker(
-                        Id = it.id,
-                        FirstName = it.firstName,
-                        LastName = it.lastName,
-                        LinkedInProfile = it.linkedInProfile,
-                        TwitterLink = it.twitterLink,
-                        GitHubLink = it.gitHubLink,
-                        GravatarUrl = "http:${it.gravatarUrl}",
-                        Biography = it.biography,
-                        BlogUrl = it.blogUrl
-                )
-            }
+            return apiSpeakers.map { convertApiSpeakerWithCollections(it) }
         }
 
-        fun mapApiSessionSpeakersToDomain(session: ApiSession) =
-                session.shortSpeakers!!.map { speaker ->
-                    SessionSpeaker(sessionId = session.id.toString(), speakerId = speaker.id!!)
-                }
+        private fun convertApiSpeakerWithCollections(apiSpeaker: ApiSpeaker): Speaker {
+            return Speaker(
+                    Id = apiSpeaker.id,
+                    FirstName = apiSpeaker.firstName,
+                    LastName = apiSpeaker.lastName,
+                    LinkedInProfile = findLinkByType(apiSpeaker, "LinkedIn"),
+                    TwitterLink = findLinkByType(apiSpeaker, "Twitter"),
+                    BlogUrl = findLinkByType(apiSpeaker, "Blog"),
+                    GravatarUrl = apiSpeaker.profilePicture,
+                    Biography = apiSpeaker.biography
+            )
+        }
 
-        fun mapApiSessionRoomsToDomain(session: ApiSession) =
-                session.rooms!!.map { room ->
-                    ConferenceRoom(sessionId = session.id.toString(), name = room)
-                }
-
-        fun mapApiSessionTagsToDomain(session: ApiSession) =
-                session.tags!!.map { tag -> Tag(sessionId = session.id.toString(), name = tag) }
+        private fun findLinkByType(apiSpeaker: ApiSpeaker, type:String) =
+                apiSpeaker.links?.find { it -> it.linkType == type }?.url ?: null
 
         fun mapApiSessionsToDomain(apiSessions: List<ApiSession>): List<Session> {
             return apiSessions.map {
-                Session(
-                        Id = it.id.toString(),
-                        Category = it.category,
-                        SessionStartTime = it.sessionStartTime,
-                        SessionEndTime = it.sessionEndTime,
-                        SessionTime = it.sessionTime,
-                        SessionType = it.sessionType,
-                        Title = it.title,
-                        Abstract = it.abstract
-                )
+                convertApiSessionsWithCollections(it)
             }
         }
 
-        fun buildSessionSpeakers(sessions:List<ApiSession>):MutableList<SessionSpeaker> {
+        private fun convertApiSessionsWithCollections(apiSession: ApiSession): Session {
+            var category = apiSession.categories?.find {it -> it.name == "Track"}?.categoryItems?.first()?.name
+            return Session(
+                    Id = apiSession.id,
+                    Category = category,
+                    SessionStartTime = apiSession.sessionStartTime,
+                    SessionEndTime = apiSession.sessionEndTime,
+        //                        SessionType = apiSession.sessionType,
+                    Title = apiSession.title,
+                    Abstract = apiSession.abstract
+            )
+        }
+
+        fun buildSessionSpeakers(sessions:List<ApiSession>):List<SessionSpeaker> {
             val sessionSpeakers = sessions.map { session ->
                 mapApiSessionSpeakersToDomain(session)
             }
-            return sessionSpeakers.flatten().toMutableList()
+            return sessionSpeakers.flatten().filterNotNull().toList()
         }
 
-        fun buildRooms(apiSessions: List<ApiSession>): MutableList<ConferenceRoom> {
-            val allRooms = apiSessions.map { session ->
+        private fun mapApiSessionSpeakersToDomain(session: ApiSession):List<SessionSpeaker?> {
+            return if (sessionHasShortSpeakers(session)) {
+                session.shortSpeakers!!.map { shortSpeaker ->
+                    SessionSpeaker(sessionId = session.id, speakerId = shortSpeaker.id!!)
+                }
+            } else { listOf() }
+        }
+
+
+        private fun sessionHasShortSpeakers(session: ApiSession): Boolean {
+            return session.shortSpeakers != null
+        }
+
+
+        fun buildRooms(apiSessions: List<ApiSession>): List<ConferenceRoom> {
+            return apiSessions.map { session ->
                 mapApiSessionRoomsToDomain(session)
-            }
-            return allRooms.flatten().toMutableList()
+            }.filterNotNull()
         }
 
-        fun buildTags(apiSessions: List<ApiSession>): MutableList<Tag> {
-            val allTags = apiSessions.map { session ->
-                mapApiSessionTagsToDomain(session)
-            }
+        private fun mapApiSessionRoomsToDomain(session: ApiSession): ConferenceRoom? {
+            return  if (sessionHasARoom(session))
+                ConferenceRoom(id=session.roomId!!, sessionId = session.id, name = session.room!!) else null
 
-            return allTags.flatten().toMutableList()
+        }
+
+        private fun sessionHasARoom(session: ApiSession) =
+                session.roomId != null && session.room != null
+
+        fun buildTags(apiSessions: List<ApiSession>): List<Tag>? {
+            var allTags:List<Tag>? = apiSessions.map { session ->
+                mapApiSessionTagsToDomain(session)
+            }.flatten()
+
+            return allTags!!.toList()
+        }
+
+        private fun mapApiSessionTagsToDomain(apiSession: ApiSession):List<Tag> {
+            var tagCategory = apiSession.categories?.find {it -> it.name == "Tags"}
+            if (tagCategory == null) {
+                return listOf()
+            } else {
+                return tagCategory?.categoryItems?.map { tag ->
+                    Tag(sessionId = apiSession.id, name = tag.name!!)
+                }
+            }
         }
     }
 }

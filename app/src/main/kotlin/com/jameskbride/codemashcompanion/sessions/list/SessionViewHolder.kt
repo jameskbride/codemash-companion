@@ -1,6 +1,5 @@
 package com.jameskbride.codemashcompanion.sessions.list
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
@@ -8,7 +7,7 @@ import com.jameskbride.codemashcompanion.data.model.FullSession
 import java.text.SimpleDateFormat
 import java.util.*
 
-open class SessionViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView)
+open class SessionViewHolder constructor(itemView: View): androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView)
 
 class ItemViewHolder constructor(val view: View): SessionViewHolder(view) {
     fun bind(session: FullSession) {

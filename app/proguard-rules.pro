@@ -34,3 +34,4 @@
 -keep public class com.jameskbride.codemashcompanion.application.ApplicationComponentFactory {*;}
 -keep class kotlin.jvm.internal.DefaultConstructorMarker {*;}
 -keep class org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement {*;}
+-keep class androidx.core.app.CoreComponentFactory { *; }

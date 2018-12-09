@@ -2,10 +2,10 @@ package com.jameskbride.codemashcompanion.sessions
 
 import android.content.Context
 import android.content.Intent
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,11 +38,11 @@ class SessionsFragmentImplTest {
     @Mock private lateinit var view:View
     @Mock private lateinit var layoutInflater:LayoutInflater
     @Mock private lateinit var container:ViewGroup
-    @Mock private lateinit var sessionsView:RecyclerView
-    @Mock private lateinit var sessionsRefresh:SwipeRefreshLayout
+    @Mock private lateinit var sessionsView: androidx.recyclerview.widget.RecyclerView
+    @Mock private lateinit var sessionsRefresh: androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     @Mock private lateinit var sessionsViewAdapter: SessionsRecyclerViewAdapter
     @Mock private lateinit var sessionsViewAdapterFactory: SessionsViewAdapterFactory
-    @Mock private lateinit var linearLayoutManager:LinearLayoutManager
+    @Mock private lateinit var linearLayoutManager: androidx.recyclerview.widget.LinearLayoutManager
     @Mock private lateinit var intentFactory:IntentFactory
     @Mock private lateinit var context:Context
     @Mock private lateinit var intent:Intent
@@ -56,8 +56,8 @@ class SessionsFragmentImplTest {
         initMocks(this)
         whenever(layoutInflater.inflate(R.layout.fragment_sessions, container, false)).thenReturn(view)
         whenever(sessionsViewAdapterFactory.make(presenter)).thenReturn(sessionsViewAdapter)
-        whenever(view.findViewById<RecyclerView>(R.id.sessions)).thenReturn(sessionsView)
-        whenever(view.findViewById<SwipeRefreshLayout>(R.id.sessions_refresh)).thenReturn(sessionsRefresh)
+        whenever(view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.sessions)).thenReturn(sessionsView)
+        whenever(view.findViewById<androidx.swiperefreshlayout.widget.SwipeRefreshLayout>(R.id.sessions_refresh)).thenReturn(sessionsRefresh)
         whenever(qtn.activity).thenReturn(activity)
 
         subject = SessionsFragmentImpl(presenter, sessionsViewAdapterFactory, intentFactory, toaster)
@@ -74,7 +74,7 @@ class SessionsFragmentImplTest {
     fun onCreateViewSetsTheSwipeToRefreshListener() {
         subject.onCreateView(layoutInflater, container, null, qtn)
 
-        val swipeListenerCaptor = argumentCaptor<SwipeRefreshLayout.OnRefreshListener>()
+        val swipeListenerCaptor = argumentCaptor<androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener>()
 
         verify(sessionsRefresh).setOnRefreshListener(swipeListenerCaptor.capture())
 

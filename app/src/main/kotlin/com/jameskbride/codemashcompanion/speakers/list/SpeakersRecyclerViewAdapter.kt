@@ -1,13 +1,13 @@
 package com.jameskbride.codemashcompanion.speakers.list
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.speakers.SpeakersFragmentPresenter
 
 class SpeakersRecyclerViewAdapter constructor(val speakersFragmentPresenter: SpeakersFragmentPresenter,
                                               val impl: SpeakersRecyclerViewAdapterImpl = SpeakersRecyclerViewAdapterImpl(speakersFragmentPresenter))
-    : RecyclerView.Adapter<BaseSpeakerViewHolder>() {
+    : androidx.recyclerview.widget.RecyclerView.Adapter<BaseSpeakerViewHolder>() {
 
     override fun onBindViewHolder(holder: BaseSpeakerViewHolder, position: Int) {
         impl.onBindViewHolder(holder, position)

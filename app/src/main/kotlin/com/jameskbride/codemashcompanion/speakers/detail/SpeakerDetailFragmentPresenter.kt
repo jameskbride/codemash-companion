@@ -1,6 +1,6 @@
 package com.jameskbride.codemashcompanion.speakers.detail
 
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.data.model.FullSession

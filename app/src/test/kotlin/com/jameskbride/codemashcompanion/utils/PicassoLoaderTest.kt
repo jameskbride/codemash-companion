@@ -59,7 +59,7 @@ class PicassoLoaderTest {
 
     private fun setupBasicBuilderSteps(speaker: FullSpeaker) {
         whenever(picassoWrapper.with(context)).thenReturn(picassoWrapper)
-        whenever(picassoWrapper.load("${speaker.GravatarUrl}?s=180&d=mm")).thenReturn(picassoWrapper)
+        whenever(picassoWrapper.load("${speaker.GravatarUrl}")).thenReturn(picassoWrapper)
         whenever(picassoWrapper.placeholder(R.drawable.ic_person)).thenReturn(picassoWrapper)
         whenever(picassoWrapper.resize(500, 500)).thenReturn(picassoWrapper)
         whenever(picassoWrapper.centerCrop()).thenReturn(picassoWrapper)

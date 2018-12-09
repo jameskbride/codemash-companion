@@ -1,6 +1,6 @@
 package com.jameskbride.codemashcompanion.speakers
 
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.bus.BusAware
 import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
@@ -45,6 +45,7 @@ class SpeakersFragmentPresenter @Inject constructor(override val eventBus: Event
 
     @Subscribe
     fun onConferenceDataRequestError(conferenceDataRequestError: ConferenceDataRequestError) {
+        conferenceDataRequestError.error.printStackTrace()
         view.stopRefreshing()
         view.displayErrorMessage(R.string.could_not_refresh)
     }

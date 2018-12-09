@@ -1,6 +1,6 @@
 package com.jameskbride.codemashcompanion.sessions
 
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.bus.BusAware
 import com.jameskbride.codemashcompanion.bus.ConferenceDataPersistedEvent
@@ -48,6 +48,7 @@ class SessionsFragmentPresenter @Inject constructor(val sessionsRetriever: Sessi
 
     @Subscribe
     fun onConferenceDataRequestError(conferenceDataRequestError: ConferenceDataRequestError) {
+        conferenceDataRequestError.error.printStackTrace()
         view.stopRefreshing()
         view.displayErrorMessage(R.string.could_not_refresh)
     }

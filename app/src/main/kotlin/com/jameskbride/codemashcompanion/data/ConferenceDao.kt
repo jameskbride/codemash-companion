@@ -1,6 +1,6 @@
 package com.jameskbride.codemashcompanion.data
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import com.jameskbride.codemashcompanion.data.model.*
 import io.reactivex.Maybe
 

@@ -1,8 +1,6 @@
 package com.jameskbride.codemashcompanion.sessions
 
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,12 +20,12 @@ import javax.inject.Inject
 class SessionsFragmentImpl @Inject constructor(val presenter: SessionsFragmentPresenter,
                            val sessionsViewAdapterFactory: SessionsViewAdapterFactory = SessionsViewAdapterFactory(),
                            val intentFactory: IntentFactory = IntentFactory(), val toaster: Toaster = Toaster()): SessionsFragmentView {
-    private lateinit var sessionsView: RecyclerView
+    private lateinit var sessionsView: androidx.recyclerview.widget.RecyclerView
 
     private lateinit var sessionsViewAdapter: SessionsRecyclerViewAdapter
 
     private lateinit var qtn: SessionsFragment
-    private lateinit var sessionsRefresh: SwipeRefreshLayout
+    private lateinit var sessionsRefresh: androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?, qtn: SessionsFragment): View? {
         this.qtn = qtn
         val view = inflater.inflate(R.layout.fragment_sessions, container, false)

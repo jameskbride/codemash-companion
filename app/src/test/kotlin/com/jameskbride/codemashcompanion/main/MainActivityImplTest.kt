@@ -2,10 +2,10 @@ package com.jameskbride.codemashcompanion.main
 
 import android.content.Intent
 import android.content.res.Resources
-import android.support.design.widget.TabLayout
-import android.support.v4.app.FragmentManager
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.Toolbar
+import com.google.android.material.tabs.TabLayout
+import androidx.fragment.app.FragmentManager
+import androidx.viewpager.widget.ViewPager
+import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -24,8 +24,8 @@ import org.mockito.MockitoAnnotations.initMocks
 class MainActivityImplTest {
 
     @Mock private lateinit var mainActivity: MainActivity
-    @Mock private lateinit var supportFragmentManager: FragmentManager
-    @Mock private lateinit var container: ViewPager
+    @Mock private lateinit var supportFragmentManager: androidx.fragment.app.FragmentManager
+    @Mock private lateinit var container: androidx.viewpager.widget.ViewPager
     @Mock private lateinit var tabs: TabLayout
     @Mock private lateinit var toolbar: Toolbar
     @Mock private lateinit var resources: Resources
@@ -47,7 +47,7 @@ class MainActivityImplTest {
 
         subject = MainActivityImpl(intentFactory)
 
-        whenever(mainActivity.findViewById<ViewPager>(R.id.container)).thenReturn(container)
+        whenever(mainActivity.findViewById<androidx.viewpager.widget.ViewPager>(R.id.container)).thenReturn(container)
         whenever(mainActivity.findViewById<TabLayout>(R.id.tabs)).thenReturn(tabs)
         whenever(mainActivity.findViewById<Toolbar>(R.id.toolbar)).thenReturn(toolbar)
         whenever(mainActivity.supportFragmentManager).thenReturn(supportFragmentManager)

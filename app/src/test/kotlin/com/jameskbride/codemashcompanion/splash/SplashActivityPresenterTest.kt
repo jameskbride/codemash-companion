@@ -89,7 +89,7 @@ class SplashActivityPresenterTest {
 
     @Test
     fun onConferenceDataRequestErrorDisplaysAnErrorDialog() {
-        subject.onConferenceDataRequestError(ConferenceDataRequestError())
+        subject.onConferenceDataRequestError(ConferenceDataRequestError(Throwable()))
 
         verify(view).showErrorDialog()
     }

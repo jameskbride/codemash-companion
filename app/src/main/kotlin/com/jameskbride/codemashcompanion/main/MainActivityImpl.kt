@@ -1,9 +1,9 @@
 package com.jameskbride.codemashcompanion.main
 
 import android.os.Bundle
-import android.support.design.widget.TabLayout
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.Toolbar
+import com.google.android.material.tabs.TabLayout
+import androidx.viewpager.widget.ViewPager
+import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import com.jameskbride.codemashcompanion.R
@@ -21,7 +21,7 @@ class MainActivityImpl constructor(val intentFactory: IntentFactory = IntentFact
     fun onCreate(savedInstanceState: Bundle?, mainActivity: MainActivity) {
         this.mainActivity = mainActivity
         mainActivity.setContentView(R.layout.activity_main)
-        val container = mainActivity.findViewById<ViewPager>(R.id.container)
+        val container = mainActivity.findViewById<androidx.viewpager.widget.ViewPager>(R.id.container)
         val toolbar = mainActivity.findViewById<Toolbar>(R.id.toolbar)
         toolbar.title = container.resources.getString(R.string.sessions)
         mainActivity.setSupportActionBar(toolbar)
@@ -66,7 +66,7 @@ class MainActivityImpl constructor(val intentFactory: IntentFactory = IntentFact
     }
 }
 
-class MainTabSelectListener constructor(val toolbar: Toolbar, val container:ViewPager): TabLayout.ViewPagerOnTabSelectedListener(container) {
+class MainTabSelectListener constructor(val toolbar: Toolbar, val container: androidx.viewpager.widget.ViewPager): TabLayout.ViewPagerOnTabSelectedListener(container) {
     override fun onTabSelected(tab: TabLayout.Tab?) {
         super.onTabSelected(tab)
         toolbar.title = when(tab?.position) {

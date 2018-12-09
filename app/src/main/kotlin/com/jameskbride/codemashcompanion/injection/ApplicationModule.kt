@@ -1,6 +1,6 @@
 package com.jameskbride.codemashcompanion.injection
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import com.jameskbride.codemashcompanion.BuildConfig
 import com.jameskbride.codemashcompanion.about.AboutActivityImpl
 import com.jameskbride.codemashcompanion.application.CodemashCompanionApplication
