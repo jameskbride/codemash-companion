@@ -2,7 +2,6 @@ package com.jameskbride.codemashcompanion.data
 
 import com.jameskbride.codemashcompanion.bus.*
 import com.jameskbride.codemashcompanion.data.model.*
-import com.jameskbride.codemashcompanion.network.model.ApiSession
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultFullSpeakers
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSessions
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
@@ -286,20 +285,6 @@ class ConferenceRepositoryTest {
 
         assertSame(expectedResponse, actualResponse)
         verify(conferenceDao).getBookmarkedSessions()
-    }
-
-    private fun buildApiSessions(): List<ApiSession> {
-        return listOf(ApiSession(
-                id = 123,
-                category = "DevOps",
-                sessionStartTime = "start time",
-                sessionEndTime = "end time",
-                sessionType = "session type",
-                sessionTime = "session time",
-                title = "title",
-                abstract = "abstract",
-                rooms = listOf("banyan", "salon e")
-        ))
     }
 
     @Subscribe
