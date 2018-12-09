@@ -4,10 +4,6 @@ import com.jameskbride.codemashcompanion.bus.*
 import com.jameskbride.codemashcompanion.data.model.Bookmark
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
-import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.buildRooms
-import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.buildSessionSpeakers
-import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.buildTags
-import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSessionsToDomain
 import io.reactivex.Maybe
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -24,18 +20,6 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    fun onSessionsReceivedEvent(sessionsReceivedEvent: SessionsReceivedEvent) {
-        val apiSessions = sessionsReceivedEvent.sessions
-
-        onSessionsUpdatedEvent(SessionsUpdatedEvent(sessions = mapApiSessionsToDomain(apiSessions)))
-        onSessionSpeakersUpdatedEvent(SessionSpeakersUpdatedEvent(sessionSpeakers = buildSessionSpeakers(apiSessions)))
-        onTagsUpdatedEvent(TagsUpdatedEvent(tags = buildTags(apiSessions)))
-        onRoomsUpdatedEvent(RoomsUpdatedEvent(conferenceRooms = buildRooms(apiSessions)))
-
-        eventBus.post(ConferenceDataPersistedEvent())
-    }
-
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onSessionSpeakersUpdatedEvent(speakersUpdatedEvent: SessionSpeakersUpdatedEvent) {
         val sessionSpeakers = speakersUpdatedEvent.sessionSpeakers
         conferenceDao.insertAll(sessionSpeakers.toTypedArray())
@@ -45,6 +29,7 @@ class ConferenceRepository @Inject constructor(private val conferenceDao: Confer
     fun onSessionsUpdatedEvent(sessionsUpdatedEvent: SessionsUpdatedEvent) {
         val sessions = sessionsUpdatedEvent.sessions
         conferenceDao.insertAll(sessions.toTypedArray())
+        eventBus.post(ConferenceDataPersistedEvent())
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)

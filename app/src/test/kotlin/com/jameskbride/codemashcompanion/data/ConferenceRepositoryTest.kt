@@ -3,8 +3,8 @@ package com.jameskbride.codemashcompanion.data
 import com.jameskbride.codemashcompanion.bus.*
 import com.jameskbride.codemashcompanion.data.model.*
 import com.jameskbride.codemashcompanion.network.model.ApiSession
-import com.jameskbride.codemashcompanion.network.model.ShortSpeaker
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultFullSpeakers
+import com.jameskbride.codemashcompanion.utils.test.buildDefaultSessions
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultSpeakers
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.verify
@@ -47,7 +47,7 @@ class ConferenceRepositoryTest {
     }
 
     @Test
-    fun onSpeakersReceivedEventItInsertsAllSpeakers() {
+    fun onSpeakersUpdatedEventItInsertsAllSpeakers() {
         val speakers = listOf(Speaker(
                 Id = "1234",
                 FirstName = "John",
@@ -77,28 +77,11 @@ class ConferenceRepositoryTest {
         assertEquals(speaker.GitHubLink, actualSpeaker.GitHubLink)
         assertEquals(speaker.Biography, actualSpeaker.Biography)
         assertEquals(speaker.BlogUrl, actualSpeaker.BlogUrl)
+        assertEquals(speaker.GravatarUrl, actualSpeaker.GravatarUrl)
     }
 
     @Test
-    fun onSpeakersReceivedEventItInsertsSpeakersWithTheCorrectedGravatarUrl() {
-        val speakers = listOf(Speaker(
-                GravatarUrl = "//gravitar"
-        ))
-
-        subject.onSpeakersUpdatedEvent(SpeakersUpdatedEvent(speakers))
-
-        val speakersCaptor = argumentCaptor<Array<Speaker>>()
-        verify(conferenceDao).insertAll(speakersCaptor.capture())
-
-        val actualSpeakers = speakersCaptor.firstValue
-
-        val speaker = speakers[0]
-        val actualSpeaker = actualSpeakers[0]
-        assertEquals("http:${speaker.GravatarUrl}", actualSpeaker.GravatarUrl)
-    }
-
-    @Test
-    fun onSpeakersReceivedEventItNotifiesSpeakersPersisted() {
+    fun onSpeakersUpdatedEventItNotifiesSpeakersPersisted() {
         val speakers = buildDefaultSpeakers()
 
         subject.onSpeakersUpdatedEvent(SpeakersUpdatedEvent(speakers.asList()))
@@ -107,132 +90,84 @@ class ConferenceRepositoryTest {
     }
 
     @Test
-    fun onSessionsReceivedEventItDeletesAllTags() {
-        val apiSessions:List<ApiSession> = buildApiSessions()
-
-        subject.onSessionsReceivedEvent(SessionsReceivedEvent(sessions = apiSessions))
+    fun onTagsUpdatedEventItDeletesAllTags() {
+        subject.onTagsUpdatedEvent(TagsUpdatedEvent(tags = listOf(Tag(sessionId = "sessionId", name = "some tag"))))
 
         verify(conferenceDao).deleteTags()
     }
 
     @Test
-    fun onSessionsReceivedEventItDeletesAllRooms() {
-        val apiSessions:List<ApiSession> = buildApiSessions()
-
-        subject.onSessionsReceivedEvent(SessionsReceivedEvent(sessions = apiSessions))
+    fun onRoomsUpdatedEventItDeletesAllRooms() {
+        subject.onRoomsUpdatedEvent(RoomsUpdatedEvent(conferenceRooms = listOf(ConferenceRoom(sessionId = "sessionId", name = "some room"))))
 
         verify(conferenceDao).deleteRooms()
     }
 
     @Test
-    fun onSessionsReceivedEventItInsertsAllSessions() {
-        val apiSessions:List<ApiSession> = buildApiSessions()
-
-        subject.onSessionsReceivedEvent(SessionsReceivedEvent(sessions = apiSessions))
+    fun onSessionsUpdatedEventItInsertsAllSessions() {
+        val sessions = buildDefaultSessions(1)
+        subject.onSessionsUpdatedEvent(SessionsUpdatedEvent(sessions = sessions.toList()))
 
         val sessionsCaptor = argumentCaptor<Array<Session>>()
         verify(conferenceDao).insertAll(sessionsCaptor.capture())
-        val sessions = sessionsCaptor.firstValue
+        val actualSessions = sessionsCaptor.firstValue
 
-        assertEquals(apiSessions.size, sessions.size)
-        val apiSession:ApiSession = apiSessions[0]
-        val session: Session = sessions[0]
-        assertEquals(apiSession.id.toString(), session.Id)
-        assertEquals(apiSession.category, session.Category)
-        assertEquals(apiSession.sessionStartTime, session.SessionStartTime)
-        assertEquals(apiSession.sessionEndTime, session.SessionEndTime)
-        assertEquals(apiSession.sessionType, session.SessionType)
-        assertEquals(apiSession.title, session.Title)
-        assertEquals(apiSession.abstract, session.Abstract)
+        assertEquals(sessions.size, actualSessions.size)
+        val expectedSession:Session = sessions[0]
+        val actualSession: Session = actualSessions[0]
+        assertEquals(expectedSession.Id, actualSession.Id)
+        assertEquals(expectedSession.Category, actualSession.Category)
+        assertEquals(expectedSession.SessionStartTime, actualSession.SessionStartTime)
+        assertEquals(expectedSession.SessionEndTime, actualSession.SessionEndTime)
+        assertEquals(expectedSession.SessionType, actualSession.SessionType)
+        assertEquals(expectedSession.Title, actualSession.Title)
+        assertEquals(expectedSession.Abstract, actualSession.Abstract)
     }
 
     @Test
-    fun onSessionsReceivedEventItInsertsAllRooms() {
-        val apiSessions = listOf(
-                ApiSession(
-                    id = 1,
-                    rooms = listOf("banyan", "salon e")),
-                ApiSession(
-                    id = 2,
-                    rooms = listOf("banyan", "salon b")
-                )
-        )
+    fun onSessionsUpdatedEventItNotifiesConferenceDataPersisted() {
+        subject.onSessionsUpdatedEvent(SessionsUpdatedEvent(listOf()))
 
-        subject.onSessionsReceivedEvent(SessionsReceivedEvent(sessions = apiSessions))
+        assertTrue(conferenceDataPersistedEventFired)
+    }
+
+    @Test
+    fun onRoomsUpdatedEventItInsertsAllRooms() {
+        subject.onRoomsUpdatedEvent(RoomsUpdatedEvent(conferenceRooms = listOf(ConferenceRoom(sessionId = "sessionId", name = "some room"))))
 
         val conferenceRoomsCaptor = argumentCaptor<Array<ConferenceRoom>>()
         verify(conferenceDao).insertAll(conferenceRoomsCaptor.capture())
 
         val rooms = conferenceRoomsCaptor.firstValue
-        assertEquals(4, rooms.size)
+        assertEquals(1, rooms.size)
 
-        assertTrue(rooms.contains(ConferenceRoom(sessionId = "1", name = "banyan")))
-        assertTrue(rooms.contains(ConferenceRoom(sessionId = "1", name = "salon e")))
-        assertTrue(rooms.contains(ConferenceRoom(sessionId = "2", name = "banyan")))
-        assertTrue(rooms.contains(ConferenceRoom(sessionId = "2", name = "salon b")))
+        assertTrue(rooms.contains(ConferenceRoom(sessionId = "sessionId", name = "some room")))
     }
 
     @Test
-    fun onSessionsReceivedEventItInsertsAllTags() {
-        val apiSessions = listOf(
-                ApiSession(id = 1, tags = listOf("tag 1", "tag 2")),
-                ApiSession(id = 2, tags = listOf("tag 1", "tag 3"))
-        )
-
-        subject.onSessionsReceivedEvent(SessionsReceivedEvent(apiSessions))
+    fun onTagsUpdatedEventItInsertsAllTags() {
+        subject.onTagsUpdatedEvent(TagsUpdatedEvent(tags = listOf(Tag(sessionId = "sessionId", name = "some tag"))))
 
         val tagsCaptor = argumentCaptor<Array<Tag>>()
         verify(conferenceDao).insertAll(tagsCaptor.capture())
 
         val tags = tagsCaptor.firstValue
-        assertEquals(4, tags.size)
+        assertEquals(1, tags.size)
 
-        assertTrue(tags.contains(Tag(sessionId = "1", name = "tag 1")))
-        assertTrue(tags.contains(Tag(sessionId = "1", name = "tag 2")))
-        assertTrue(tags.contains(Tag(sessionId = "2", name = "tag 1")))
-        assertTrue(tags.contains(Tag(sessionId = "2", name = "tag 3")))
+        assertTrue(tags.contains(Tag(sessionId = "sessionId", name = "some tag")))
     }
 
     @Test
-    fun onSessionsReceivedEventItInsertsAllSessionSpeakers() {
-        val apiSessions = listOf(
-                ApiSession(
-                        shortSpeakers = listOf(
-                            ShortSpeaker(id = "1"),
-                            ShortSpeaker(id = "2")
-                        ),
-                        id = 1
-                ),
-                ApiSession(
-                        shortSpeakers = listOf(
-                                ShortSpeaker(id = "3"),
-                                ShortSpeaker(id = "4")
-                        ),
-                        id = 2
-                )
-        )
-
-        subject.onSessionsReceivedEvent(SessionsReceivedEvent(apiSessions))
+    fun onSessionSpeakersUpdatedEventItInsertsAllSessionSpeakers() {
+        subject.onSessionSpeakersUpdatedEvent(SessionSpeakersUpdatedEvent(sessionSpeakers = listOf(SessionSpeaker(sessionId = "sessionId", speakerId = "1234"))))
 
         val sessionSpeakerCaptor = argumentCaptor<Array<SessionSpeaker>>()
         verify(conferenceDao).insertAll(sessionSpeakerCaptor.capture())
 
         val sessionSpeakers = sessionSpeakerCaptor.firstValue
-        assertEquals(4, sessionSpeakers.size)
+        assertEquals(1, sessionSpeakers.size)
 
-        assertTrue((sessionSpeakers.contains(SessionSpeaker(sessionId = "1", speakerId = "1"))))
-        assertTrue((sessionSpeakers.contains(SessionSpeaker(sessionId = "1", speakerId = "2"))))
-        assertTrue((sessionSpeakers.contains(SessionSpeaker(sessionId = "2", speakerId = "3"))))
-        assertTrue((sessionSpeakers.contains(SessionSpeaker(sessionId = "2", speakerId = "4"))))
-    }
-
-    @Test
-    fun onSessionsReceivedEventItNotifiesConferenceDataPersisted() {
-        val sessions = buildApiSessions()
-
-        subject.onSessionsReceivedEvent(SessionsReceivedEvent(sessions))
-
-        assertTrue(conferenceDataPersistedEventFired)
+        assertTrue((sessionSpeakers.contains(SessionSpeaker(sessionId = "sessionId", speakerId = "1234"))))
     }
 
     @Test
