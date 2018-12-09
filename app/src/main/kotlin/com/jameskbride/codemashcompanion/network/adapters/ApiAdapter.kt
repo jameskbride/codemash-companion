@@ -27,28 +27,14 @@ class ApiAdapter {
         private fun findLinkByType(apiSpeaker: ApiSpeaker, type:String) =
                 apiSpeaker.links?.find { it -> it.linkType == type }?.url ?: null
 
-        fun mapApiSessionSpeakersToDomain(session: ApiSession) =
-                session.shortSpeakers!!.map { speaker ->
-                    SessionSpeaker(sessionId = session.id.toString(), speakerId = speaker.id!!)
-                }
-
-        fun mapApiSessionRoomsToDomain(session: ApiSession) =
-                session.rooms!!.map { room ->
-                    ConferenceRoom(sessionId = session.id.toString(), name = room)
-                }
-
-        fun mapApiSessionTagsToDomain(session: ApiSession) =
-                session.tags!!.map { tag -> Tag(sessionId = session.id.toString(), name = tag) }
-
         fun mapApiSessionsToDomain(apiSessions: List<ApiSession>): List<Session> {
             return apiSessions.map {
                 Session(
-                        Id = it.id.toString(),
-                        Category = it.category,
+                        Id = it.id,
+//                        Category = it.category,
                         SessionStartTime = it.sessionStartTime,
                         SessionEndTime = it.sessionEndTime,
-                        SessionTime = it.sessionTime,
-                        SessionType = it.sessionType,
+//                        SessionType = it.sessionType,
                         Title = it.title,
                         Abstract = it.abstract
                 )
@@ -62,11 +48,19 @@ class ApiAdapter {
             return sessionSpeakers.flatten().toMutableList()
         }
 
-        fun buildRooms(apiSessions: List<ApiSession>): MutableList<ConferenceRoom> {
-            val allRooms = apiSessions.map { session ->
+        private fun mapApiSessionSpeakersToDomain(session: ApiSession) =
+                session.shortSpeakers!!.map { speaker ->
+                    SessionSpeaker(sessionId = session.id, speakerId = speaker.id!!)
+                }
+
+        fun buildRooms(apiSessions: List<ApiSession>): List<ConferenceRoom> {
+            return apiSessions.map { session ->
                 mapApiSessionRoomsToDomain(session)
             }
-            return allRooms.flatten().toMutableList()
+        }
+
+        private fun mapApiSessionRoomsToDomain(session: ApiSession): ConferenceRoom {
+            return ConferenceRoom(id=session.roomId!!, sessionId = session.id, name = session.room!!)
         }
 
         fun buildTags(apiSessions: List<ApiSession>): MutableList<Tag> {
@@ -76,5 +70,8 @@ class ApiAdapter {
 
             return allTags.flatten().toMutableList()
         }
+
+        private fun mapApiSessionTagsToDomain(session: ApiSession):List<Tag> = listOf()
+//                session.tags!!.map { tag -> Tag(sessionId = session.id, name = tag) }
     }
 }

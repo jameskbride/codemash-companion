@@ -1,5 +1,7 @@
 package com.jameskbride.codemashcompanion.network.adapters
 
+import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSessionsToDomain
+import com.jameskbride.codemashcompanion.network.model.ApiSession
 import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
 import com.jameskbride.codemashcompanion.network.model.Link
 import org.junit.Assert.assertEquals
@@ -82,5 +84,27 @@ class ApiAdapterTest {
         val speakers = ApiAdapter.mapApiSpeakersToDomain(apiSpeakers)
 
         assertEquals(linkedInLink.url, speakers.first().LinkedInProfile)
+    }
+
+    @Test
+    fun mapApiSessionsToDomainConvertsBasicFields() {
+        val apiSession = ApiSession(
+                id = "1234",
+                sessionStartTime = "some start time",
+                sessionEndTime = "some end time",
+                title = "title",
+                abstract = "abstract"
+        )
+        val apiSessions = listOf(
+            apiSession
+        )
+
+        val sessions = mapApiSessionsToDomain(apiSessions)
+
+        assertEquals(apiSession.id, sessions.first().Id)
+        assertEquals(apiSession.sessionStartTime, sessions.first().SessionStartTime)
+        assertEquals(apiSession.sessionEndTime, sessions.first().SessionEndTime)
+        assertEquals(apiSession.title, sessions.first().Title)
+        assertEquals(apiSession.abstract, sessions.first().Abstract)
     }
 }

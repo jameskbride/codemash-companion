@@ -88,12 +88,11 @@ class CodemashServiceTest {
     @Test
     fun onSpeakersPersistedEventUpdatesTheSessionsData() {
         val apiSession = ApiSession(
-                id  = 123,
-                category = "DevOps",
+                id  = "123",
+//                category = "DevOps",
                 sessionStartTime = "start time",
                 sessionEndTime = "end time",
-                sessionType = "session type",
-                sessionTime = "session time",
+//                sessionType = "session type",
                 title = "title",
                 abstract = "abstract"
         )
@@ -106,11 +105,10 @@ class CodemashServiceTest {
 
         val actualSession = sessionsUpdatedEvent.sessions[0]
         assertEquals(apiSession.id.toString(), actualSession.Id)
-        assertEquals(apiSession.category, actualSession.Category)
+//        assertEquals(apiSession.category, actualSession.Category)
         assertEquals(apiSession.sessionStartTime, actualSession.SessionStartTime)
         assertEquals(apiSession.sessionEndTime, actualSession.SessionEndTime)
-        assertEquals(apiSession.sessionType, actualSession.SessionType)
-        assertEquals(apiSession.sessionTime, actualSession.SessionTime)
+//        assertEquals(apiSession.sessionType, actualSession.SessionType)
         assertEquals(apiSession.title, actualSession.Title)
         assertEquals(apiSession.abstract, actualSession.Abstract)
     }
@@ -118,8 +116,9 @@ class CodemashServiceTest {
     @Test
     fun onSpeakersPersistedEventUpdatesTheRoomData() {
         val apiSession = ApiSession(
-                id  = 123,
-                rooms = listOf("room 1", "room 2")
+                id  = "123",
+                roomId = 456,
+                room = "room 1"
         )
 
         whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiSession)))
@@ -128,19 +127,16 @@ class CodemashServiceTest {
 
         testScheduler.triggerActions()
 
-        assertEquals(2, roomsUpdatedEvent.conferenceRooms.size)
+        assertEquals(1, roomsUpdatedEvent.conferenceRooms.size)
         val actualRooms = roomsUpdatedEvent.conferenceRooms
         assertEquals("${apiSession.id}", actualRooms[0].sessionId)
         assertEquals("room 1", actualRooms[0].name)
-        assertEquals("${apiSession.id}", actualRooms[1].sessionId)
-        assertEquals("room 2", actualRooms[1].name)
     }
 
     @Test
     fun onSpeakersPersistedEventUpdatesTheTagData() {
         val apiSession = ApiSession(
-                id  = 123,
-                tags = listOf("tag 1", "tag 2")
+                id  = "123"
         )
 
         whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiSession)))
@@ -149,19 +145,17 @@ class CodemashServiceTest {
 
         testScheduler.triggerActions()
 
-        assertEquals(2, tagsUpdatedEvent.tags.size)
+        assertEquals(1, tagsUpdatedEvent.tags.size)
         val actualTags = tagsUpdatedEvent.tags
         assertEquals("${apiSession.id}", actualTags[0].sessionId)
         assertEquals("tag 1", actualTags[0].name)
-        assertEquals("${apiSession.id}", actualTags[1].sessionId)
-        assertEquals("tag 2", actualTags[1].name)
     }
 
     @Test
     fun onSpeakersPersistedEventUpdatesTheSessionSpeakerData() {
-        val sessionSpeaker = ShortSpeaker(id = "1234", firstName = "first", lastName = "last", gravatarUrl = "url")
+        val sessionSpeaker = ShortSpeaker(id = "1234")
         val apiSession = ApiSession(
-                id  = 123,
+                id  = "123",
                 shortSpeakers = listOf(sessionSpeaker)
         )
 
@@ -172,7 +166,7 @@ class CodemashServiceTest {
         testScheduler.triggerActions()
 
         val actualSessionSpeaker = sessionSpeakersUpdatedEvent.sessionSpeakers[0]
-        assertEquals(apiSession.id.toString(), actualSessionSpeaker.sessionId)
+        assertEquals(apiSession.id, actualSessionSpeaker.sessionId)
         assertEquals(sessionSpeaker.id, actualSessionSpeaker.speakerId)
     }
 
