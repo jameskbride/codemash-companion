@@ -110,6 +110,13 @@ class ConferenceRepositoryTest {
     }
 
     @Test
+    fun onSessionsUpdatedEventItDeletesAllSessions() {
+        subject.onSessionsUpdatedEvent(SessionsUpdatedEvent())
+
+        verify(conferenceDao).deleteSessions()
+    }
+
+    @Test
     fun onSessionsUpdatedEventItInsertsAllSessions() {
         val sessions = buildDefaultSessions(1)
         subject.onSessionsUpdatedEvent(SessionsUpdatedEvent(sessions = sessions.toList()))
