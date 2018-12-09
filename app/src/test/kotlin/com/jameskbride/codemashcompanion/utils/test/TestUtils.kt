@@ -4,6 +4,7 @@ import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.data.model.Session
 import com.jameskbride.codemashcompanion.data.model.Speaker
 import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
+import com.jameskbride.codemashcompanion.network.model.Link
 
 fun buildDefaultSpeakers(count:Int = 1): Array<Speaker> {
 
@@ -51,15 +52,14 @@ fun buildDefaultApiSpeakers(count:Int = 1): Array<ApiSpeaker> {
     for (i in 0 until count) {
         speakers.add(ApiSpeaker(
                 id = "1234",
-//                linkedInProfile = "linkedin",
                 lastName = "Smith",
-//                twitterLink = "twitter",
-//                gitHubLink = "github",
                 firstName = "John",
-//                gravatarUrl = "gravatar",
-                biography = "biography"
-//                blogUrl = "blog",
-//                sessionIds = listOf("1", "2")
+                biography = "biography",
+                links = listOf(
+                        Link(title = "LinkedIn", url = "linkedin", linkType = "LinkedIn"),
+                        Link(title = "Twitter", url = "twitter", linkType = "Twitter"),
+                        Link(title = "Blog", url = "blog", linkType = "Blog")
+                )
         ))
     }
 

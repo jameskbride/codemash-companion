@@ -1,10 +1,8 @@
 package com.jameskbride.codemashcompanion.network.service
 
 import com.jameskbride.codemashcompanion.bus.*
-import com.jameskbride.codemashcompanion.data.model.Speaker
 import com.jameskbride.codemashcompanion.network.CodemashApi
 import com.jameskbride.codemashcompanion.network.model.ApiSession
-import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
 import com.jameskbride.codemashcompanion.network.model.ShortSpeaker
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultApiSpeakers
 import com.nhaarman.mockito_kotlin.verify
@@ -65,9 +63,7 @@ class CodemashServiceTest {
 
         testScheduler.triggerActions()
 
-        val expectedSpeaker = convertApiSpeakerToDomain(speaker)
-        val actualSpeakers = speakersUpdatedEvent.speakers
-        assertEquals(expectedSpeaker, actualSpeakers[0])
+        assertEquals(1, speakersUpdatedEvent.speakers.size)
     }
 
     @Test
@@ -218,18 +214,5 @@ class CodemashServiceTest {
     @Subscribe
     fun onRequestConferenceDataErrorEvent(conferenceDataRequestError: ConferenceDataRequestError) {
         this.conferenceDataRequestErrorFired = true
-    }
-
-    private fun convertApiSpeakerToDomain(speaker: ApiSpeaker): Speaker {
-        return Speaker(Id = speaker.id,
-                FirstName = speaker.firstName,
-                LastName = speaker.lastName,
-//                LinkedInProfile = speaker.linkedInProfile,
-//                TwitterLink = speaker.twitterLink,
-//                GitHubLink = speaker.gitHubLink,
-//                GravatarUrl = "http:${speaker.gravatarUrl}",
-                Biography = speaker.biography
-//                BlogUrl = speaker.blogUrl
-        )
     }
 }
