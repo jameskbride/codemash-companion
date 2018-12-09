@@ -1,5 +1,6 @@
 package com.jameskbride.codemashcompanion.network.adapters
 
+import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.buildRooms
 import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSessionsToDomain
 import com.jameskbride.codemashcompanion.network.model.*
 import org.junit.Assert.assertEquals
@@ -124,5 +125,23 @@ class ApiAdapterTest {
         val sessions = mapApiSessionsToDomain(listOf(apiSession))
 
         assertEquals("DevOps", sessions.first().Category)
+    }
+    
+    @Test
+    fun buildRoomsConvertsTheRooms() {
+        val apiSession = ApiSession(
+                id = "1234",
+                sessionStartTime = "some start time",
+                sessionEndTime = "some end time",
+                title = "title",
+                abstract = "abstract",
+                roomId = 1234,
+                room = "some room"
+        )
+
+        val rooms = buildRooms(listOf(apiSession))
+
+        assertEquals("some room", rooms.first().name)
+        assertEquals("1234", rooms.first().sessionId)
     }
 }
