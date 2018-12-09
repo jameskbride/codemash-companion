@@ -1,4 +1,4 @@
 package com.jameskbride.codemashcompanion.bus
 
-class ConferenceDataRequestError {
+class ConferenceDataRequestError constructor(val error: Throwable){
 }

@@ -1,9 +1,7 @@
 package com.jameskbride.codemashcompanion.network.adapters
 
 import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSessionsToDomain
-import com.jameskbride.codemashcompanion.network.model.ApiSession
-import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
-import com.jameskbride.codemashcompanion.network.model.Link
+import com.jameskbride.codemashcompanion.network.model.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -106,5 +104,25 @@ class ApiAdapterTest {
         assertEquals(apiSession.sessionEndTime, sessions.first().SessionEndTime)
         assertEquals(apiSession.title, sessions.first().Title)
         assertEquals(apiSession.abstract, sessions.first().Abstract)
+    }
+
+    @Test
+    fun mapApiSessionsToDomainConvertsTrackToCategoryType() {
+        val trackCategory = Category(
+                id = 1234,
+                name = "Track",
+                categoryItems = listOf(CategoryItem(1234, name = "DevOps")))
+        val apiSession = ApiSession(
+                id = "1234",
+                sessionStartTime = "some start time",
+                sessionEndTime = "some end time",
+                title = "title",
+                abstract = "abstract",
+                categories = listOf(trackCategory)
+        )
+
+        val sessions = mapApiSessionsToDomain(listOf(apiSession))
+
+        assertEquals("DevOps", sessions.first().Category)
     }
 }

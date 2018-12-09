@@ -29,16 +29,21 @@ class ApiAdapter {
 
         fun mapApiSessionsToDomain(apiSessions: List<ApiSession>): List<Session> {
             return apiSessions.map {
-                Session(
-                        Id = it.id,
-//                        Category = it.category,
-                        SessionStartTime = it.sessionStartTime,
-                        SessionEndTime = it.sessionEndTime,
-//                        SessionType = it.sessionType,
-                        Title = it.title,
-                        Abstract = it.abstract
-                )
+                convertApiSessionsWithCollections(it)
             }
+        }
+
+        private fun convertApiSessionsWithCollections(apiSession: ApiSession): Session {
+            var category = apiSession.categories?.find {it -> it.name == "Track"}?.categoryItems?.first()?.name
+            return Session(
+                    Id = apiSession.id,
+                    Category = category,
+                    SessionStartTime = apiSession.sessionStartTime,
+                    SessionEndTime = apiSession.sessionEndTime,
+        //                        SessionType = apiSession.sessionType,
+                    Title = apiSession.title,
+                    Abstract = apiSession.abstract
+            )
         }
 
         fun buildSessionSpeakers(sessions:List<ApiSession>):MutableList<SessionSpeaker> {

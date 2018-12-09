@@ -9,7 +9,7 @@ data class ApiSession constructor(
         @SerializedName("endsAt") var sessionEndTime: String? = "",
         @SerializedName("title") var title: String? = "",
         @SerializedName("description") var abstract: String? = "",
-        @SerializedName("roomId") var roomId:Int? = null,
+        @SerializedName("roomId") var roomId:Int? = -1,
         @SerializedName("room") var room:String? = "",
         @SerializedName("categories") var categories:List<Category>? = listOf(),
         @SerializedName("speakers") var shortSpeakers:List<ShortSpeaker>? = listOf()
@@ -20,13 +20,12 @@ data class ShortSpeaker constructor(
 ): Serializable
 
 data class Category constructor(
-        @SerializedName("id") var id:Int?,
+        @SerializedName("id") var id:Int? = -1,
         @SerializedName("name") var name:String? = "",
-        @SerializedName("sort") var sort:Int?,
         @SerializedName("categoryItems") var categoryItems:List<CategoryItem> = listOf()
 )
 
 data class CategoryItem constructor(
-        @SerializedName("id") var id:Int?,
+        @SerializedName("id") var id:Int? = -1,
         @SerializedName("name") var name:String? = ""
 )
