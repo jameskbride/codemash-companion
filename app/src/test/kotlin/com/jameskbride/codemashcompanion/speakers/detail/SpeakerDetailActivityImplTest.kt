@@ -1,11 +1,11 @@
 package com.jameskbride.codemashcompanion.speakers.detail
 
 import android.content.Intent
-import android.support.annotation.IdRes
-import android.support.v4.app.FragmentManager
-import android.support.v4.view.ViewPager
-import android.support.v7.app.ActionBar
-import android.support.v7.widget.Toolbar
+import androidx.annotation.IdRes
+import androidx.fragment.app.FragmentManager
+import androidx.viewpager.widget.ViewPager
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.widget.Toolbar
 import android.view.MenuItem
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSpeaker
@@ -23,8 +23,8 @@ import org.mockito.MockitoAnnotations.initMocks
 
 class SpeakerDetailActivityImplTest {
     @Mock private lateinit var qtn: SpeakerDetailActivity
-    @Mock private lateinit var supportFragmentManager: FragmentManager
-    @Mock private lateinit var speakerPager: ViewPager
+    @Mock private lateinit var supportFragmentManager: androidx.fragment.app.FragmentManager
+    @Mock private lateinit var speakerPager: androidx.viewpager.widget.ViewPager
     @Mock private lateinit var speakerPagerAdapter:SpeakerPagerAdapter
     @Mock private lateinit var speakerPagerAdapterFactory:SpeakerPagerAdapterFactory
     @Mock private lateinit var intent:Intent
@@ -47,7 +47,7 @@ class SpeakerDetailActivityImplTest {
         whenever(qtn.intent).thenReturn(intent)
         whenever(intent.getSerializableExtra(PARAMETER_BLOCK)).thenReturn(speakerDetailParams)
         whenever(speakerPagerAdapterFactory.make(supportFragmentManager)).thenReturn(speakerPagerAdapter)
-        whenever(qtn.findViewById<ViewPager>(R.id.speaker_pager)).thenReturn(speakerPager)
+        whenever(qtn.findViewById<androidx.viewpager.widget.ViewPager>(R.id.speaker_pager)).thenReturn(speakerPager)
         whenever(qtn.findViewById<Toolbar>(R.id.toolbar)).thenReturn(toolbar)
         whenever(qtn.supportActionBar).thenReturn(actionBar)
         whenever(qtn.supportFragmentManager).thenReturn(supportFragmentManager)

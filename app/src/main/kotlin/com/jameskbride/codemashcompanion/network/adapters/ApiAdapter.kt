@@ -3,6 +3,7 @@ package com.jameskbride.codemashcompanion.network.adapters
 import com.jameskbride.codemashcompanion.data.model.*
 import com.jameskbride.codemashcompanion.network.model.ApiSession
 import com.jameskbride.codemashcompanion.network.model.ApiSpeaker
+import com.jameskbride.codemashcompanion.network.model.ShortSpeaker
 
 class ApiAdapter {
 
@@ -50,23 +51,37 @@ class ApiAdapter {
             val sessionSpeakers = sessions.map { session ->
                 mapApiSessionSpeakersToDomain(session)
             }
-            return sessionSpeakers.flatten().toMutableList()
+            return sessionSpeakers.flatten().filterNotNull().toList()
         }
 
-        private fun mapApiSessionSpeakersToDomain(session: ApiSession) =
-                session.shortSpeakers!!.map { speaker ->
-                    SessionSpeaker(sessionId = session.id, speakerId = speaker.id!!)
+        private fun mapApiSessionSpeakersToDomain(session: ApiSession):List<SessionSpeaker?> {
+            return if (sessionHasShortSpeakers(session)) {
+                session.shortSpeakers!!.map { shortSpeaker ->
+                    SessionSpeaker(sessionId = session.id, speakerId = shortSpeaker.id!!)
                 }
+            } else { listOf() }
+        }
+
+
+        private fun sessionHasShortSpeakers(session: ApiSession): Boolean {
+            return session.shortSpeakers != null
+        }
+
 
         fun buildRooms(apiSessions: List<ApiSession>): List<ConferenceRoom> {
             return apiSessions.map { session ->
                 mapApiSessionRoomsToDomain(session)
-            }
+            }.filterNotNull()
         }
 
-        private fun mapApiSessionRoomsToDomain(session: ApiSession): ConferenceRoom {
-            return ConferenceRoom(id=session.roomId!!, sessionId = session.id, name = session.room!!)
+        private fun mapApiSessionRoomsToDomain(session: ApiSession): ConferenceRoom? {
+            return  if (sessionHasARoom(session))
+                ConferenceRoom(id=session.roomId!!, sessionId = session.id, name = session.room!!) else null
+
         }
+
+        private fun sessionHasARoom(session: ApiSession) =
+                session.roomId != null && session.room != null
 
         fun buildTags(apiSessions: List<ApiSession>): List<Tag>? {
             var allTags:List<Tag>? = apiSessions.map { session ->

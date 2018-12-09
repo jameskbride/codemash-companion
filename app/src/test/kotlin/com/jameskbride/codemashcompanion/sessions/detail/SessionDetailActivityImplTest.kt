@@ -1,10 +1,10 @@
 package com.jameskbride.codemashcompanion.sessions.detail
 
 import android.content.Intent
-import android.support.annotation.IdRes
-import android.support.design.widget.FloatingActionButton
-import android.support.v7.app.ActionBar
-import android.support.v7.widget.Toolbar
+import androidx.annotation.IdRes
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
@@ -44,8 +44,8 @@ class SessionDetailActivityImplTest {
     @Mock private lateinit var speakersHolder:LinearLayout
     @Mock private lateinit var speakersBlock:LinearLayout
     @Mock private lateinit var actionBar:ActionBar
-    @Mock private lateinit var addBookmarkFAB:FloatingActionButton
-    @Mock private lateinit var removeBookmarkFAB:FloatingActionButton
+    @Mock private lateinit var addBookmarkFAB: FloatingActionButton
+    @Mock private lateinit var removeBookmarkFAB: FloatingActionButton
     @Mock private lateinit var presenter:SessionDetailActivityPresenter
     @Mock private lateinit var speakerHeadshotFactory:SpeakerHeadshotFactory
     @Mock private lateinit var intentFactory:IntentFactory

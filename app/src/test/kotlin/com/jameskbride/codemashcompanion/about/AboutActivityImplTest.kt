@@ -3,9 +3,9 @@ package com.jameskbride.codemashcompanion.about
 import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
-import android.support.annotation.IdRes
-import android.support.v7.app.ActionBar
-import android.support.v7.widget.Toolbar
+import androidx.annotation.IdRes
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout

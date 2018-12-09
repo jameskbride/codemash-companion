@@ -2,7 +2,7 @@ package com.jameskbride.codemashcompanion.splash
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.FragmentManager
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.error.ErrorDialog
 import com.jameskbride.codemashcompanion.error.ErrorDialogFactory
@@ -27,7 +27,7 @@ class SplashActivityImplTest {
     @Mock private lateinit var bundleFactory: BundleFactory
     @Mock private lateinit var errorDialogFactory: ErrorDialogFactory
     @Mock private lateinit var errorDialog:ErrorDialog
-    @Mock private lateinit var fragmentManager:FragmentManager
+    @Mock private lateinit var fragmentManager: androidx.fragment.app.FragmentManager
 
     
     private lateinit var subject: SplashActivityImpl

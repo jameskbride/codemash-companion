@@ -39,6 +39,7 @@ class SplashActivityPresenter @Inject constructor(override val eventBus: EventBu
 
     @Subscribe
     fun onConferenceDataRequestError(conferenceDataRequestError: ConferenceDataRequestError) {
+        conferenceDataRequestError.error.printStackTrace()
         view.showErrorDialog()
     }
 

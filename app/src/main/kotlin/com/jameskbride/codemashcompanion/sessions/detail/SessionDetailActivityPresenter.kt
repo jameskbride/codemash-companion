@@ -1,7 +1,7 @@
 package com.jameskbride.codemashcompanion.sessions.detail
 
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.bus.BusAware
 import com.jameskbride.codemashcompanion.bus.SessionBookmarkUpdated

@@ -1,10 +1,10 @@
 package com.jameskbride.codemashcompanion.data
 
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.runner.AndroidJUnit4
 import org.junit.Test
 import org.junit.runner.RunWith
-import android.arch.persistence.room.Room
-import android.support.test.InstrumentationRegistry
+import androidx.room.Room
+import androidx.test.InstrumentationRegistry
 import com.jameskbride.codemashcompanion.data.model.*
 import io.reactivex.schedulers.TestScheduler
 import org.junit.Assert.assertEquals

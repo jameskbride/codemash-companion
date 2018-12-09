@@ -24,7 +24,7 @@
                     android:textSize="16dp"
                     android:textStyle="bold"
                     android:textColor="@color/codemash_blue"/>
-                <android.support.v4.widget.Space
+                <androidx.legacy.widget.Space
                     android:layout_width="5dp"
                     android:layout_height="wrap_content" />
                 <TextView
@@ -81,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/version_label"/>
-                <android.support.v4.widget.Space
+                <androidx.legacy.widget.Space
                     android:layout_width="5dp"
                     android:layout_height="wrap_content" />
                 <TextView

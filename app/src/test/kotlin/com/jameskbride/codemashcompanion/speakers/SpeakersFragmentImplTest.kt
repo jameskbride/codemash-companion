@@ -2,10 +2,10 @@ package com.jameskbride.codemashcompanion.speakers
 
 import android.content.Context
 import android.content.Intent
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,10 +36,10 @@ class SpeakersFragmentImplTest {
     @Mock private lateinit var speakersViewAdapterFactory: SpeakersViewAdapterFactory
     @Mock private lateinit var qtn:SpeakersFragment
     @Mock private lateinit var view:View
-    @Mock private lateinit var speakersView:RecyclerView
-    @Mock private lateinit var speakersRefresh:SwipeRefreshLayout
+    @Mock private lateinit var speakersView: androidx.recyclerview.widget.RecyclerView
+    @Mock private lateinit var speakersRefresh: androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     @Mock private lateinit var context:Context
-    @Mock private lateinit var gridLayoutManager:GridLayoutManager
+    @Mock private lateinit var gridLayoutManager: androidx.recyclerview.widget.GridLayoutManager
     @Mock private lateinit var intentFactory:IntentFactory
     @Mock private lateinit var activity:AppCompatActivity
     @Mock private lateinit var toaster:Toaster
@@ -54,8 +54,8 @@ class SpeakersFragmentImplTest {
         whenever(qtn.getView()).thenReturn(view)
         whenever(qtn.getContext()).thenReturn(context)
         whenever(qtn.activity).thenReturn(activity)
-        whenever(view.findViewById<RecyclerView>(R.id.speakers)).thenReturn(speakersView)
-        whenever(view.findViewById<SwipeRefreshLayout>(R.id.speakers_refresh)).thenReturn(speakersRefresh)
+        whenever(view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.speakers)).thenReturn(speakersView)
+        whenever(view.findViewById<androidx.swiperefreshlayout.widget.SwipeRefreshLayout>(R.id.speakers_refresh)).thenReturn(speakersRefresh)
         whenever(speakersViewAdapterFactory.make(presenter)).thenReturn(speakersViewAdapter)
         whenever(layoutInflater.inflate(R.layout.fragment_speakers, viewGroup, false)).thenReturn(view)
     }
@@ -84,7 +84,7 @@ class SpeakersFragmentImplTest {
     fun itSetsTheRefreshListenerOnCreate() {
         subject.onCreateView(layoutInflater, viewGroup, null, qtn)
 
-        val refreshListenerCaptor = argumentCaptor<SwipeRefreshLayout.OnRefreshListener>()
+        val refreshListenerCaptor = argumentCaptor<androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener>()
         verify(speakersRefresh).setOnRefreshListener(refreshListenerCaptor.capture())
 
         refreshListenerCaptor.firstValue.onRefresh()

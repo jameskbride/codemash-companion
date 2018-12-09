@@ -1,14 +1,14 @@
 package com.jameskbride.codemashcompanion.speakers.detail
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.application.CodemashCompanionApplication
 import javax.inject.Inject
 
-class SpeakerDetailFragment: Fragment() {
+class SpeakerDetailFragment: androidx.fragment.app.Fragment() {
     @Inject
     lateinit var impl: SpeakerDetailFragmentImpl
 

@@ -1,6 +1,6 @@
 package com.jameskbride.codemashcompanion.speakers.list
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
@@ -12,7 +12,7 @@ import com.jameskbride.codemashcompanion.data.model.FullSpeaker
 import com.jameskbride.codemashcompanion.utils.PicassoLoader
 
 
-open class BaseSpeakerViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+open class BaseSpeakerViewHolder(itemView: View): androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
     var view = itemView
 }
 

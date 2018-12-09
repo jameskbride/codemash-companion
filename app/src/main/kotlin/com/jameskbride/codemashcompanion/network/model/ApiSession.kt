@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class ApiSession constructor(
-        @SerializedName("id") var id: String,
-        @SerializedName("startsAt") var sessionStartTime: String? = "",
-        @SerializedName("endsAt") var sessionEndTime: String? = "",
+        @SerializedName("id") var id: String = "",
+        @SerializedName("startsAt") var sessionStartTime: String? = "2019-01-08T08:00:00",
+        @SerializedName("endsAt") var sessionEndTime: String? = "2019-01-08T12:00:00",
         @SerializedName("title") var title: String? = "",
         @SerializedName("description") var abstract: String? = "",
         @SerializedName("roomId") var roomId:Int? = -1,

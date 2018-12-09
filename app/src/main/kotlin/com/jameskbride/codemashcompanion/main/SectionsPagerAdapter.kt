@@ -1,15 +1,15 @@
 package com.jameskbride.codemashcompanion.main
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import com.jameskbride.codemashcompanion.schedule.ScheduleFragment
 import com.jameskbride.codemashcompanion.sessions.SessionsFragment
 import com.jameskbride.codemashcompanion.speakers.SpeakersFragment
 
-class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class SectionsPagerAdapter(fm: androidx.fragment.app.FragmentManager) : androidx.fragment.app.FragmentPagerAdapter(fm) {
 
-    override fun getItem(position: Int): Fragment {
+    override fun getItem(position: Int): androidx.fragment.app.Fragment {
         return when(position) {
             0 -> SessionsFragment()
             1 -> SpeakersFragment()

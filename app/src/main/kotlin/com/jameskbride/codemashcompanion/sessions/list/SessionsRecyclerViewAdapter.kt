@@ -1,12 +1,11 @@
 package com.jameskbride.codemashcompanion.sessions.list
 
-import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.sessions.SessionsFragmentPresenter
 
 open class SessionsRecyclerViewAdapter constructor(val sessionsFragmentPresenter: SessionsFragmentPresenter,
                                                    open val impl: SessionsRecyclerViewAdapterImpl = SessionsRecyclerViewAdapterImpl(sessionsFragmentPresenter))
-    : RecyclerView.Adapter<SessionViewHolder>() {
+    : androidx.recyclerview.widget.RecyclerView.Adapter<SessionViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
         return impl.getItemViewType(position)

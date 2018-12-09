@@ -1,14 +1,14 @@
 package com.jameskbride.codemashcompanion.error
 
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
+import androidx.fragment.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.application.CodemashCompanionApplication
 import javax.inject.Inject
 
-class ErrorDialog:DialogFragment() {
+class ErrorDialog: androidx.fragment.app.DialogFragment() {
 
     @Inject
     lateinit var impl:ErrorDialogImpl

@@ -2,10 +2,7 @@ package com.jameskbride.codemashcompanion.network.service
 
 import com.jameskbride.codemashcompanion.bus.*
 import com.jameskbride.codemashcompanion.network.CodemashApi
-import com.jameskbride.codemashcompanion.network.model.ApiSession
-import com.jameskbride.codemashcompanion.network.model.Category
-import com.jameskbride.codemashcompanion.network.model.CategoryItem
-import com.jameskbride.codemashcompanion.network.model.ShortSpeaker
+import com.jameskbride.codemashcompanion.network.model.*
 import com.jameskbride.codemashcompanion.utils.test.buildDefaultApiSpeakers
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -81,7 +78,8 @@ class CodemashServiceTest {
 
     @Test
     fun onSpeakersPersistedEventGetsTheSessionData() {
-        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf()))
+        val apiGroup = ApiGroup(sessions = listOf())
+        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiGroup)))
 
         eventBus.post(SpeakersPersistedEvent())
 
@@ -98,7 +96,9 @@ class CodemashServiceTest {
                 abstract = "abstract"
         )
 
-        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiSession)))
+        val apiGroup = ApiGroup(sessions = listOf(apiSession))
+
+        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiGroup)))
 
         eventBus.post(SpeakersPersistedEvent())
 
@@ -115,7 +115,9 @@ class CodemashServiceTest {
                 room = "room 1"
         )
 
-        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiSession)))
+        val apiGroup = ApiGroup(sessions = listOf(apiSession))
+
+        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiGroup)))
 
         eventBus.post(SpeakersPersistedEvent())
 
@@ -138,7 +140,9 @@ class CodemashServiceTest {
                 categories = listOf(tagsCategory)
         )
 
-        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiSession)))
+        val apiGroup = ApiGroup(sessions = listOf(apiSession))
+
+        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiGroup)))
 
         eventBus.post(SpeakersPersistedEvent())
 
@@ -155,7 +159,9 @@ class CodemashServiceTest {
                 shortSpeakers = listOf(sessionSpeaker)
         )
 
-        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiSession)))
+        val apiGroup = ApiGroup(sessions = listOf(apiSession))
+
+        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiGroup)))
 
         eventBus.post(SpeakersPersistedEvent())
 
@@ -203,6 +209,7 @@ class CodemashServiceTest {
 
     @Subscribe
     fun onRequestConferenceDataErrorEvent(conferenceDataRequestError: ConferenceDataRequestError) {
+        conferenceDataRequestError.error.printStackTrace()
         this.conferenceDataRequestErrorFired = true
         this.conferenceDataRequestError = conferenceDataRequestError
     }

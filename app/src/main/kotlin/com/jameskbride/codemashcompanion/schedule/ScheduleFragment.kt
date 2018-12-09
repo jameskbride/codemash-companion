@@ -1,8 +1,8 @@
 package com.jameskbride.codemashcompanion.schedule
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +32,7 @@ class ScheduleFragment:SessionsFragment() {
         impl.onPause()
     }
 
-    override fun makeLinearLayoutManager(): RecyclerView.LayoutManager? {
-        return LinearLayoutManager(view?.context)
+    override fun makeLinearLayoutManager(): androidx.recyclerview.widget.RecyclerView.LayoutManager? {
+        return androidx.recyclerview.widget.LinearLayoutManager(view?.context)
     }
 }

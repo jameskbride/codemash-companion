@@ -1,9 +1,9 @@
 package com.jameskbride.codemashcompanion.data.model
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.Index
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 import java.io.Serializable
 
 @Entity(indices = arrayOf(Index(value = arrayOf("session_id", "speaker_id"), unique = true)))
