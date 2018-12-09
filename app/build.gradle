@@ -53,14 +53,14 @@ android {
         qa {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASE_URL", '"https://speakers.codemash.org/"'
+            buildConfigField "String", "BASE_URL", '"https://sessionize.com/"'
         }
         release {
             signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASE_URL", '"https://speakers.codemash.org/"'
-            buildConfigField "String", "BASE_URL", '"https://speakers.codemash.org/"'
+            buildConfigField "String", "BASE_URL", '"https://sessionize.com/"'
+            buildConfigField "String", "BASE_URL", '"https://sessionize.com/"'
         }
     }
     sourceSets {

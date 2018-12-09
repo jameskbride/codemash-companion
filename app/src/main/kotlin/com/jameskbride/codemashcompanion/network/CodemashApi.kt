@@ -8,9 +8,9 @@ import retrofit2.http.Query
 
 interface CodemashApi {
 
-    @GET("api/SpeakersData")
+    @GET("api/v2/mqm7pgek/view/speakers")
     fun getSpeakers(@Query("type") type: String = "json"): Observable<List<ApiSpeaker>>
 
-    @GET("api/SessionsData")
+    @GET("api/v2/mqm7pgek/view/sessions")
     fun getSessions(@Query("type") type: String = "json"): Observable<List<ApiSession>>
 }
