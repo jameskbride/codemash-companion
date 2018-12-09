@@ -171,6 +171,13 @@ class ConferenceRepositoryTest {
     }
 
     @Test
+    fun onSessionSpeakersUpdatedEventItDeletesAllSessionSpeakers() {
+        subject.onSessionSpeakersUpdatedEvent(SessionSpeakersUpdatedEvent())
+
+        verify(conferenceDao).deleteSessionSpeakers()
+    }
+
+    @Test
     fun onSessionSpeakersUpdatedEventItInsertsAllSessionSpeakers() {
         subject.onSessionSpeakersUpdatedEvent(SessionSpeakersUpdatedEvent(sessionSpeakers = listOf(SessionSpeaker(sessionId = "sessionId", speakerId = "1234"))))
 
