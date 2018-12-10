@@ -76,8 +76,7 @@ class ApiAdapter {
 
         private fun mapApiSessionRoomsToDomain(session: ApiSession): ConferenceRoom? {
             return  if (sessionHasARoom(session))
-                ConferenceRoom(id=session.roomId!!, sessionId = session.id, name = session.room!!) else null
-
+                ConferenceRoom(sessionId = session.id, name = session.room!!) else null
         }
 
         private fun sessionHasARoom(session: ApiSession) =
