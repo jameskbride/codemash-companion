@@ -27,12 +27,7 @@ open class SessionsRecyclerViewAdapterImpl(open val sessionsFragmentPresenter: S
 
     private fun groupByStartTime(sessionsGroupedByDate: List<SessionsByDate>): Map<String, Map<Date, List<FullSession?>>> {
         return sessionsGroupedByDate.map { sessionsByDate ->
-            val startTime = sessionsByDate.sessionDate
-            val sessions = sessionsByDate.sessions.groupBy { session ->
-                val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
-                dateFormatter.parse(session?.SessionStartTime)
-            }
-            Pair<String, Map<Date, List<FullSession>>>(startTime, sessions)
+            sessionsByDate.sessionsByTime()
         }.toMap()
     }
 
