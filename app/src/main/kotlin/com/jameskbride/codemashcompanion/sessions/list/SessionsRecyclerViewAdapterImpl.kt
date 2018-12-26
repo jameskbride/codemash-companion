@@ -18,7 +18,7 @@ open class SessionsRecyclerViewAdapterImpl(open val sessionsFragmentPresenter: S
     }
 
     fun setSessions(sessionData: SessionData, qtn: SessionsRecyclerViewAdapter) {
-        val sessionsByDate = groupSessionsByDate(sessionData)
+        val sessionsByDate = sessionData.groupSessionsByDate()
         val dateTimeSessions = groupByStartTime(sessionsByDate)
         sessionsList = populateSessionList(dateTimeSessions)
 
@@ -47,16 +47,6 @@ open class SessionsRecyclerViewAdapterImpl(open val sessionsFragmentPresenter: S
         }
 
         return sessionsList
-    }
-
-    private fun groupSessionsByDate(sessionData: SessionData): List<SessionsByDate> {
-        return sessionData.sessions.groupBy { session ->
-            val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
-            val calendar = Calendar.getInstance()
-            calendar.time = dateFormatter.parse(session?.SessionStartTime)
-            val shortDateFormatter = SimpleDateFormat(Session.SHORT_DATE_FORMAT)
-            shortDateFormatter.format(calendar.time)
-        }.map { entry -> SessionsByDate(entry.key, entry.value) }
     }
 
     fun onBindViewHolder(holder: SessionViewHolder, position: Int) {
