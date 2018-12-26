@@ -18,8 +18,8 @@ open class SessionsRecyclerViewAdapterImpl(open val sessionsFragmentPresenter: S
     }
 
     fun setSessions(sessionData: SessionData, qtn: SessionsRecyclerViewAdapter) {
-        var sessionsGroupedByDate: Map<String, List<FullSession>> = groupByDate(sessionData)
-        var dateTimeSessions = groupByStartTime(sessionsGroupedByDate)
+        val sessionsGroupedByDate: Map<String, List<FullSession>> = groupSessionsByDate(sessionData)
+        val dateTimeSessions = groupByStartTime(sessionsGroupedByDate)
         sessionsList = populateSessionList(dateTimeSessions)
 
         qtn.notifyDataSetChanged()
@@ -36,7 +36,7 @@ open class SessionsRecyclerViewAdapterImpl(open val sessionsFragmentPresenter: S
         }.toMap()
     }
 
-    private fun populateSessionList(dateTimesSessions: Map<String, Map<Date, List<FullSession?>>>): MutableList<ListItem> {
+    private fun populateSessionList(dateTimesSessions: Map<String, Map<Date, List<FullSession?>>>): List<ListItem> {
         var sessionsList:MutableList<ListItem> = mutableListOf()
         val dateFormatter = SimpleDateFormat(Session.SHORT_DATE_FORMAT)
         dateTimesSessions.keys.sortedWith(compareBy{ dateString ->
@@ -52,12 +52,6 @@ open class SessionsRecyclerViewAdapterImpl(open val sessionsFragmentPresenter: S
         }
 
         return sessionsList
-    }
-
-    private fun groupByDate(sessionData: SessionData): Map<String, List<FullSession>> {
-        val sessionsGroupedByDate = groupSessionsByDate(sessionData)
-
-        return sessionsGroupedByDate
     }
 
     private fun groupSessionsByDate(sessionData: SessionData): Map<String, List<FullSession>> {
