@@ -7,12 +7,10 @@ import java.util.*
 
 class SessionsByDate constructor(val sessionDate: String, val sessions: List<FullSession> = listOf()) {
 
-    fun sessionsByTime(): Pair<String, Map<Date, List<FullSession>>> {
-        val sessions = sessions.groupBy { session ->
+    fun sessionsByTime(): Map<Date, List<FullSession>> {
+        return sessions.groupBy { session ->
             val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
             dateFormatter.parse(session?.SessionStartTime)
         }
-
-        return Pair<String, Map<Date, List<FullSession>>>(sessionDate, sessions)
     }
 }
