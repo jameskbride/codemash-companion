@@ -3,12 +3,10 @@ package com.jameskbride.codemashcompanion.sessions.list
 import android.view.View
 import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.R
-import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.Session
 import com.jameskbride.codemashcompanion.sessions.SessionsFragmentPresenter
 import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 import java.text.SimpleDateFormat
-import java.util.*
 
 open class SessionsRecyclerViewAdapterImpl(open val sessionsFragmentPresenter: SessionsFragmentPresenter, open val layoutInflaterFactory: LayoutInflaterFactory = LayoutInflaterFactory()) {
     var sessionsList: List<ListItem> = mutableListOf()
@@ -19,27 +17,20 @@ open class SessionsRecyclerViewAdapterImpl(open val sessionsFragmentPresenter: S
 
     fun setSessions(sessionData: SessionData, qtn: SessionsRecyclerViewAdapter) {
         val sessionsByDate = sessionData.groupSessionsByDate()
-        val dateTimeSessions = groupByStartTime(sessionsByDate)
-        sessionsList = populateSessionList(dateTimeSessions)
+        sessionsList = populateSessionList(sessionsByDate)
 
         qtn.notifyDataSetChanged()
     }
 
-    private fun groupByStartTime(sessionsGroupedByDate: List<SessionsByDate>): Map<String, Map<Date, List<FullSession>>> {
-        return sessionsGroupedByDate.map { sessionsByDate ->  Pair(sessionsByDate.sessionDate, sessionsByDate.sessionsByTime()) }.toMap()
-    }
-
-    private fun populateSessionList(dateTimesSessions: Map<String, Map<Date, List<FullSession?>>>): List<ListItem> {
+    private fun populateSessionList(dateTimesSessions: List<SessionsByDate>): List<ListItem> {
         var sessionsList:MutableList<ListItem> = mutableListOf()
-        val dateFormatter = SimpleDateFormat(Session.SHORT_DATE_FORMAT)
-        dateTimesSessions.keys.sortedWith(compareBy{ dateString ->
-            dateFormatter.parse(dateString)
-        }).forEach{ date ->
-            sessionsList.add(DateHeaderListItem(date))
-            dateTimesSessions[date]!!.keys.sorted().forEach { time ->
-                sessionsList.add(TimeHeaderListItem(time))
-                dateTimesSessions[date]!![time]!!.forEach { session ->
-                    sessionsList.add(SessionListItem(session!!))
+
+        dateTimesSessions.forEach{ sessionsByDate ->
+            sessionsList.add(DateHeaderListItem(sessionsByDate.sessionDate))
+            sessionsByDate.sessionsByTime().forEach { sessionsByTime ->
+                sessionsList.add(TimeHeaderListItem(sessionsByTime.sessionTime))
+                sessionsByTime.sessions.forEach { session ->
+                    sessionsList.add(SessionListItem(session))
                 }
             }
         }
