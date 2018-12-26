@@ -25,18 +25,18 @@ open class SessionsRecyclerViewAdapterImpl(open val sessionsFragmentPresenter: S
         qtn.notifyDataSetChanged()
     }
 
-    private fun groupByStartTime(sessionsGroupedByDate: Map<String, List<FullSession>>): LinkedHashMap<String, Map<Date, List<FullSession?>>> {
-        var dateTimesSessions: LinkedHashMap<String, Map<Date, List<FullSession?>>> = linkedMapOf()
-        sessionsGroupedByDate.forEach { keyValue ->
-            dateTimesSessions[keyValue.key] = keyValue.value.groupBy { session ->
+    private fun groupByStartTime(sessionsGroupedByDate: Map<String, List<FullSession>>): Map<String, Map<Date, List<FullSession?>>> {
+        return sessionsGroupedByDate.map { keyValue ->
+            val startTime = keyValue.key
+            val sessions = keyValue.value.groupBy { session ->
                 val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
                 dateFormatter.parse(session?.SessionStartTime)
             }
-        }
-        return dateTimesSessions
+            Pair<String, Map<Date, List<FullSession>>>(startTime, sessions)
+        }.toMap()
     }
 
-    private fun populateSessionList(dateTimesSessions: LinkedHashMap<String, Map<Date, List<FullSession?>>>): MutableList<ListItem> {
+    private fun populateSessionList(dateTimesSessions: Map<String, Map<Date, List<FullSession?>>>): MutableList<ListItem> {
         var sessionsList:MutableList<ListItem> = mutableListOf()
         val dateFormatter = SimpleDateFormat(Session.SHORT_DATE_FORMAT)
         dateTimesSessions.keys.sortedWith(compareBy{ dateString ->
