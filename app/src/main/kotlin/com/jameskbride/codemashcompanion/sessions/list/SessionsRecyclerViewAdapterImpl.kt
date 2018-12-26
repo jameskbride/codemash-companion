@@ -18,17 +18,17 @@ open class SessionsRecyclerViewAdapterImpl(open val sessionsFragmentPresenter: S
     }
 
     fun setSessions(sessionData: SessionData, qtn: SessionsRecyclerViewAdapter) {
-        val sessionsGroupedByDate: Map<String, List<FullSession>> = groupSessionsByDate(sessionData)
-        val dateTimeSessions = groupByStartTime(sessionsGroupedByDate)
+        val sessionsByDate = groupSessionsByDate(sessionData)
+        val dateTimeSessions = groupByStartTime(sessionsByDate)
         sessionsList = populateSessionList(dateTimeSessions)
 
         qtn.notifyDataSetChanged()
     }
 
-    private fun groupByStartTime(sessionsGroupedByDate: Map<String, List<FullSession>>): Map<String, Map<Date, List<FullSession?>>> {
-        return sessionsGroupedByDate.map { keyValue ->
-            val startTime = keyValue.key
-            val sessions = keyValue.value.groupBy { session ->
+    private fun groupByStartTime(sessionsGroupedByDate: List<SessionsByDate>): Map<String, Map<Date, List<FullSession?>>> {
+        return sessionsGroupedByDate.map { sessionsByDate ->
+            val startTime = sessionsByDate.sessionDate
+            val sessions = sessionsByDate.sessions.groupBy { session ->
                 val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
                 dateFormatter.parse(session?.SessionStartTime)
             }
@@ -54,14 +54,14 @@ open class SessionsRecyclerViewAdapterImpl(open val sessionsFragmentPresenter: S
         return sessionsList
     }
 
-    private fun groupSessionsByDate(sessionData: SessionData): Map<String, List<FullSession>> {
+    private fun groupSessionsByDate(sessionData: SessionData): List<SessionsByDate> {
         return sessionData.sessions.groupBy { session ->
             val dateFormatter = SimpleDateFormat(Session.TIMESTAMP_FORMAT)
             val calendar = Calendar.getInstance()
             calendar.time = dateFormatter.parse(session?.SessionStartTime)
             val shortDateFormatter = SimpleDateFormat(Session.SHORT_DATE_FORMAT)
             shortDateFormatter.format(calendar.time)
-        }
+        }.map { entry -> SessionsByDate(entry.key, entry.value) }
     }
 
     fun onBindViewHolder(holder: SessionViewHolder, position: Int) {
