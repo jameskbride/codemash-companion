@@ -25,10 +25,8 @@ open class SessionsRecyclerViewAdapterImpl(open val sessionsFragmentPresenter: S
         qtn.notifyDataSetChanged()
     }
 
-    private fun groupByStartTime(sessionsGroupedByDate: List<SessionsByDate>): Map<String, Map<Date, List<FullSession?>>> {
-        return sessionsGroupedByDate.map { sessionsByDate ->
-            sessionsByDate.sessionsByTime()
-        }.toMap()
+    private fun groupByStartTime(sessionsGroupedByDate: List<SessionsByDate>): Map<String, Map<Date, List<FullSession>>> {
+        return sessionsGroupedByDate.map { sessionsByDate ->  sessionsByDate.sessionsByTime() }.toMap()
     }
 
     private fun populateSessionList(dateTimesSessions: Map<String, Map<Date, List<FullSession?>>>): List<ListItem> {
