@@ -20,6 +20,9 @@ class DateHeaderListItem constructor(val text:String): Item<DateViewHolder>(), E
 
     override fun bind(viewHolder: DateViewHolder, position: Int) {
         viewHolder.bind(text)
+        viewHolder.root.setOnClickListener {
+            onToggleListener.onToggleExpanded()
+        }
     }
 
     override fun createViewHolder(itemView: View): DateViewHolder {

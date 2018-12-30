@@ -17,6 +17,9 @@ class TimeHeaderListItem constructor(val sessionTime: Date): Item<TimeViewHolder
 
     override fun bind(viewHolder: TimeViewHolder, position: Int) {
         viewHolder.bind(sessionTime)
+        viewHolder.root.setOnClickListener {
+            onToggleListener.onToggleExpanded()
+        }
     }
 
     override fun getLayout(): Int {

@@ -1,23 +1,31 @@
 package com.jameskbride.codemashcompanion.sessions.list.listitems
 
+import android.view.View
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.sessions.list.DateViewHolder
+import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.verify
-import org.junit.Assert.*
+import com.nhaarman.mockito_kotlin.whenever
+import com.xwray.groupie.ExpandableGroup
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.MockitoAnnotations
+import org.mockito.MockitoAnnotations.initMocks
 
 class DateHeaderListItemTest {
     private lateinit var subject: DateHeaderListItem
 
-    @Mock
-    private lateinit var dateViewHolder: DateViewHolder
+    @Mock private lateinit var dateViewHolder: DateViewHolder
+    @Mock private lateinit var itemView: View
+    @Mock private lateinit var expandableGroup: ExpandableGroup
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        initMocks(this)
+
+        whenever(dateViewHolder.root).thenReturn(itemView)
+
         subject = DateHeaderListItem("some date")
     }
 
@@ -31,5 +39,18 @@ class DateHeaderListItemTest {
         subject.bind(dateViewHolder, 0)
 
         verify(dateViewHolder).bind("some date")
+    }
+
+    @Test
+    fun givenTheExpandedGroupIsSetThenItCanToggleExpandedWhenClicked() {
+        subject.setExpandableGroup(expandableGroup)
+        subject.bind(dateViewHolder, 0)
+
+        val onClickCaptor = argumentCaptor<View.OnClickListener>()
+        verify(itemView).setOnClickListener(onClickCaptor.capture())
+
+        onClickCaptor.firstValue.onClick(null)
+
+        verify(expandableGroup).onToggleExpanded()
     }
 }
