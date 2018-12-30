@@ -2,6 +2,9 @@ package com.jameskbride.codemashcompanion.sessions.list
 
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.Session
+import com.jameskbride.codemashcompanion.sessions.list.listitems.DateHeaderListItem
+import com.jameskbride.codemashcompanion.sessions.list.listitems.SessionListItem
+import com.jameskbride.codemashcompanion.sessions.list.listitems.TimeHeaderListItem
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
