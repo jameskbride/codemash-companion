@@ -42,6 +42,7 @@ class SessionsRecyclerViewAdapterImplTest {
 
         subject.setSessions(sessions, qtn)
 
+        verify(qtn).clear()
         verify(qtn).addAll(groups)
     }
 }

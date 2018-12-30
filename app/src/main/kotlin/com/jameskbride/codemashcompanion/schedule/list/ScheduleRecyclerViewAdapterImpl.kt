@@ -7,5 +7,4 @@ import com.jameskbride.codemashcompanion.utils.LayoutInflaterFactory
 class ScheduleRecyclerViewAdapterImpl constructor(
         override val sessionsFragmentPresenter: SessionsFragmentPresenter,
         override val layoutInflaterFactory: LayoutInflaterFactory = LayoutInflaterFactory())
-    : SessionsRecyclerViewAdapterImpl(sessionsFragmentPresenter, layoutInflaterFactory) {
-}
+    : SessionsRecyclerViewAdapterImpl(sessionsFragmentPresenter, layoutInflaterFactory)

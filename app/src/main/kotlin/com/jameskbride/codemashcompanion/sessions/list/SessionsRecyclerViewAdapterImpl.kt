@@ -11,6 +11,7 @@ open class SessionsRecyclerViewAdapterImpl(
         open val sessionToListItemConverter: SessionToListItemConverter = SessionToListItemConverter()) {
 
     fun setSessions(sessionData: SessionData, qtn: SessionsRecyclerViewAdapter) {
+        qtn.clear()
         val sessionsByDate = sessionData.groupSessionsByDate()
         val sessionsList = populateSessionList(sessionsByDate)
         qtn.addAll(sessionsList)
