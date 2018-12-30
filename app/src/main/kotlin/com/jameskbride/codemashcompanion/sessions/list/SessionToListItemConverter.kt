@@ -6,29 +6,26 @@ import com.jameskbride.codemashcompanion.sessions.list.listitems.DateHeaderListI
 import com.jameskbride.codemashcompanion.sessions.list.listitems.EmptyListItem
 import com.jameskbride.codemashcompanion.sessions.list.listitems.SessionListItem
 import com.jameskbride.codemashcompanion.sessions.list.listitems.TimeHeaderListItem
+import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.Group
+import com.xwray.groupie.Section
 
 class SessionToListItemConverter {
 
     fun populateSessionList(sessionsByDate: List<SessionsByDate>, sessionOnClick: (FullSession) -> Unit): List<Group> {
-        val sessionsList = mutableListOf<Group>()
+        var dateGroups = sessionsByDate.map{ sessionsByDate ->
+            var timeSections = sessionsByDate.sessionsByTime().map { sessionsByTime ->
+                var timeSection = Section()
+                timeSection.setHeader(TimeHeaderListItem(sessionsByTime.sessionTime))
+                timeSection.addAll(sessionsByTime.sessions.map { session -> SessionListItem(session, View.OnClickListener { sessionOnClick(session) }) })
+                timeSection
+            }
 
-        sessionsByDate.forEach{ sessionsByDate ->
-            sessionsList.add(DateHeaderListItem(sessionsByDate.sessionDate))
-            sessionsByDate.sessionsByTime().forEach { sessionsByTime ->
-                sessionsList.add(TimeHeaderListItem(sessionsByTime.sessionTime))
-                sessionsByTime.sessions.forEach { session ->
-                    sessionsList.add(SessionListItem(session, View.OnClickListener {
-                        sessionOnClick(session)
-                    }))
-                }
+            ExpandableGroup(DateHeaderListItem(sessionsByDate.sessionDate), true).apply {
+                addAll(timeSections)
             }
         }
 
-        if (sessionsList.isEmpty()) {
-            sessionsList.add(EmptyListItem())
-        }
-
-        return sessionsList
+        return if (dateGroups.isEmpty()) { listOf(EmptyListItem()) } else { dateGroups }
     }
 }
