@@ -3,6 +3,7 @@ package com.jameskbride.codemashcompanion.sessions.list
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.data.model.Session
 import com.jameskbride.codemashcompanion.sessions.list.listitems.DateHeaderListItem
+import com.jameskbride.codemashcompanion.sessions.list.listitems.EmptyListItem
 import com.jameskbride.codemashcompanion.sessions.list.listitems.SessionListItem
 import com.jameskbride.codemashcompanion.sessions.list.listitems.TimeHeaderListItem
 import org.junit.Assert.*
@@ -42,6 +43,13 @@ class SessionToListItemConverterTest {
         sessionData = SessionData(sessions)
     }
 
+    @Test
+    fun givenNoSessionsItGeneratesAtLeastTheEmptyListItem() {
+        val result = subject.populateSessionList(listOf(), { sessionData: FullSession -> })
+
+        assertEquals(1, result.size)
+        assertTrue(result[0] is EmptyListItem)
+    }
 
     @Test
     fun itConvertsSessionsToListItems() {
