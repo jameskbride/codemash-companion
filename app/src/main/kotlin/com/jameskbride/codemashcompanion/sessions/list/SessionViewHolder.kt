@@ -4,10 +4,11 @@ import android.view.View
 import android.widget.TextView
 import com.jameskbride.codemashcompanion.R
 import com.jameskbride.codemashcompanion.data.model.FullSession
+import com.xwray.groupie.ViewHolder
 import java.text.SimpleDateFormat
 import java.util.*
 
-open class SessionViewHolder constructor(itemView: View): androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView)
+open class SessionViewHolder constructor(itemView: View): ViewHolder(itemView)
 
 class ItemViewHolder constructor(val view: View): SessionViewHolder(view) {
     fun bind(session: FullSession) {
@@ -33,6 +34,5 @@ class DateViewHolder constructor(itemView: View): SessionViewHolder(itemView) {
 
 class EmptyViewHolder constructor(itemView: View): SessionViewHolder(itemView) {
     fun bind() {
-
     }
 }
