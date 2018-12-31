@@ -2,7 +2,6 @@ package com.jameskbride.codemashcompanion.sessions.list
 
 import android.view.View
 import com.jameskbride.codemashcompanion.data.model.FullSession
-import com.jameskbride.codemashcompanion.data.model.Session
 import com.jameskbride.codemashcompanion.sessions.list.listitems.DateHeaderListItem
 import com.jameskbride.codemashcompanion.sessions.list.listitems.EmptyListItem
 import com.jameskbride.codemashcompanion.sessions.list.listitems.SessionListItem
@@ -11,7 +10,6 @@ import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.Group
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
-import java.text.SimpleDateFormat
 import java.util.*
 
 class SessionToListItemConverter {
@@ -19,7 +17,7 @@ class SessionToListItemConverter {
     fun populateSessionList(sessionsByDate: List<SessionsByDate>, sessionOnClick: (FullSession) -> Unit): List<Group> {
         var dateGroups = sessionsByDate.map{ sessionsByDate ->
             var timeSections = sessionsByDate.sessionsByTime().map { sessionsByTime ->
-                ExpandableGroup(TimeHeaderListItem(sessionsByTime.sessionTime), true).apply {
+                ExpandableGroup(TimeHeaderListItem(sessionsByTime.sessionTime), isTimeExpanded(sessionsByTime.sessionTime)).apply {
                     addAll(sessionsByTime.sessions.map { session -> SessionListItem(session, View.OnClickListener { sessionOnClick(session) }) })
                 }
             }
@@ -30,6 +28,10 @@ class SessionToListItemConverter {
         }
 
         return if (dateGroups.isEmpty()) { listOf(EmptyListItem()) } else { dateGroups }
+    }
+
+    private fun isTimeExpanded(sessionTime: Date): Boolean {
+        return false
     }
 
     private fun isDateExpanded(sessionsDate: String): Boolean {

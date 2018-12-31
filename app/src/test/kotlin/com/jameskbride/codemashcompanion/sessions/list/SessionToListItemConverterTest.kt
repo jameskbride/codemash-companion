@@ -97,6 +97,7 @@ class SessionToListItemConverterTest {
         val result = subject.populateSessionList(sessionData.groupSessionsByDate()) {sessionData: FullSession -> }
 
         val firstDay = result[0] as ExpandableGroup
-        assertFalse(firstDay.isExpanded)
+        val firstSession = firstDay.getGroup(1) as ExpandableGroup
+        assertFalse(firstSession.isExpanded)
     }
 }
