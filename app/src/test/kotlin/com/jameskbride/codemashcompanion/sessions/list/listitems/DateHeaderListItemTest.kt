@@ -26,7 +26,7 @@ class DateHeaderListItemTest {
 
         whenever(dateViewHolder.root).thenReturn(itemView)
 
-        subject = DateHeaderListItem("some date")
+        subject = DateHeaderListItem("2018-01-01")
     }
 
     @Test
@@ -38,7 +38,7 @@ class DateHeaderListItemTest {
     fun itCanBindTheViewHolder() {
         subject.bind(dateViewHolder, 0)
 
-        verify(dateViewHolder).bind("some date")
+        verify(dateViewHolder).bind("1/1/2018")
     }
 
     @Test
