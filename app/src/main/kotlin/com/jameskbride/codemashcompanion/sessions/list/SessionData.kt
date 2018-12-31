@@ -11,12 +11,12 @@ class SessionData(val sessions: Array<FullSession> = arrayOf()) {
         return sessions
                 .groupBy { session -> toSessionDate(session) }
                 .map { entry -> SessionsByDate(entry.key, entry.value) }
-                .sortedWith(compareBy { sessionsByDate -> toCalendar(sessionsByDate.sessionDate, Session.SHORT_DATE_FORMAT) })
+                .sortedWith(compareBy { sessionsByDate -> toCalendar(sessionsByDate.sessionDate, Session.ISO_DATE_FORMAT) })
     }
 
     private fun toSessionDate(session: FullSession): String {
         val calendar = toCalendar(session.SessionStartTime, Session.TIMESTAMP_FORMAT)
-        val shortDateFormatter = SimpleDateFormat(Session.SHORT_DATE_FORMAT)
+        val shortDateFormatter = SimpleDateFormat(Session.ISO_DATE_FORMAT)
         return shortDateFormatter.format(calendar?.time)
     }
 

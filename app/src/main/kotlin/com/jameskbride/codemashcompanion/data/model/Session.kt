@@ -18,5 +18,6 @@ data class Session constructor(
     companion object {
         val TIMESTAMP_FORMAT = "yyyy-MM-dd'T'HH:mm"
         val SHORT_DATE_FORMAT =  "M/d/yyyy"
+        val ISO_DATE_FORMAT = "yyyy-MM-dd"
     }
 }

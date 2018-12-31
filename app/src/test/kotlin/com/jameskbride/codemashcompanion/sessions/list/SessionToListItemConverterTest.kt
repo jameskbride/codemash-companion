@@ -3,10 +3,11 @@ package com.jameskbride.codemashcompanion.sessions.list
 import com.jameskbride.codemashcompanion.data.model.FullSession
 import com.jameskbride.codemashcompanion.sessions.list.listitems.EmptyListItem
 import com.xwray.groupie.ExpandableGroup
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
 
 class SessionToListItemConverterTest {
 
@@ -56,6 +57,46 @@ class SessionToListItemConverterTest {
         val result = subject.populateSessionList(sessionData.groupSessionsByDate()) {sessionData: FullSession -> }
 
         val firstDay = result[0] as ExpandableGroup
-        assertEquals(1, firstDay.groupCount - 1)
+        assertEquals(1, firstDay.groupCount)
+    }
+
+    @Test
+    fun itCollapsesDaysThatAreInThePast() {
+        val result = subject.populateSessionList(sessionData.groupSessionsByDate()) {sessionData: FullSession -> }
+
+        val firstDay = result[0] as ExpandableGroup
+        assertFalse(firstDay.isExpanded)
+    }
+
+    @Test
+    fun itExpandsTheCurrentDate() {
+        val currentDate = LocalDateTime.now()
+        val currentDateString = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(currentDate)
+
+        val sessionData = SessionData(arrayOf(FullSession(SessionStartTime = currentDateString)))
+        val results = subject.populateSessionList(sessionData.groupSessionsByDate(), { })
+
+        val firstDay = results[0] as ExpandableGroup
+        assertTrue(firstDay.isExpanded)
+    }
+
+    @Test
+    fun itExpandsFutureDates() {
+        val currentDate = LocalDateTime.now().plusDays(1)
+        val currentDateString = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(currentDate)
+
+        val sessionData = SessionData(arrayOf(FullSession(SessionStartTime = currentDateString)))
+        val results = subject.populateSessionList(sessionData.groupSessionsByDate(), { })
+
+        val firstDay = results[0] as ExpandableGroup
+        assertTrue(firstDay.isExpanded)
+    }
+
+    @Test
+    fun itCollapsesTimesThatAreInThePast() {
+        val result = subject.populateSessionList(sessionData.groupSessionsByDate()) {sessionData: FullSession -> }
+
+        val firstDay = result[0] as ExpandableGroup
+        assertFalse(firstDay.isExpanded)
     }
 }
