@@ -1,27 +1,11 @@
 package com.jameskbride.codemashcompanion.sessions.list
 
-import android.view.ViewGroup
 import com.jameskbride.codemashcompanion.sessions.SessionsFragmentPresenter
+import com.xwray.groupie.GroupAdapter
 
 open class SessionsRecyclerViewAdapter constructor(val sessionsFragmentPresenter: SessionsFragmentPresenter,
                                                    open val impl: SessionsRecyclerViewAdapterImpl = SessionsRecyclerViewAdapterImpl(sessionsFragmentPresenter))
-    : androidx.recyclerview.widget.RecyclerView.Adapter<SessionViewHolder>() {
-
-    override fun getItemViewType(position: Int): Int {
-        return impl.getItemViewType(position)
-    }
-
-    override fun onBindViewHolder(holder: SessionViewHolder, position: Int) {
-        impl.onBindViewHolder(holder, position)
-    }
-
-    override fun getItemCount(): Int {
-        return impl.getItemCount()
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionViewHolder {
-        return impl.onCreateViewHolder(parent, viewType)
-    }
+    : GroupAdapter<SessionViewHolder>() {
 
     fun setSessions(sessionData: SessionData) {
         impl.setSessions(sessionData, this)

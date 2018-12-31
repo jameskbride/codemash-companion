@@ -1,6 +1,7 @@
 package com.jameskbride.codemashcompanion.application
 
 import android.app.Application
+import com.jakewharton.threetenabp.AndroidThreeTen
 import com.jameskbride.codemashcompanion.data.ConferenceRepository
 import com.jameskbride.codemashcompanion.injection.ApplicationComponent
 import com.jameskbride.codemashcompanion.injection.ApplicationModule
@@ -19,6 +20,7 @@ constructor(val applicationComponentFactory: ApplicationComponentFactory = Appli
 
     override fun onCreate() {
         super.onCreate()
+        AndroidThreeTen.init(this)
 
         configure()
     }
