@@ -8,7 +8,7 @@ import com.jameskbride.codemashcompanion.sessions.list.listitems.SessionListItem
 import com.jameskbride.codemashcompanion.sessions.list.listitems.TimeHeaderListItem
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.Group
-import org.threeten.bp.LocalDate
+import org.threeten.bp.*
 import org.threeten.bp.format.DateTimeFormatter
 import java.util.*
 
@@ -31,7 +31,13 @@ class SessionToListItemConverter {
     }
 
     private fun isTimeExpanded(sessionTime: Date): Boolean {
-        return false
+        val sessionTimeInstant = Instant.ofEpochMilli(sessionTime.getTime())
+                .atZone(ZoneId.systemDefault()).toInstant()
+        val sessionDateTime = LocalDateTime.ofInstant(sessionTimeInstant, ZoneId.systemDefault())
+
+        val currentDateTime = LocalDateTime.now()
+
+        return sessionDateTime.isEqual(currentDateTime) || sessionDateTime.isAfter(currentDateTime)
     }
 
     private fun isDateExpanded(sessionsDate: String): Boolean {

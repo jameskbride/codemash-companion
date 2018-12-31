@@ -100,4 +100,18 @@ class SessionToListItemConverterTest {
         val firstSession = firstDay.getGroup(1) as ExpandableGroup
         assertFalse(firstSession.isExpanded)
     }
+
+    @Test
+    fun itExpandsFutureTimes() {
+        val currentDate = LocalDateTime.now().plusDays(1)
+        val currentDateString = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(currentDate)
+
+        val sessionData = SessionData(arrayOf(FullSession(SessionStartTime = currentDateString)))
+
+        val result = subject.populateSessionList(sessionData.groupSessionsByDate()) {sessionData: FullSession -> }
+
+        val firstDay = result[0] as ExpandableGroup
+        val firstSession = firstDay.getGroup(1) as ExpandableGroup
+        assertTrue(firstSession.isExpanded)
+    }
 }
