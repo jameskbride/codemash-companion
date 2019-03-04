@@ -78,8 +78,8 @@ class CodemashServiceTest {
 
     @Test
     fun onSpeakersPersistedEventGetsTheSessionData() {
-        val apiGroup = ApiGroup(sessions = listOf())
-        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiGroup)))
+        val apiGrid = ApiGrid(rooms = listOf())
+        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiGrid)))
 
         eventBus.post(SpeakersPersistedEvent())
 
@@ -96,9 +96,10 @@ class CodemashServiceTest {
                 abstract = "abstract"
         )
 
-        val apiGroup = ApiGroup(sessions = listOf(apiSession))
+        val apiRoom = ApiRoom(sessions = listOf(apiSession))
+        val apiGrid = ApiGrid(rooms = listOf(apiRoom))
 
-        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiGroup)))
+        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiGrid)))
 
         eventBus.post(SpeakersPersistedEvent())
 
@@ -115,9 +116,10 @@ class CodemashServiceTest {
                 room = "room 1"
         )
 
-        val apiGroup = ApiGroup(sessions = listOf(apiSession))
+        val apiRoom = ApiRoom(sessions = listOf(apiSession))
+        val apiGrid = ApiGrid(rooms = listOf(apiRoom))
 
-        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiGroup)))
+        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiGrid)))
 
         eventBus.post(SpeakersPersistedEvent())
 
@@ -140,9 +142,10 @@ class CodemashServiceTest {
                 categories = listOf(tagsCategory)
         )
 
-        val apiGroup = ApiGroup(sessions = listOf(apiSession))
+        val apiRoom = ApiRoom(sessions = listOf(apiSession))
+        val apiGrid = ApiGrid(rooms = listOf(apiRoom))
 
-        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiGroup)))
+        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiGrid)))
 
         eventBus.post(SpeakersPersistedEvent())
 
@@ -159,9 +162,10 @@ class CodemashServiceTest {
                 shortSpeakers = listOf(sessionSpeaker)
         )
 
-        val apiGroup = ApiGroup(sessions = listOf(apiSession))
+        val apiRoom = ApiRoom(sessions = listOf(apiSession))
+        val apiGrid = ApiGrid(rooms = listOf(apiRoom))
 
-        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiGroup)))
+        whenever(codemashApi.getSessions()).thenReturn(Observable.fromArray(listOf(apiGrid)))
 
         eventBus.post(SpeakersPersistedEvent())
 

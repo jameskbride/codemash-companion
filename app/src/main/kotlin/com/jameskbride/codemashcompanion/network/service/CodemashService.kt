@@ -7,7 +7,9 @@ import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.b
 import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.buildTags
 import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSessionsToDomain
 import com.jameskbride.codemashcompanion.network.adapters.ApiAdapter.Companion.mapApiSpeakersToDomain
+import com.jameskbride.codemashcompanion.network.model.ApiGrid
 import com.jameskbride.codemashcompanion.network.model.ApiGroup
+import com.jameskbride.codemashcompanion.network.model.ApiRoom
 import io.reactivex.Scheduler
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -40,8 +42,8 @@ class CodemashService @Inject constructor(private val codemashApi: CodemashApi,
                 )
     }
 
-    private fun handleSessionsUpdated(apiGroup: ApiGroup) {
-        val apiSessions = apiGroup.sessions
+    private fun handleSessionsUpdated(apiGrid: ApiGrid) {
+        val apiSessions = apiGrid.rooms.map { apiRoom -> apiRoom.sessions }.flatten()
         eventBus.post(RoomsUpdatedEvent(conferenceRooms = buildRooms(apiSessions)))
         eventBus.post(TagsUpdatedEvent(tags = buildTags(apiSessions)!!))
         eventBus.post(SessionSpeakersUpdatedEvent(sessionSpeakers = buildSessionSpeakers(apiSessions)))
