@@ -1,0 +1,4 @@
+store.file=~/.android/debug.keystore
+store.password=android
+key.alias=androiddebugkey
+key.password=android
